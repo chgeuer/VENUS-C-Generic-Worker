@@ -1,0 +1,996 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0dbe5200-5bca-4021-b5d0-8935ad413e76" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>This tutorial will show you what are all the components required to build your own client in order to upload an application and submit a job.</para>
+
+    </introduction>
+    <section >
+      <title>Required components</title>
+      <content>
+        <procedure>
+         
+
+          <title>
+
+          </title>
+
+          <steps class="ordered">
+
+            <step>
+              <content>
+                <para>Application executable</para>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>Application's description</para>
+              </content>
+            </step>
+
+
+            <step>
+              <content>
+                <para>Job description</para>
+                
+              </content>
+            </step>
+          </steps>
+          <conclusion>
+            <content>
+
+            </content>
+          </conclusion>
+
+        </procedure>
+        <alert>
+          <para>
+            Application's executable file and its file name and path are necessary for building your application description
+          </para>
+
+        </alert>
+        <!-- If a section contains a sections element, its content creates
+           sub-sections.  These are not collapsible.
+      <sections>
+          <section address="SubSection1">
+              <title>Sub-section 1</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+          <section address="SubSection2">
+              <title>Sub-section 2</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+      </sections> -->
+
+
+      </content>
+    </section>
+
+    <section >
+      <title>Running the application on your desktop</title>
+      <content>
+
+        <para>
+          In this section we will briefly talk about an example application which is run on a desktop without connecting to the cloud, just to give you a picture of the following aspects of the application
+        </para>
+        <para>So that you would be required to know to come up with your own version of application description and job description for starters. </para>
+        <para>We will come to more complex aspects like different parameters required to establish a connection with the cloud a bit latter in this course.
+        </para>
+        <procedure>
+          <title>
+
+          </title>
+
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>
+                  Application input fields
+
+                </para>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  Application output fields
+                </para>
+              </content>
+            </step>
+          </steps>
+          <conclusion>
+            <content>
+
+            </content>
+          </conclusion>
+        </procedure>
+
+        <mediaLink>
+          <image xlink:href="tutorial1"/>
+        </mediaLink>
+
+
+
+        <para>The above screenshot shows a simpleApplication being run on command Prompt console of a local desktop.</para>
+        <para>
+          The command to execute the batch file looks like this : <legacyBold>SimpleApplication -input input.txt -outputfiles 3</legacyBold>
+        </para>
+
+
+        <procedure>
+          <title>
+
+          </title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>Input parameters as "-input" followed by the input file "input.txt" whose contents are visible in the below picture</para>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>Output parameters as "-outfiles" followed by the number of output files to be generated after the processing the input file </para>
+              </content>
+            </step>
+
+          </steps>
+        </procedure>
+        <mediaLink>
+          <image xlink:href="tutorial2"/>
+        </mediaLink>
+
+        <alert class="note">
+          <para>The SimpleApplication is just dividing the input file into 3 different files each containing 1 line of the original input file</para>
+        </alert>
+        <mediaLink>
+          <image xlink:href="tutorial3"/>
+        </mediaLink>
+
+      </content>
+
+    </section>
+
+    <section>
+      <title>Writing Application Description</title>
+      <content>
+
+        <para>
+          Looking at the above simpleApplication example, we now know the different input and output fields required and the different kinds of fields accepted by the application execution command to run the command successfully.
+        </para>
+
+        <para>
+          Now we need to understand how is this embedded into Generic Worker to accommodate different inputs and outputs for applications executed in the cloud. 
+          </para>
+        <para>Application Description provides a way to define the required and optional input and output parameters for an application to run successfully in the cloud.
+        </para>
+
+        <mediaLink>
+          <image xlink:href="tutorial4"/>
+        </mediaLink>
+
+        <para>
+          First we will have a look into the class Diagram (as depicted in the picture above) of the <legacyBold>VenusApplicationDescription</legacyBold> class used to store all the necessary information about your application like :
+
+        </para>
+        <procedure>
+          <title>
+
+          </title>
+          <steps class ="bullet">
+            <step>
+              <content>
+                <para>
+                  <legacyBold>VenusCommandTemplate class</legacyBold> Object and its attributes
+                </para>
+                <para>
+                  1. Executable (string) : Mandatory field - Name of the executable file.
+                </para>
+                <para>
+                  2. Path (string) : Optional - Environment variable Path - used in the case where the executable requires certain other files which are available in different folders.
+                </para>
+
+                <para>
+                  3. <legacyBold>CommandLineArgument class</legacyBold> object and its attributes
+                </para>
+                <para>
+                  3.1 FormatString (string) :corresponds to names of the different fields like "-input" or "-outfiles" as shown in the figure 1.
+                </para>
+                <para>
+                  3.2 Name (string) : This is the name of the field in the command line which is used to refer and assign values to the commandline arguments in the job description part.
+                </para>
+                <para>
+                  For example:
+                  if the application description has arguments defined in the following way:
+                </para>
+                <code title="Example for Name field in the Application Description to show how is this linked to in the Job Description">
+                  new CommandLineArgument()
+                  {
+                  Name = "InputFile",
+                  FormatString = "-input {0}",
+                  Required = Required.Mandatory,
+                  CommandLineArgType = CommandLineArgType.SingleReferenceInputArgument
+                  },
+                </code>
+
+                <para>
+                  Corresponding reference to this CommandLineArgument in the JobDescription section will be done the following way :
+                </para>
+                <code title="Example for Name field in the Application Description to show how is this linked to in the Job Description">
+                  // create a blobreference in the cloud for the input file named as "input.txt"
+                  var nameIn = "input.txt";   // this can be any name not h=just input.txt but should follow after "-input" in the commandline
+                  var blobIn = blobContainer.GetBlobReference(nameIn);
+                  blobIn.UploadFile(nameIn);  //upload the input.txt file
+
+                  // Now it is possible to create the SingleReference
+                  AzureArgumentSingleReference inputFile = new AzureArgumentSingleReference();
+                  inputFile.Name = "InputFile";               // This has to be the same name as in the application description
+                  inputFile.DataAddress = blobIn.Uri.AbsoluteUri;   //this is how the input.txt is linked to input field "-input"
+                  inputFile.ConnectionString = UserDataStoreConnectionString;
+                </code>
+
+                <para>
+                  3.3 CommandLineArgType (ENUM) : represents different kind of argument. For this refer the next section.
+
+                </para>
+                <para>
+                  3.4 Required (ENUM) : Defines whether the field is required or not.
+                </para>
+              </content>
+            </step>
+
+
+
+          </steps>
+
+          <conclusion>
+            <content>
+            </content>
+          </conclusion>
+        </procedure>
+      </content>
+    </section>
+
+    <section>
+      <title>
+        CommandLineArguments Class for Application Description
+      </title>
+      <content>
+
+
+        <para>
+          This is the class which captures all the information for execution of the application very similar to the command used to execute the application on the desktop (<legacyBold>SimpleApplication -input input.txt -outputfiles 3</legacyBold>) as depicted in the figure below.
+        </para>
+        <mediaLink>
+          <image xlink:href="tutorial5"/>
+        </mediaLink>
+
+
+        <para>
+          The above figure depicts the mapping understanding required to be able to translate the desktop commandline to a compatible Application Description.
+
+         </para>
+        <para><legacyBold>SimpleApplication -input input.txt -outputfiles 3</legacyBold>
+
+        </para> <para>Here the "SimpleApplication" is the name of the executable to be invoked to start the application and thus it is associated to the "Executable" field of the CommandLineArgument class.
+        </para>
+
+        <para>
+          The "-input" and "-outfiles" fields are associated to the "FormatString" field of the CommandLineArgument class.
+        </para>
+        <code title="FormatString field association with its commandline counterpart">
+          new CommandLineArgument()
+          {
+          Name = "InputFile",
+          FormatString = "-input {0}",
+          Required = Required.Mandatory,
+          CommandLineArgType = CommandLineArgType.SingleReferenceInputArgument
+          },
+          // The second parameter is to specify the number of output files
+          new CommandLineArgument()
+          {
+          Name = "NumberOutFiles",
+          FormatString = "-outfiles {0}",
+          Required = Required.Mandatory,
+          CommandLineArgType = CommandLineArgType.SingleLiteralArgument
+          },
+
+        </code>
+
+        <list class="bullet">
+          <listItem>
+            <para>
+              The values input next to "-input" is associated to SingleReferenceInputArgument because we have a single valued input file which is to be referenced from the local machine which can have any name.
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              Now in this example if the Desktop application command were to take different no of input files in different instances, then in that case instead of "SingleReferenceInputArgument" we should use "MultiReferenceOutputArgument". But if the application were to take a constant no of files (more than 1 file as input) but not a variable number of input files then we would still use "SingleReferenceInputArgument".
+            </para>
+          </listItem>
+          
+          
+          <listItem>
+            <para>
+              Now coming to the value input next to "-outfiles" field in the desktop commandline, this is associated to "SingleLiteralArgument" for the reason that, the value input into this field is required to be a number and not a file or reference to a file. This value states the number of output files to be generated by the application being executed after successful execution.
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              To accomodate the Output files another CommandLineArgument object is created with the type "MultipleReferenceOutputArgument", this type of an argument type is used when we dont know the required number files to be generated after execution.
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              Now if this example if the Desktop application command were to look like this <legacyBold>SimpleApplication -input input.txt -outputfiles output.txt</legacyBold> : here we would have considered using the value "output.txt" as an "SingleReferenceOutputArgument" and not as an "SingleLiteralArgument".
+            </para>
+          </listItem>
+          
+        </list>
+        
+
+
+        
+
+       
+
+        
+
+       
+
+        <para>
+          <legacyBold>Corresponding Code would look like this after the mapping is done</legacyBold>
+        </para>
+        <code title="Example Mapping from CommandLine to GenericWorker understandable format">
+          Console.Write("Create application description.. ");
+
+          // The description is needed to define, which input / outputfiles and arguments are required to run the application
+          VENUSApplicationDescription applicationDescription = new VENUSApplicationDescription();
+
+          // The application needs a unique name so that the GenericWorker can identify the application.
+          var myApplicationName = "http://MySimpleApplication";
+          applicationDescription.ApplicationIdentificationURI = myApplicationName;
+
+          // Now we need to define arguments for the commandline
+          VENUSCommandTemplate myTemplate = new VENUSCommandTemplate();
+          myTemplate.Path = string.Empty;                     // You could a path here, which is added to the environment PATH variable
+          myTemplate.Executable = "SimpleApplication.bat";    // This is the executable which will be lunched by the GenericWorker
+          myTemplate.Args = new List of CommandLineArgument ()
+            {
+                // For our application a single input file is needed, so we create a SingleReferenceInputArgument
+                new CommandLineArgument()
+                {
+                    Name = "InputFile",
+                    FormatString = "-input {0}",
+                    Required = Required.Mandatory,
+                    CommandLineArgType = CommandLineArgType.SingleReferenceInputArgument
+                },
+                // The second parameter is to specify the number of output files
+                new CommandLineArgument()
+                {
+                    Name = "NumberOutFiles",
+                    FormatString = "-outfiles {0}",
+                    Required = Required.Mandatory,
+                    CommandLineArgType = CommandLineArgType.SingleLiteralArgument
+                },
+
+                // The application creates a yet not known number of output files.
+                // So we create a mandatory MultipleReferenceOutputArgument to be able to set the number of
+                // inputfiles when submitting the job.
+                new CommandLineArgument()
+                {
+                    Name = "OutputFiles",
+                    FormatString = "",
+                    Required = Required.Mandatory,
+                    CommandLineArgType = CommandLineArgType.MultipleReferenceOutputArgument
+                }
+            };
+
+            applicationDescription.CommandTemplate = myTemplate;
+
+            Console.WriteLine("Done");
+        </code>
+
+
+        <alert class="note">
+
+          <para>
+            More on CommandLineArgType ENUM values can be found in the following <link xlink:href="6dd926cc-56b3-4789-8b40-67d6fc566bb6">link</link>.
+          </para>
+        </alert>
+      </content>
+
+
+
+    </section>
+
+    <section>
+      <title>
+        Zipping and Uploading ApplicationDescription and Application executable files to the Cloud
+      </title>
+      <content>
+
+
+        <para>
+          Now that the ApplicationDescription is complete, we can go ahead and write the code to zip the application execuatbles. And the code to upload the zipped application files and the application description.
+        </para>
+        
+        <para>
+            This step to zip the application is a necessary step for the reason that the GenericWorker expects a zip file, So its always necessary to write the below code to zip the executable file.
+        </para>
+
+        <para>
+          Steps to accomplish the uploading task are:
+        </para>
+        <procedure>
+          <title>
+
+          </title>
+          <steps class ="bullet">
+            <step>
+              <content>
+                <para>
+                  <legacyBold> Zipping the application file</legacyBold>
+
+                </para>
+                <code  title="Zip app files">
+                  string[] appFiles = { "MySimpleApplication.bat" };
+
+                  // All files are then zipped in memory
+                  MemoryStream appZipBytes = new MemoryStream();
+                  using (var zip = new ZipFile())
+                  {
+                  foreach (string file in appFiles)
+                  {
+                  zip.AddFile(file, "");
+                  }
+                  zip.Save(appZipBytes);
+                  }
+                </code>
+              </content>
+            </step>
+
+
+            <step>
+              <content>
+                <para>
+                  <legacyBold>
+                    Uploading the application executable and application Description  </legacyBold>
+                </para>
+
+
+                <para>
+                  The reason for this necessary action is as follows - till the last step, we have created Application description referencing the Application we want to run on the cloud (which is just a class being populated with certain fields as seen in application description code, but this application description needs to be accessible to the GenericWorker in the Cloud - thus the need to upload the application description which means create a blobcontainer and store this application description in the cloud).</para>
+                <para> we have the Application executable which again is an executable residing on your desktop hardrive which again is inaccessible to the GenericWorker from the Cloud, thus even this application executable has to uploaded to the Cloud.
+                </para>
+
+                <para>
+                  There are multiple points to be taken care off for a smooth and successful upload process, and these are as follows :
+                </para>
+                <para>
+                  <legacyBold>
+                    Step 1. </legacyBold>  ConnectionString : you will need this to establish a link between your client and the cloud. ConnectionString is of this form <legacyBold>"DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey]"</legacyBold>
+                </para>
+                <para> The AccountName and AccountKey values are obtained while configuring the ConnectionString.</para>
+                <para>
+                The steps to create and retrieve this information can be found in the <link xlink:href="5f289c39-8ab0-42ca-bf79-e6a814c65b55">Editing Connection Strings section</link> of the Creating Service Configuration tutorial.
+                  Complete information about connectionString 
+                  <externalLink>
+                  <linkText>click here</linkText>
+                  <linkAlternateText>ConnectionString Info</linkAlternateText>
+                  <linkUri>http://msdn.microsoft.com/en-us/library/windowsazure/ee758697.aspx</linkUri>
+                  <linkTarget>_blank</linkTarget>
+                      </externalLink>
+                </para>
+               
+
+               
+                <code  title="ConnectionString and blobClient creation for uploading Application Description">
+                  var UserDataStoreConnectionString = "UseDevelopmentStorage=true";        //Assigning the connection string to a variable in the client program.
+                  var account = CloudStorageAccount.Parse(UserDataStoreConnectionString);  // Assigning the parsed version of the connection string to the variable named account in the client program.
+                  var blobClient = account.CreateCloudBlobClient();                        // Using the variable account created in the previous line, creating a blobClient which encapsulates account data within it for establishing connection.
+                </code>
+                  <para>
+                    <legacyBold>
+                      Step 2. </legacyBold> In the previous step we created a blobClinet containing ConnectionString data (the protocol,the account name, and key to connect to the cloud), thus enabling the blobClient to be able to connect to the cloud. </para>
+                <para>By having this channel of communication with the cloud, we can create placeholders like CloudBlobContainers.
+                    </para>
+                <para>For more info on How to Programmatically access Blob Storage 
+                    <externalLink>
+                    <linkText>click here</linkText>
+                    <linkAlternateText>Windows Azure</linkAlternateText>
+                    <linkUri>http://www.windowsazure.com/en-us/develop/net/how-to-guides/blob-storage/#configure-access</linkUri>
+                    <linkTarget>_blank</linkTarget>
+                  </externalLink>
+                </para>
+                <code  title="CloudBlobContainer creation using blobClient for uploading Application Description">
+
+                  // Create a new container (folder) for storing the application
+                  CloudBlobContainer appDataContainer = blobClient.GetContainerReference("applicationcontainer"); //placeholders
+                  appDataContainer.CreateIfNotExist();
+
+                  var appDescriptionBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_Desc";  // url encode the applicationDescription.ApplicationIdentificationURI containing "http://MySimpleApplication" and then add "_Desc" to it and store it in appDescriptionBlobName.
+                  // using the data in appDescriptionBlobName the GenericWorker can get the ApplicationDescription after uploading the application description
+                  // the location where it is uploaded in the cloud is referenced using the data in appDescriptionBlobName
+
+                </code>
+                <para>
+                  <legacyBold>
+                    Step 3. </legacyBold> In this step we serialize the data inside applicationDescription which is of type "VENUSApplicationDescription" and write the serialized data into a MemoryStream object
+                </para>
+
+                <code  title="Serialization of Application Description data for uploading Application Description">
+                  //data that is sent needs to be serialized to be understood and reconstructed correctly on the other side of communication link
+                  DataContractSerializer dcs = new DataContractSerializer(applicationDescription.GetType());
+                  MemoryStream msxml = new MemoryStream();
+                  dcs.WriteObject(msxml, applicationDescription);
+
+                </code>
+
+
+                <para>
+                  <legacyBold>
+                    Step 4.  </legacyBold>In this step we upload the data in the MemoryStream object using the appDataContainer a CloudBlobContainer object created in Step 2 (remember appDataContainer contains information about blobClient which in turn contains the ConnectionString data).
+                </para>
+
+                <code  title="Serialization of Application Description data for uploading Application Description">
+                  CloudBlob xmlBlob = appDataContainer.GetBlobReference(appDescriptionBlobName);
+                  xmlBlob.Properties.ContentType = "text/xml";
+                  xmlBlob.UploadByteArray(msxml.ToArray());
+
+                </code>
+
+                <para>
+                  <legacyBold>
+                    Step 5.  </legacyBold>In this step we upload the application executable using the appDataContainer a CloudBlobContainer object created in Step 2 (remember appDataContainer contains information about blobClient which in turn contains the ConnectionString data).
+                </para>
+
+                <code  title="uploading the zipped application files">
+                  var appZipBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_App"; // url encode the applicationDescription.ApplicationIdentificationURI containing "http://MySimpleApplication" and then add "_App" to it and store it in appZipBlobName.
+                  // using the data in appZipBlobName the GenericWorker can get the Application executable after the executable is uploaded
+                  // the location where it is uploaded in the cloud is referenced using the data in appZipBlobName
+                  CloudBlob applicationBlob = appDataContainer.GetBlobReference(appZipBlobName);
+                  applicationBlob.UploadByteArray(appZipBytes.ToArray());
+                </code>
+                <para>
+                <legacyBold>
+                 Complete code for the ApplicationDescription and Application executable uploading task. 
+                </legacyBold>
+                </para>
+                <code  title="uploading zip app files and Application Description">
+                  var UserDataStoreConnectionString = "UseDevelopmentStorage=true";  
+                  var account = CloudStorageAccount.Parse(UserDataStoreConnectionString); 
+                  var blobClient = account.CreateCloudBlobClient();  
+
+                  // Create a new container (folder) for storing the application
+                  CloudBlobContainer appDataContainer = blobClient.GetContainerReference("applicationcontainer"); //placeholders
+                  appDataContainer.CreateIfNotExist();
+
+                  var appDescriptionBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_Desc";
+
+                  //data that is sent needs to be serialized to be understood and reconstructed correctly on the other side of communication link
+                  DataContractSerializer dcs = new DataContractSerializer(applicationDescription.GetType());
+                  MemoryStream msxml = new MemoryStream();
+                  dcs.WriteObject(msxml, applicationDescription);
+
+
+                  CloudBlob xmlBlob = appDataContainer.GetBlobReference(appDescriptionBlobName);
+                  xmlBlob.Properties.ContentType = "text/xml";
+                  xmlBlob.UploadByteArray(msxml.ToArray());
+
+
+                  var appZipBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_App";
+                  CloudBlob applicationBlob = appDataContainer.GetBlobReference(appZipBlobName);
+                  applicationBlob.UploadByteArray(appZipBytes.ToArray());
+
+
+                </code>
+              </content>
+            </step>
+
+          </steps>
+        </procedure>
+      </content>
+    </section>
+
+
+    <section>
+      <title>
+        Writing Job Description
+      </title>
+      <content>
+
+
+        <para>
+          In the Application Description section we saw that what it does, is define the necessary parameters of an application to run.
+        </para>
+        <para>On similar lines JobDescription is the section where you can assign values to the necessary fields mentioned in ApplicationDescription and to instruct GenericWorker to download the necessary files before the execution begins and upload the output files after the execution.
+        </para>
+
+        <mediaLink>
+          <image xlink:href="tutorial6"/>
+        </mediaLink>
+
+        <procedure>
+          <title>
+            VENUSJobDescription Class Mandatory fields
+          </title>
+          <steps class ="bullet">
+            <step>
+              <content>
+                <para>
+                  ApplicationIdentificationURI : Identifies the application which is to be executed for this Job. 
+                </para>
+                <para>
+                  The counterpart of applicationDescription.ApplicationIdentificationURI in the jobDescription class.
+                </para>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  CustomerJobID : Identifies the Job Number
+                </para>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  AppPkgReference : provides the reference to the address location in the cloud of the Application zip file that was uploaded as part of the Application Description step
+                </para>
+                <para>
+                  To populate this field in jobDescription use the same applicationDataContainer used in the application description's "Zipping and Uploading ApplicationDescription and Application executable files to the Cloud" step 5, and get the address referenced by "applicationBlob" for applicationDescription.ApplicationIdentificationURI + "_App".
+
+
+                </para>
+                
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  AppDescReference : provides the reference to the address location of the Application Description that was uploaded as part of the Application Description step
+                </para>
+
+                <para>
+                  To populate this field in jobDescription use the same applicationDataContainer used in the application description's "Zipping and Uploading ApplicationDescription and Application executable files to the Cloud" step 2, and get the address referenced by "applicationBlob" for applicationDescription.ApplicationIdentificationURI + "_Desc".
+
+                </para>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  JobArgs : Assigns values to the commandLine template specified as part of the Application Description step
+                </para>
+                <alert class="note">
+                  <para>Here with this JobArgs parameter, make sure all the parameters are named exactly the same as their counterparts in the ApplicationDescription</para>
+                </alert>
+
+              </content>
+            </step>
+
+          </steps>
+        </procedure>
+        <para>
+          <legacyBold>Steps to be followed while writing your JobDescription</legacyBold>
+        </para>
+        <procedure>
+          <title>
+
+          </title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>
+                  Make sure you have the same value assigned to the <legacyBold>VENUSApplicationDescription.ApplicationIdentificationURI</legacyBold> and the <legacyBold>VENUSJobDescription.ApplicationIdentificationURI</legacyBold>
+                </para>
+                <code title="VENUSApplicationDescription.ApplicationIdentificationURI assignment">
+                  VENUSApplicationDescription applicationDescription = new VENUSApplicationDescription();
+
+                  // The application needs a unique name so that the GenericWorker can identify the application.
+                  var myApplicationName = "MySimpleApplication";
+                  applicationDescription.ApplicationIdentificationURI = myApplicationName;
+
+                </code>
+
+                <code  title="VENUSJObDescription.ApplicationIdentificationURI assignment">
+                  VENUSJobDescription mySimpleJobDescription = new VENUSJobDescription();
+                  mySimpleJobDescription.ApplicationIdentificationURI = myApplicationName;
+
+                </code>
+
+                <alert class="note">
+                  <para>Reason for this is as follows, the application files are searched for in the applicationDataContainer local to the AzureStorageAccount's ApplicationDataContainer(Object of CloudBlobContainer Class).</para>
+                </alert>
+
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  Assigning other values of the VENUSJobDescription attributes like
+                </para>
+
+                
+
+                <list class="ordered">
+                  <listItem>
+                    <para>
+                       VENUSJobDescription.CustomerJobID - can have any value, preferred mode for verification latter would be
+                    </para>
+                    <code  title="VENUSJobDescription.CustomerJobID value assignment">
+                      VENUSJobDescription.CustomerJobID="Customer Name or ID" + DateTime.Now.ToLocalTime().ToString();
+                    </code>
+                  </listItem>
+
+                  <listItem>
+                    <para>
+                      VENUSJobDescription.JobName - can have any value, preferred mode for verification latter would be
+                    </para>
+
+                    <code  title="VENUSJobDescription.JobName value assignment">
+                      VENUSJobDescription.JobName="Job Name";
+                    </code>
+                  </listItem>
+                  
+                </list>
+                
+
+                
+
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  To run this program we need the application Desc and the application executable, whose location in the cloud is to be referenced in the VENUSJobDescription. This can be done in the following way
+                </para>
+
+
+
+                <code  title="VENUSJobDescription being assigned location of the earlier defined and uploaded ApplicationDescription and Application executable ">
+
+                  myJobDescription.AppPkgReference = new Reference(new AzureBlobReference(appDataContainer.GetBlobReference(myApplicationName + "_App"), UserDataStoreConnectionString));
+                  myJobDescription.AppDescReference = new Reference(new AzureBlobReference(appDataContainer.GetBlobReference(myApplicationName + "_Desc"), UserDataStoreConnectionString));
+
+                </code>
+
+                <alert class="note">
+                  <para>The ApplicationDataContainer(Object of CloudBlobContainer Class) used while uploading the ApplicationDescription and Application Executable should be used in the above step, so that GenericWorker can search for these files in the same CloudBlobContainer</para>
+                </alert>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  Now assigning all the necessary parameters some value, according to the applicationDescription. These paramters that need to be assigned are as shown in the ApplicationDescription's CommandLineArgumentType section
+                </para>
+
+                <list class="ordered">
+                  <listItem>
+                    <para>
+                      SingleReferenceInputArgument
+                    </para> 
+                  </listItem>
+
+                  <listItem>
+                    <para>
+                      SingleLiteralArgument
+                    </para>
+                  </listItem>
+
+                  <listItem>
+                    <para>
+                      MultipleReferenceOutputArgument
+                    </para>
+                  </listItem>
+                </list>
+                
+
+                <para>
+                  To do this, lets create a new CloubBlobContainer to store the input files and create reference to output files like it was done in the <legacyBold>uploading app files and app description files section  </legacyBold>
+                </para>
+
+                <alert class="note">
+                  <para>There is no need specifically to create a new CloudBlobContainer for input and output files, but its advisable for the reason that the application which has been uploaded into the cloud as part of the ApplicationDescription creation task, can be used by multiple Jobs(each Job running using a different JobDescription) and thus creating another CloudBlobContainer makes it more modular</para>
+                </alert>
+
+                <code  title="create a new CloubBlobContainer to store input files and references to output files ">
+                  blobClient = account.CreateCloudBlobClient();
+                  var blobContainer = blobClient.GetContainerReference("testcontainer");
+                  blobContainer.CreateIfNotExist();
+
+                </code>
+
+                <para>
+                  Now the creation of the input file with the help of the newly created CloubBlobContainer (CloudBlobContainer can be thought to be placeholder or a folder created in the cloud to store our input and output files).
+                </para>
+
+                <code  title="create a new input file">
+                  var nameInput = "input.txt";
+                  var blobInput = blobContainer.GetBlobReference(nameInput);
+                  blobInput.UploadFile(nameInput);
+
+
+                </code>
+                <alert class="note">
+                  <para>Make sure there is a file named input.txt in the same folder as this project or provide the actual path to the input file</para>
+                </alert>
+
+                <para>
+                  Now the creation of the references to output files (this is necessary to tell GenericWorker to place the outfiles at these locations in the cloud whenever GenericWorker generates them) with the help of the newly created CloubBlobContainer (CloudBlobContainer can be thought to be placeholder or a folder created in the cloud to store our input and output files).
+                </para>
+
+                <code  title="create new references to output files in the cloud">
+                  // The application description says, that a variable number of output files is needed for execution.
+                  // This leads to an array for defining the files.
+                  ReferenceArray refArrOut = new ReferenceArray
+                  {
+                  Name = "OutputFiles",                   // This has to be the same name as in the application description
+                  References = new ReferenceCollection()
+                  };
+
+                  int numberOfOutputFiles=5;
+                  // Some dummy input files are created in the container created above and directly put in the ReferenceArrays
+
+                  for (int i = 1; i lessThanOrEqualTo numberOfOutputFiles; i++)
+                  {
+                  // The application creates output files with the ending ".out".
+                  // As the output files don't exist yet, just specifying where the GenericWorker should upload them is enough.
+                  var nameOut = string.Format("{0}.out", i);
+                  var blobOut = blobContainer.GetBlobReference(nameOut); // the same blobContainer used as in the case of input files upload so that the references are in the same blobContainer.
+                  var azBlobRefOut = new AzureBlobReference(blobOut, UserDataStoreConnectionString);
+                  refArrOut.References.Add(new Reference(nameOut, azBlobRefOut));
+                  }
+
+
+                </code>
+
+                <para>
+                  Now that we have the input files uploaded to the cloud and references created for the output files in the cloud, we can go ahead and assign values to the list of CommandLineArguments as declared as necessary in the ApplicationDescription.
+                </para>
+
+
+                <code  title="Assigning values to the CommandLineArguments as declared as necessary in the ApplicationDescription">
+                  AzureArgumentSingleReference inputFile = new AzureArgumentSingleReference();
+                  inputFile.Name = "InputFile";               // This has to be the same name as in the application description
+                  inputFile.DataAddress = blobIn.Uri.AbsoluteUri;
+                  inputFile.ConnectionString = UserDataStoreConnectionString;
+
+
+                  // Second Reference is the number for specifying the amount of output files.
+                  // In this case five output files should be created.
+                  LiteralArgument outfilesNumber = new LiteralArgument();
+                  outfilesNumber.Name = "NumberOutFiles";     // This has to be the same name as in the application description
+                  outfilesNumber.LiteralValue = numberOfOutputFiles.ToString();
+
+
+                  // Finally all parameters / arguments have to be added to the job description
+                  mySimpleJobDescription.JobArgs.Add(inputFile);
+                  mySimpleJobDescription.JobArgs.Add(outfilesNumber);
+                  mySimpleJobDescription.JobArgs.Add(refArrOut);
+
+                </code>
+
+              </content>
+            </step>
+          </steps>
+        </procedure>
+          </content>
+          </section>
+
+    <section>
+      <title>
+        Job Submission step :
+      </title>
+      <content>
+
+        <procedure>
+          <title>
+            
+          </title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>
+
+                </para>
+
+                <code  title="Job Submission">
+                  const string jobsubmissionURL = "http://simpleapp.cloudapp.net/JobSubmission/SecureService.svc"; // the deployment to which you are submitting the job
+                  const string securityTokenServiceURL = "http://simpleapp.cloudapp.net/STS/UsernamePassword.svc"; 
+                  GenericWorkerJobManagementClient jobSubmissionPortal = GenericWorkerJobManagementClient.CreateSecureClient(
+                  new EndpointAddress(new Uri(jobsubmissionURL), new DnsEndpointIdentity("MyAzureSTS")),
+                  new EndpointAddress(new Uri(securityTokenServiceURL), new DnsEndpointIdentity("MyAzureSTS")),
+                  "Researcher", "secret",
+                  X509Helper.GetX509Certificate2(
+                  StoreLocation.LocalMachine, StoreName.My,
+                  "‎EF0548F7EB15F1FCCDDF42C3592916D540F88BB7",
+                  X509FindType.FindByThumbprint));
+
+                  jobSubmissionPortal.SubmitVENUSJob(jobDescription);
+
+                </code>
+
+                <alert class="note">
+                  <para>
+                    The thumbprint value given as "‎EF0548F7EB15F1FCCDDF42C3592916D540F88BB7" has to be changed to the value as on your system, to find out what the Thumbprint value is look at this <link xlink:href="4c70a6ec-deb8-4f89-8d15-f3a1df106f3f">link</link>.
+                  </para>
+                </alert>
+
+              </content>
+            </step>
+
+          </steps>
+
+        </procedure>
+    </content>
+    </section>
+
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

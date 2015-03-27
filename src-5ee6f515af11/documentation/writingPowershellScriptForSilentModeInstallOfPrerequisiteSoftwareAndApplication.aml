@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="71b29e94-4470-4de4-b5c0-983a2754831d" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+     
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="oX4">
+     
+      <content>
+        <para>
+          In the previous example we saw how to install JRE for a Java application that you would want to run on the cloud, now in this section lets go a step further and look at an example wherein you would want to install the JRE and the Java application in one go.
+        </para>
+
+        <para>
+          Now the question, why would you want to do this, well like the JRE install package being large there just might be a case that the Java application that you need to run on the cloud is a very large program for some complex simulation problem then it would be easier to have a way that you can install the Java Application the same way the JRE was installed and whenever you would want to run this Java Application you would not have to upload the application everytime as in the earlier case.
+        </para>
+
+        <alert class="note">
+          <para>
+            The option of installing the Java Application and the JRE in one go does provide you a means to create a service on the cloud which allows you invite others to use your new program/solution without exposing your Application code to them and instead just give them the Batch file which calls the executable version of your program/solution.
+          </para>
+        </alert>
+
+
+        <para>
+          To accomplish this task at hand, we will need the following components to be uploaded to the userprerequisites folder on the cloud storage:
+        </para>
+        <list class="ordered">
+          <listItem>
+            <para>
+              JRE installable
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              Java Application executable zipped (remember the GW expects the Application to be zipped) <link xlink:href="d8424506-ccfe-427e-bd32-d751a9a42e83">Implementing your own cloud client: Zipping and Uploading ApplicationDescription and Application executable files to the Cloud</link>
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              Ionic.Zip.dll file (used to unzip the Application executable)
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              A powershell script which will perform the following tasks:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>Install the JRE</para>
+              </listItem>
+              <listItem>
+                <para>unzip the application executable</para>
+              </listItem>
+              <listItem>
+                <para>Install the application</para>
+              </listItem>
+            </list>
+          </listItem>
+         
+        </list>
+
+        <para>
+          Steps to be followed to accomplish task:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              Write the Powershell script which performs the tasks mentioned above:
+            </para>
+            <list class="ordered">
+              <listItem>
+                <para>
+                  Install the JRE
+                </para>
+                <para>
+                  This can be accomplished in the similar way as explained in <link xlink:href="6f5ab85a-82e8-4e1b-9db2-e1ecf7018b62">Writing a script in powershell to install the prerequisite software in silent mode  </link>   
+
+                </para>
+
+               
+              </listItem>
+
+              <listItem>
+                <para>
+                  unzip the application executable
+                </para>
+
+                <code title="Unzipping the application executable">
+                  # We need unzipping, so let's load the corresponding DLL
+                  add-type -path .\Ionic.Zip.dll
+
+                  # The zip file has the name 'RunInAzure.zip' and the full qualified path is needed
+                  [string]$currentDirUserforapp = get-location
+                  [string]$zipApplicationFull = [System.IO.Path]::Combine($currentDirUserforapp, "SampleApplication.zip")
+
+                  # The destination for installing the application is also needed
+                  [string]$programFiles = Get-ProgramFilesDirX86
+                  [string]$zipDestination = [System.IO.Path]::Combine($programFiles, "MySampleApplication")
+                  [IO.Directory]::CreateDirectory($zipDestination)
+
+                  # Extract the zip to the destination
+                  [Ionic.Zip.ZipFile] $zip = new-object Ionic.Zip.ZipFile $zipApplicationFull
+                  $zip.ExtractAll($zipDestination, [Ionic.Zip.ExtractExistingFileAction]::OverwriteSilently)
+
+                  Write-Host "Application extracted"
+                </code>
+              </listItem>
+
+              <listItem>
+                <para>
+                  Install the application
+                </para>
+
+                <code title="Installing the application">
+                  # Last step is to add the location of the application to the system environment
+                  [string]$existingPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+                  [string]$expandedPath = [System.String]::Format("{0};{1}", $existingPath, $zipDestination)
+                  [System.Environment]::SetEnvironmentVariable("Path", $expandedPath, [System.EnvironmentVariableTarget]::Machine)
+                </code>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <code title="Complete PowerShell script looks like this:">
+              #####################################################
+              # This script is executed automatically by the GenericWorker during startup  #
+              #####################################################
+
+              Write-Host "UserPrerequisites.ps1 is now running..."
+              Write-Host "Installing Java Runtime..."
+
+              # For a safe determination of the location for the application, some helper functions are needed
+              # Functions from: http://geekswithblogs.net/Lance/archive/2009/12/29/program-files-environment-variable-in-powershell.aspx
+
+              function is64bit()
+               {
+                   return ([IntPtr]::Size -eq 8)
+                 }
+
+              function Get-ProgramFilesDirX86()
+                {
+                    if (is64bit -eq $true)
+                     {
+                       (Get-Item "Env:ProgramFiles(x86)").Value
+                      }
+                    else
+                      {
+                        (Get-Item "Env:ProgramFiles").Value
+                        }
+                  }
+
+              [string]$currentDirUser = get-location
+              [string]$jREinstallerlocation = [System.IO.Path]::Combine($currentDirUser, "jre-7u5-windows-x64.exe")
+              [string]$logJavaInstallLocation = [System.IO.Path]::Combine($currentDirUser, 'javaSetup.log')
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jREinstallerlocation value is ..."
+              write-Host "$jREinstallerlocation"
+              write-Host "...logJavaInstallLocation value is ..."
+              write-Host "$logJavaInstallLocation"
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+
+              [string]$programFilesforJREinstall = Get-ProgramFilesDirX86
+              [string]$jREinstallDestination = [System.IO.Path]::Combine($programFilesforJREinstall, 'java\jre1.7.0_05')
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jREinstallDestination value is ..."
+              write-Host "$jREinstallDestination"
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+
+              [IO.Directory]::CreateDirectory($jREinstallDestination)
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jREinstallDestination's directory created successfully ..."
+              write-Host "...jre install starts now..."
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+
+              # Installing JRE
+              Start-Process -FilePath $jREinstallerlocation -ArgumentList @("/s", "STATIC=1", "/L $logJavaInstallLocation", "INSTALLDIR=\`"$jREinstallDestination\`"") -wait -PassThru
+
+              [string]$javaExeDir = [System.IO.Path]::Combine($jREinstallDestination,'bin')
+              #[environment]::SetEnvironmentVariable('JAVA_HOME', $javaExeDir, 'machine')
+              [string]$existingPathJRE = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              [string]$expandedPathJRE = [System.String]::Format("{0};{1}", $existingPathJRE, $javaExeDir)
+              [System.Environment]::SetEnvironmentVariable("Path", $expandedPathJRE, [System.EnvironmentVariableTarget]::Machine)
+
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jre install ends successfully now..."
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+              Write-Host "JRE install finished"
+
+              # We need unzipping, so let's load the corresponding DLL
+              add-type -path .\Ionic.Zip.dll
+
+              # The zip file has the name 'SampleApplication.zip' and the full qualified path is needed
+              [string]$currentDirUserforapp = get-location
+              [string]$zipApplicationFull = [System.IO.Path]::Combine($currentDirUserforapp, "SimpleMathConsole.zip")
+
+              # The destination for installing the application is also needed
+              [string]$programFiles = Get-ProgramFilesDirX86
+              [string]$zipDestination = [System.IO.Path]::Combine($programFiles, "SimpleMathConsole")
+              [IO.Directory]::CreateDirectory($zipDestination)
+
+              # Extract the zip to the destination
+              [Ionic.Zip.ZipFile] $zip = new-object Ionic.Zip.ZipFile $zipApplicationFull
+              $zip.ExtractAll($zipDestination, [Ionic.Zip.ExtractExistingFileAction]::OverwriteSilently)
+
+              Write-Host "Application extracted"
+
+              # Last step is to add the location of the application to the system environment
+              [string]$existingPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              [string]$expandedPath = [System.String]::Format("{0};{1}", $existingPath, $zipDestination)
+              [System.Environment]::SetEnvironmentVariable("Path", $expandedPath, [System.EnvironmentVariableTarget]::Machine)
+
+              Write-Host "Reaching end of UserPrerequisites.ps1, all done!"
+
+            </code>
+          </listItem>
+
+
+
+          <listItem>
+        <para>
+          Next step is to zip all these files into a zip file named userprerequisites.zip
+        </para>
+        <mediaLink>
+          <image xlink:href="userprerequistes4"/>
+        </mediaLink>
+          </listItem>
+          <listItem>
+            
+          
+        <para>
+          Next step is to upload the userprerequisites.zip file into the userprerequisites folder of the cloud storage using the Azure Cloud Storage explorer as explained in <link xlink:href="6f5ab85a-82e8-4e1b-9db2-e1ecf7018b62"> uploading step in the Writing a script in powershell to install the prerequisite software in silent mode Section </link>
+        </para>
+          </listItem>
+            
+        <listItem>
+          <para>
+            Some modifications to the CloudClient ( Since We no longer are required to zip the Application executable with Application Description as seen in <link xlink:href="d8424506-ccfe-427e-bd32-d751a9a42e83">Implementing your own cloud client:Zipping and Uploading ApplicationDescription and Application executable files to the Cloud</link>), but on the contrary to the earlier case we are not reqiured to zip the application executable and upload it to the cloudBlob storage with the Application description, but instead, with this method we have already uploaded the application executable and installed the JRE by uploading the JRE installable, the application executable, the powershell script and the Ionic.Zip.dll file into the userprerequisites folder in the cloud storage as illustrated in the earlier steps of this document. So what we would be required to do is to make a batch file which calls the application that has already been installed in the cloud, and upload this batch file as an application being uploaded by the cloud client(instead of the application executable zip) you write
+                      </para>
+
+          <para>
+            The batch file needs the application to be installed and the application requires the JRE to be installed - the installation of the JRE and the application is taken care by the powershell script part of the userprerequisites.zip file uploaded to the userprerequisites folder on the cloud already.
+          </para>
+          <para>
+            So instead of uploading the zip of the application executable in the cloudclient, you will be required to upload the zipped version of the batch file you created which makes use of the java application already installed in the cloud. The part of writing the cloudclient takes the same course but instead of java application zip file being uploaded by the client you will be required to upload the batch zip file.
+          </para>
+         
+        </listItem>
+
+        </list>
+        
+      </content>
+    </section>
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

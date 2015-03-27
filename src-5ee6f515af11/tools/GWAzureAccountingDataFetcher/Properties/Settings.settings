@@ -1,0 +1,45 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GWAzureAccountingDataFetcher.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UpdateFrequency" Type="System.TimeSpan" Scope="Application">
+      <Value Profile="(Default)">01:00:00</Value>
+    </Setting>
+    <Setting Name="GenericWorkerConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">UseDevelopmentStorage=true</Value>
+    </Setting>
+    <Setting Name="GenericWorkerAccountingTableName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">gwaccountingtable</Value>
+    </Setting>
+    <Setting Name="CreatorID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Azure GW Accounting Connector</Value>
+    </Setting>
+    <Setting Name="ResourceOwner" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Microsoft Windows Azure</Value>
+    </Setting>
+    <Setting Name="VmPostUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost/usagetracker/rest/usagerecords/vm/</Value>
+    </Setting>
+    <Setting Name="StoragePostUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost/usagetracker/rest/usagerecords/storage/</Value>
+    </Setting>
+    <Setting Name="NetworkPostUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost/usagetracker/rest/usagerecords/network/</Value>
+    </Setting>
+    <Setting Name="JobPostUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost/usagetracker/rest/usagerecords/job</Value>
+    </Setting>
+    <Setting Name="UserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">venus</Value>
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">venus</Value>
+    </Setting>
+    <Setting Name="GenericWorkerAccountingPushedTableName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">gwaccountingpushedtable</Value>
+    </Setting>
+    <Setting Name="GenericWorkerAccountingErrorTableName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">gwaccountingerrortable</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

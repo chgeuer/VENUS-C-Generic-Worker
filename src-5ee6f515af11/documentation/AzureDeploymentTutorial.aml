@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="91ac6cd8-5e0c-4c02-9e09-df7de9507f03" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+
+      <para>
+        There are two ways in which the cloud computing platform can be realised, and out of the two methods, in this section we will be looking into the Azure Cloud Deployment method - wherein you will be connecting to the cloud via browser. 
+      </para>
+      <para>
+        In this method you will be directly connecting to the cloud via the browser and will be able to create a cloud service.</para>
+     
+
+      <para>
+        To create a working cloud service, please follow these steps sequentially:
+      </para>      
+
+
+      <list class="ordered">
+        <listItem>
+          <para>
+
+            <link xlink:href="c5b5c7a3-7e24-4bcd-81f9-adb0117d5dd2">Creating certificates </link>
+            
+          </para>
+
+          <alert>
+            <para>
+           	For authentication purposes, it is required to create certificates to deploy and run applications.
+            </para>
+          </alert>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="11c8294c-9929-4e94-bb5a-3a13278ff9bf">Importing certificates to Certificate Store on your Computer</link>
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="4418576a-8642-4f19-8290-ef1d4bd2cf98">Creating a cloud service</link>
+          </para>
+
+          <alert>
+            <para>
+              This cloud service will accessible via an URL, this URL will inturn be the  <link xlink:href="e3d9d0a6-c7a3-46a0-9708-5edc4dfa84fb">ApplicationIdentificationURI in the Job Description section of your Client</link>
+            </para>  
+          </alert>
+        </listItem>
+
+
+        <listItem>
+          <para>
+            Login to the <externalLink>
+              <linkText>Azure platform</linkText>
+              <linkAlternateText>Login</linkAlternateText>
+              <linkUri>https://windows.azure.com</linkUri>
+              <linkTarget>_blank</linkTarget>
+            </externalLink> with the LiveID provided for the MOSA.
+          </para>
+
+          <mediaLink>
+            <image xlink:href="newDeploymentImage1"/>
+          </mediaLink>
+        </listItem>
+        <listItem>
+          <para>
+            <link xlink:href="aa286ad1-0f19-4138-bf16-f4c88df4874c">Uploading the certificates to the cloud service that you created in the previous step</link>
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            
+            <link xlink:href="5f289c39-8ab0-42ca-bf79-e6a814c65b55">Creating Service Configuration File</link>
+          </para>
+        </listItem>
+
+
+        <listItem>
+          <para>
+            
+            <link xlink:href="efbf0f40-cb4c-4ca5-b42f-833ecae954b8">Creating Connection String</link>
+          </para>
+
+          <alert>
+            <para>
+              This Connection String will be used in the writing of <link xlink:href="8e9fde66-8469-4594-94e6-01731adbbd35">Application Description</link> section of your cloud client.
+            </para>
+          </alert>
+        </listItem>
+        <listItem>
+          <para>
+            <link xlink:href="dae1965c-5769-4d9d-845b-bd2ffaa98c25">Editing the Service Configuration File</link>
+
+          </para>
+
+          <alert>
+            <para>
+              	Prepare the deployment package by editing the Service Configuration file.
+              Before we get into deploying our cloud service we would be required to configure a few things before hand.
+            </para>
+          </alert>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="d9c5409b-4498-4f33-9d5a-1a710a2abfda"> Creating Deployment</link>
+          </para>
+
+          <alert>
+            <para>
+              It may take some minutes to finish to process of creation, but finally the status of the new deployment should be “ready”. If this is not the case there is most probably a mistake in ServiceConfiguration. A double check of all steps mentioned here is then required.
+            </para>
+          </alert>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="b8b0ed96-cdca-455b-9309-92337e7ff717">  Run the STSInitilizer </link>
+          </para>
+
+          <para>
+            This was the last step of the Cloud deployment Tutorial. 
+          </para>
+        </listItem>
+
+
+      </list>
+
+      <para>
+        If all the above steps were successfully executed than you would be able to submit jobs using the cloud client you created with the following parameters altered according to this new cloud deployment that you have successfully created.
+      </para>
+      <list class="bullet">
+        <listItem>
+          <para>
+            ApplicationIdentificationURL = http://"Cloud service name".cloudapp.net/
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            jobsubmissionURL = http://"Cloud service name".cloudapp.net/JobSubmission/SecureService.svc
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            securityTokenServiceURL = http://"Cloud service name".cloudapp.net/STS/UsernamePassword.svc
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+           Thumbprint Value for the <link xlink:href="fec92d86-badf-4499-9186-b5f4aca2c4fc">JobSubmission Step</link>
+          </para>
+        </listItem>
+      </list>
+      
+      <para>
+        The Generic Worker is a worker-role implementation for Windows Azure that eases deployment, instantiation, and
+        remote invocation of existing .NET applications within Azure without changing their source code.
+      </para>
+      <para>
+        The steps above summarizes the procedure to deploy a hosted service in Azure. If you would like to run Azure locally in the emulator,
+        please click <link xlink:href="69ee4241-36ac-42d4-a956-aa90d3a664d1">here</link>.
+      </para>
+    </introduction>
+
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

@@ -1,0 +1,82 @@
+﻿@using ManagementWeb
+@using PagedList.Mvc
+@using PagedList
+@using Microsoft.EMIC.Cloud.GenericWorker
+@using SecureJobManagement.Controllers
+@model IPagedList<IJob>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="@Url.Content("~/Content/JobStatus.css")" rel="stylesheet" type="text/css" />
+
+<h2>Job Overview</h2>
+
+@if (ViewBag.NumOwnTerminatedJobs > 0)
+{
+    var owner = User.Identity.Name;
+    using (Html.BeginForm("ClearTable", "Home"))
+    {
+      <input type="hidden" name="owner" value=@owner />
+      <input type="submit" value="Remove my terminated jobs" />
+    }
+} 
+
+@Html.Partial("_ListNavigationPartialView", Model)
+
+<table>
+    <tr>
+        <th>Job Owner</th>
+        <th>ApplicationIdentificationURI</th>
+        <th>CustomerJobID</th>
+        <th>Status</th>
+        <th>InstanceID</th>
+        <th>Submission</th>
+        <th>Last Change</th>
+        <th>Status Text</th>
+        <th>Stdout</th>
+        <th>Stderror</th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td> @item.Owner </td>
+        <td> @item.ApplicationIdentificationURI </td>
+        <td> @item.CustomerJobID </td>
+        <td class="jobstatus-@item.Status"> @item.Status </td>
+        <td> @item.InstanceID </td>
+        <td> @item.Submission </td>
+        <td> @item.LastChange </td>
+        <td>
+        <table style="border:0;" >
+        
+        @foreach (var line in StatusTextHelper.LastLines(item.StatusText, 4))
+        { 
+            <tr><td style="border:0;"> @line </td></tr>         
+        }
+        </table>
+        </td>
+        <td> @item.Stdout </td>
+        <td> @item.Stderr </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { internalJobId = item.InternalJobID })
+            | 
+            @if (item.Status == Microsoft.EMIC.Cloud.GenericWorker.JobStatus.Submitted ||
+                item.Status == Microsoft.EMIC.Cloud.GenericWorker.JobStatus.Running)
+            {
+              Html.ActionLink("Stop", "Stop", new { internalJobId = item.InternalJobID });
+
+              using (Html.BeginForm("Stop", "Home", new { internalJobId = item.InternalJobID }))
+              {
+                    <input type="submit" value="Stop"/>    
+              }
+            }
+        </td>
+    </tr>
+}
+</table>
+
+@Html.Partial("_ListNavigationPartialView", Model)
+

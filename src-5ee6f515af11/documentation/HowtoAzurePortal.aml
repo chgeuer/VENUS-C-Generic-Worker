@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8b18474b-5b1e-4318-8dce-585a1a247911" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>
+        This document describes how you can deploy the Generic Worker through the Azure Portal.
+      </para>
+    </introduction>
+    
+    <procedure>
+      <title>Deploying the generic worker</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              After customizing the configuration file with our own settings, we can finally deploy the 
+              infrastructure to Windows Azure. Selecting the "Hosted Service" node enables the 
+              "New Production Deployment" button:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image15"/>
+            </mediaLink>
+            <para>
+              The difference between a 'production' and a 'staging' deployment in Azure is simply the
+              external address of the endpoints (see also the  <externalLink> 
+                <linkText>Application Life Cycle Management for Windows Azure Applications</linkText>
+                <linkUri>http://msdn.microsoft.com/en-us/library/ff803362.aspx#sec6</linkUri>
+              </externalLink>). 
+              The production deployment is reachable through the DNS entries we’ve configured previously.
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image16"/>
+            </mediaLink>
+            <para>
+              After browsing locally for your package file and the updated configuration file and clicking "OK", 
+              you see the status changing to uploading. 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image17"/>
+            </mediaLink>
+            <para>
+              After Windows Azure started all the virtual machines, you should be seeing the status of the different VMs being "Ready". 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image18"/>
+            </mediaLink>
+            <para>
+              Navigating to the public web site should show a simple index page:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image19"/>
+            </mediaLink>
+            <para>
+              Clicking on the links should you the actual web service endpoint façades. 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image20"/>
+            </mediaLink>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+  </developerHowToDocument>
+</topic>

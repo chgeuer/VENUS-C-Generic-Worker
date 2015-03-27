@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ec6b1774-9bff-4364-b9bb-5708ef143e81" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>If you want to get notified when a job or a workflow of jobs are done. You can use 
+      a datadriven notification job. This document explains the principle of that method.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <procedure>
+      <title>Datadriven notification</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>For a datadriven notification, you can use the working concept of the Generic Worker.
+            The Generic Worker takes a job from the jobtable and looks if every input file, for
+            processing that specific job, is available. You can use this for your own notification service.</para>
+            <mediaLink>
+              <image placement="center" xlink:href="notifier"/>
+            </mediaLink>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Create a notification application (e.g. E-Mail, HTTP Post request, etc.) and submit a job that
+            waits for the result file of your compute job, you want to get notified about.
+            The notification jobs then stays in the jobtable and is triggered by the Generic Worker once
+            the result file is available.</para>
+            
+<alert class="note">
+  <para>We will provide a complete cloud client in the next chapter but for this section,
+  
+  please see the comments alongside the code for the notification service in the code snippet below.</para>
+</alert>
+
+
+            <code title="Notification Service Code">
+
+              // method for creating secure notification service client
+              Func string, NotificationServiceClient=""
+              CreateSecureClient = (username) =>
+              {
+              print(ConsoleColor.Red, string.Format("Using NotificationService at: {0}", secNotificationServiceUrl));
+              print(ConsoleColor.Red, string.Format("fetching tokens from {0}", issuerAddress));
+
+              // In the development setting (when talking to localhost), we need to override WCF security checks
+              // with the DnsEndpointIdentity.
+              
+              return NotificationServiceClient.CreateSecureClient(
+                  address: new EndpointAddress(new Uri(secNotificationServiceUrl), new DnsEndpointIdentity(dnsEnpointId)),
+                  issuer: new EndpointAddress(new Uri(issuerAddress), new DnsEndpointIdentity(dnsEnpointId)),
+                  username: username,
+                  password: "secret",
+                  serviceCert: X509Helper.GetX509Certificate2(
+                  StoreLocation.LocalMachine, StoreName.My,
+                  authThumprint,
+                  X509FindType.FindByThumbprint));
+              };
+
+              // creating notification service client for Researcher
+              var researcherNotificationClient = CreateSecureClient("Researcher");
+
+              // creating Cloud Storage Account
+              var account = CloudStorageAccount.Parse(storageConnectionString);
+
+              // creating queue client
+              var queueClient = account.CreateCloudQueueClient();
+
+              // names of the queues that will be created
+              var runningstatus = "runningstatus";
+              var finishedstatus = "finishedstatus";
+
+              // creating queue references
+              var runningqueue = queueClient.GetQueueReference(runningstatus);
+              var finishedqueue = queueClient.GetQueueReference(finishedstatus);
+
+              // delete if previous data in queue exists
+              if (runningqueue.Exists()) runningqueue.Delete();
+              if (finishedqueue.Exists()) finishedqueue.Delete();
+
+              // define the properties for the queues
+              var pluginConfigRunningQueue = new List(PluginAttr)
+                ();//
+                pluginConfigRunningQueue.Add(new PluginAttr(PluginConfigMandatoryKeys.NAME, JobStatusNotificationPluginNames.AZURE_QUEUE));
+                pluginConfigRunningQueue.Add(new PluginAttr(AzureQueueJobStatusNotificationPlugin.QUEUE_NAME, runningstatus));
+                pluginConfigRunningQueue.Add(new PluginAttr(AzureQueueJobStatusNotificationPlugin.MESSAGE, "msg1: I like running statuses"));
+                pluginConfigRunningQueue.Add(new PluginAttr(AzureQueueJobStatusNotificationPlugin.CONNECTION_STRING, storageConnectionString));
+
+                var pluginConfigFinishedQueue = new List(PluginAttr)
+                  ();//
+                  pluginConfigFinishedQueue.Add(new PluginAttr(PluginConfigMandatoryKeys.NAME, JobStatusNotificationPluginNames.AZURE_QUEUE));
+                  pluginConfigFinishedQueue.Add(new PluginAttr(AzureQueueJobStatusNotificationPlugin.QUEUE_NAME, finishedstatus));
+                  pluginConfigFinishedQueue.Add(new PluginAttr(AzureQueueJobStatusNotificationPlugin.MESSAGE, "msg1: I like finished statuses"));
+                  pluginConfigFinishedQueue.Add(new PluginAttr(AzureQueueJobStatusNotificationPlugin.CONNECTION_STRING, storageConnectionString));
+
+                  // create subscription for the first job in Running status
+                  researcherNotificationClient.CreateSubscriptionForStatuses(researcherJobs[0], new List(JobStatus)
+                    () { JobStatus.Running }, pluginConfigRunningQueue);
+                    // create subscription for the first job in Finished status
+                    researcherNotificationClient.CreateSubscriptionForStatuses(researcherJobs[0], new List(JobStatus)() { JobStatus.Finished }, pluginConfigFinishedQueue);
+              
+            </code>
+
+            <alert>
+              <para>
+                For complete understanding of the Data Driven Notification please go to
+                <link xlink:href="7d1df782-e3b2-4746-a7f2-bc7dec3975d0">Setup Notifications for your jobs topic</link>in the tutorial.
+
+              </para>
+            </alert>
+          </content>
+        </step>
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

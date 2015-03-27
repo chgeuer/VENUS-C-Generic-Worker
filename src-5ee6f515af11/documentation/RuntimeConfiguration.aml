@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="09b63345-c9fc-4ac2-9c34-3a4905220ff9" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>If you want to change the deployment configuration at runtime, you need to follow the following steps</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <procedure>
+      <title>Change configuration file at runtime</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Change the settings in our <application>ServerConfiguration.csfg</application> file 
+            to the desired values and redirect your browser to the <externalLink>
+<linkText>Windows Azure Portal</linkText>
+<linkUri>https://windows.azure.com/</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Mark your deployment at the <ui>Hosted Services</ui> tab. And click on <ui>Configure</ui> in the toolbar.</para>
+            <para><mediaLink><image placement="center" xlink:href="configure"/></mediaLink></para>
+<alert class="note">
+  <para>Your deployment status must be <phrase>Ready</phrase>, otherwise the toolbar buttons are gray.</para>
+</alert>
+
+        </content>
+        </step>
+        <step>
+        	<content>
+        	<para>On the upcoming screen, you can choose to upload a new configuration or make changes to the current one.</para>
+        		<para><mediaLink><image placement="center" xlink:href="configureSelect"/></mediaLink></para>
+     		<para>
+        		If you want to upload a new configuration choose <ui>Upload a new configuration file</ui> and select the local file by clicking <ui>Browse...</ui></para>
+        	<para>
+        		Select <ui>Edit current configuration</ui> to edit the configuration file directly.
+        	</para>
+        	</content>
+       	</step>
+       	<step>
+       		<content>
+       			<para>
+       				After committing the changes with <ui>OK</ui> the Webroles will be instantly updated.
+       			</para>
+       		</content>
+       	</step>
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <procedure>
+    	<title>Change Remote Access settings at runtime</title>
+    	<steps class="ordered">
+    		<step>
+    		<content>
+    			<para>In order to simply change the Remote Access settings, you have to select the WebRole at the <ui>Hosted Services</ui> tab.
+    			</para>
+    			<alert class="note">
+  					<para>Your deployment status must be <phrase>Ready</phrase>, otherwise the toolbar buttons are gray.</para>
+				</alert>
+				<para>
+					Select <ui>Configure</ui> in the Remote Access toolbar
+				</para>
+				<para><mediaLink><image placement="center" xlink:href="configureRemoteAccess"/></mediaLink></para>
+    		</content>
+    		</step>
+    		<step>
+    			<content>
+    				<para>
+    					Fill in your desired changes in the next screen and apply with <ui>OK</ui>
+    				</para>
+    				<para><mediaLink><image placement="center" xlink:href="configureRemoteAccessSelect"/></mediaLink></para>
+    				<para>
+    					The Webroles will be instantly updated.
+    				</para>
+    				<alert class="security">
+  							<para>Your password MUST be at least 6 characters long, and has to contain one upper-/lowercase and nummeric character.</para>
+  					</alert>
+    			</content>
+    		</step>
+    	</steps>
+    </procedure>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

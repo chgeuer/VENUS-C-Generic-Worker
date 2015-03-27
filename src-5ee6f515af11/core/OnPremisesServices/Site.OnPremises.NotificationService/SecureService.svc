@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" 
+    Factory="Site.NotificationService.SecureNotificationServiceFactory" 
+    Service="Microsoft.EMIC.Cloud.GenericWorker.NotificationService, Microsoft.EMIC.Cloud.GenericWorker"  
+    %>

@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fec92d86-badf-4499-9186-b5f4aca2c4fc" revisionNumber="1">
+  <developerConceptualDocument
+  xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+<summary>
+<para>Optional summary abstract</para>
+</summary>
+-->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+titles. Specify a numeric value as the inner text to limit it to
+a specific number of sub-topics when creating the outline. Specify
+zero (0) to limit it to top-level sections only. -->
+      <!-- <autoOutline /> -->
+
+      
+    </introduction>
+
+    <!-- Add one or more top-level section elements. These are collapsible.
+If using <autoOutline />, add an address attribute to identify it
+and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="ox9">
+      
+      <content>
+
+       
+        
+                <para>
+                  Now that we have constructed the Application Description and the Job Description, As of now we have the Application Description and the Application executable in the cloud
+                  and using those references we have constructed the Job Description.
+                </para>
+
+                <para>
+                  Now we would need the access point to which we have to submit the Job Description to have the Job executed in the cloud by the GenericWorker, because JobDesc is still just a VENUSJobDescription class with all the necessary fields set and this class object resides in the local machine which has to submitted to trigger the execution of the Job.
+                </para>
+
+                <para>
+                  To submit a JobDesc and trigger the execution of the Job in the cloud, we need an object of a class named as GenericWorkerJobManagementClient which requires the following parameters which require necessary changes according to your deployment - further information found in <link xlink:href="5f289c39-8ab0-42ca-bf79-e6a814c65b55"> Creating Service Configuration section </link>
+                </para>
+
+                <list class="bullet">
+                  <listItem>
+                    <para>
+                      <legacyBold>JobsubmissionURL</legacyBold>
+                    </para>
+                  </listItem>
+
+                  <listItem>
+                    <para>
+                      <legacyBold>securityTokenServiceURL</legacyBold>
+                    </para>
+                  </listItem>
+
+
+                  <listItem>
+                    <para>
+                      <legacyBold>Thumbprint value</legacyBold>
+                    </para>
+                  </listItem>
+
+                </list>
+
+                <code title="Job Submission">
+
+                    // The DnsEndpointIdentity has to be the value "Issued to" of the certificate used for
+                    // the GenericWorker setting "Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint"
+                    const string jobsubmissionURL = "http://simpleapp.cloudapp.net/JobSubmission/SecureService.svc";
+
+
+                    const string securityTokenServiceURL = "http://simpleapp.cloudapp.net/STS/UsernamePassword.svc";
+
+                    // With these informations it is now possible to create the client.
+                    // It is important to use the certificate thumbprint provided in the GenericWorker setting "Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint".
+                    GenericWorkerJobManagementClient jobSubmissionPortal = GenericWorkerJobManagementClient.CreateSecureClient(
+                    new EndpointAddress(new Uri(jobsubmissionURL), new DnsEndpointIdentity("MyAzureSTS")),
+                    new EndpointAddress(new Uri(securityTokenServiceURL), new DnsEndpointIdentity("MyAzureSTS")),
+                    "Researcher", "secret",
+                    X509Helper.GetX509Certificate2(
+                    StoreLocation.LocalMachine, StoreName.My,
+                    "‎EF0548F7EB15F1FCCDDF42C3592916D540F88BB7", // this Thumbprint value is of MyAzureSTS Cert
+                    X509FindType.FindByThumbprint));
+
+
+                    // As the client is now available, the job can be submitted
+                    jobSubmissionPortal.SubmitVENUSJob(jobDescription);
+
+                </code>
+
+                <alert class="note">
+                  <para>
+                    The thumbprint value given as "‎EF0548F7EB15F1FCCDDF42C3592916D540F88BB7" has to be changed to the value as on your system, to find out what the Thumbprint value is look at this <link xlink:href="4c70a6ec-deb8-4f89-8d15-f3a1df106f3f">link</link>.
+                  </para>
+                </alert>
+
+             
+
+       
+      </content>
+    </section>
+
+    <relatedTopics>
+      <!-- One or more of the following:
+- A local link
+- An external link
+- A code entity reference
+
+<link xlink:href="Other Topic's ID"/>
+<link xlink:href="Other Topic's ID">Link inner text</link>
+
+<externalLink>
+<linkText>Link text</linkText>
+<linkAlternateText>Optional alternate link text</linkAlternateText>
+<linkUri>URI</linkUri>
+</externalLink>
+
+<codeEntityReference>API member ID</codeEntityReference>
+
+Examples:
+
+<link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+<link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+<externalLink>
+<linkText>SHFB on CodePlex</linkText>
+<linkAlternateText>Go to CodePlex</linkAlternateText>
+<linkUri>http://shfb.codeplex.com</linkUri>
+</externalLink>
+
+<codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+<codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+<codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+<codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+<codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+<codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+<codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+-->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

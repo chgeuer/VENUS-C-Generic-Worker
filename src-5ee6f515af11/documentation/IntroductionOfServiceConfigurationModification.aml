@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7630f09e-4143-48ee-8990-405994496e89" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+
+      <para>
+        To deploy an application on to the cloud you are required to set up some parameters in the service config file.
+        These parameters are all required setting changes that you will have to change in your service config file according to your requirement, 
+        These settings will govern the way your deployment will work on the cloud,
+        for instance you will be required provide these below mentioned values:
+      </para>
+      <para>•	Instance Count</para>
+      <para>•	Data Connection String</para>
+      <para>•	STS Thumbprint</para>
+      <para>•	Management Thumbprint</para>
+      <para>•	Deployment URL</para>
+      <para>•	Remote Account User Name</para>
+      <para>•	Encrypted Password for Remote Account</para>
+      <para>•	Allow Insecure Access</para>
+      <para>•	Enable Accounting</para>
+      <para>•	Service Name</para>
+      <para>•	Subscription Id</para>
+
+      <para>Here in this section we will be looking into these different parameters that will have to be changed in the service configuration file and where to find the correct values for these parameters in your system, 
+      .</para>
+
+      <para>
+        First of all, The Service Configuration file can be downloaded from this 
+        <externalLink>
+        <linkText>Link</linkText>
+        <linkAlternateText>Login</linkAlternateText>
+        <linkUri>http://resources.venus-c.eu/gw/cloud/</linkUri>
+        <linkTarget>_blank</linkTarget>
+      </externalLink>. 
+    </para>
+
+      
+      
+      <para>
+      There are 2 ways in which you could accomplish the above task of changing the parameter setting of the service config file namely: 
+      </para>
+
+
+      <list class="bullet">
+        <listItem>
+          <para>Using a Tool to change the above list of values - please click <link xlink:href="dae1965c-5769-4d9d-845b-bd2ffaa98c25">here</link>.
+
+        </para>
+
+         
+        </listItem>
+
+        <listItem>
+          <para>
+            Manually changing the values by editing the Service config XML File - please click  
+          <link xlink:href="5f289c39-8ab0-42ca-bf79-e6a814c65b55">here</link>.
+        </para>
+
+          <alert>
+            <para>
+This above link to the article also talks about the fields that have to be incorporated into your version of the service configuration file and also where to find these setting values and whats the significance of these parameters and ofcourse which parts of the service configuration file requires changes.
+            </para>
+          </alert>
+        </listItem>
+      </list>
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

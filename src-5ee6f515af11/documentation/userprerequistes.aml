@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ce7a4231-501d-4f9e-9ea8-463bd20cb292" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>To this point in the tutorial we have learnt how to write our own client, using which we can accomplish tasks like :</para>
+      <list class="bullet">
+        <listItem>
+          <para>
+            Connecting to the Cloud
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            Writing our own Application Description
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            Uploading our Application Description and Application into an known address location in the cloud as:
+          </para>
+          <list class="ordered">
+            <listItem>
+              <para>
+                Application Description stored as <legacyBold> HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_Desc" </legacyBold>
+              </para>
+            </listItem>
+
+            <listItem>
+              <para>
+                Application executable stored as <legacyBold>HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_App"</legacyBold>
+              </para>
+            </listItem>
+
+          </list>
+        </listItem>
+
+        <listItem>
+          <para>
+            Writing our own Job Description
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            Submitting the Job
+          </para>
+        </listItem>
+      </list>
+
+      <para>
+        Now lets take a scenario wherein we have to run an application for instance a Java application which requires JRE to be installed in the cloud machines as a prerequisite, so that this application can be run successfully.
+      </para>
+
+      <para>
+        Well this can be accomplished simply by attaching the JRE install into the Application Zip file as seen in the section of <link xlink:href="d8424506-ccfe-427e-bd32-d751a9a42e83">Zipping and Uploading Application Description and Application executable files to the Cloud</link>. Well this is pretty straight forward task, But it is quite a tedious job if you required to this every time when there are only changes to your program and none to the JRE, This option allows you to change things on your program and upload the complete program without worrying about reinstalling the whole JRE, thus making things move quicker. And the same goes to the fact when you dont perform any changes to the program and are required to run this program multiple times(which in the earlier case would need you to zip the JRE and the App program together, and upload everytime you wanted to run the program) but where as now you could just upload the App program alone and thus without extra work or burden you utilize the earlier installation of JRE.  This situation is worsened if you are required to execute an MatLab program which in turn would require you to upload the MatLab installable every time and MatLab installable are quite large.
+      </para>
+
+      <para>
+        To counter this roundabout way of doing things, why not have a method wherein you are given a chance to install the application prerequisites once and run the application by just zipping the application(without the JRE installable. Zipping the JRE with the application would work just fine but we are trying to eliminate this necessity to have JRE along with the application), writing the Application Description, Job Description and submit the job. And not worry about installing the Application prerequisites every time you want to run a particular application.
+      </para>
+
+      <para>
+        With that in mind, the concept of User Prerequisites is being introduced which allows the cloud service users to first install the necessary components and then go about running their choice of application any number of times they would need it to run.
+      </para>
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="oX1">
+      <title>User Prerequisites</title>
+      <content>
+        <!-- Uncomment this to create a sub-section outline
+        <autoOutline /> -->
+        <para>
+          First things first, to go ahead with this option of User Prerequisites, we need to follow these 2 steps:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              Software components need to be installed which will facilitate installing the prerequisite software to run your application successfully.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Writing a script in powershell to install the prerequisite software in silent mode.
+            </para>
+          </listItem>
+
+        </list>
+      </content>
+    </section>
+
+    <section address="oX2">
+      <title>Software Installations required for Prerequisites’ option to work</title>
+      <content>
+        
+        
+        <list class="bullet">
+          <listItem>
+            <para>
+              We need the Azure Storage Explorer Installed on our system - for installation instructions refer <link xlink:href="69ee4241-36ac-42d4-a956-aa90d3a664d1">Local Deployment Tutorial</link>
+            </para>
+            <alert class="note">
+              <para>
+                There are other softwares which allow access to the cloud storage available in the market, for this tutorial we will be using Azure Storage explorer.
+              </para>
+            </alert>
+          
+          </listItem>
+
+          <listItem>
+            <para>
+              We need	Windows Powershell 2.0 Installed on our system - for installation instructions refer <link xlink:href="69ee4241-36ac-42d4-a956-aa90d3a664d1">Local Deployment Tutorial</link>
+            </para>
+
+            <alert class="note">
+              <para>
+                For more info and learning points about Windows Powershell refer this link:  
+
+                <externalLink>
+                  <linkText>MSDN - Starting Windows PowerShell </linkText>
+                  <linkAlternateText>MSDN - Starting Windows PowerShell</linkAlternateText>
+                  <linkUri>http://msdn.microsoft.com/en-us/library/windows/desktop/ms714415%28v=vs.85%29.aspx</linkUri>
+                  <linkTarget>_blank</linkTarget>
+                </externalLink>
+              </para>
+            </alert>  
+          </listItem>
+
+          <listItem>
+            <para>The connection String that was used in the Cloud Client that you wrote(use this Connection String to connect to the Azure Storage explorer to upload the prerequisite software to the cloud storage).</para>
+            <alert class="note">
+              <para>
+                Storage Account View using Azure Storage Explorer can be configured as shown in the below figure.
+              </para>
+            </alert>
+
+            <mediaLink>
+              <image xlink:href="userprerequistes1"/>
+            </mediaLink>
+          </listItem>
+        </list>
+
+      </content>
+    </section>
+
+    <section>
+      <title>A brief overview of what comes next when you use userprerequisite option</title>
+      <content>
+    <para>
+          Now that we have all the softwares components installed on our Desktop system, it would be much clearer as to explain the next steps :
+        </para>
+        
+        <para>
+          <legacyBold>
+            Next Topic:
+          </legacyBold>
+          <link xlink:href="6f5ab85a-82e8-4e1b-9db2-e1ecf7018b62">Writing a script in powershell to install the prerequisite software in silent mode</link>
+        </para>
+      </content>
+    </section>
+
+
+    
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>
+
+
+
+

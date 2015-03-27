@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8da06954-83a6-4f38-bc28-c97357b7c2bf" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+                  <para>
+              In a production deployment of the generic worker, all web service interactions with the infrastructure 
+              happen in a secure way, i.e. the job submission (which uses OGF BES/JSDL messages, exchanged over SOAP)
+              is protected using WS-Security. To appropriately secure communications, the web services in the cloud 
+              need to possess an X.509 certificate to enable the client to encrypt messages for the service. 
+              A production certificate need to be issued for the domain name of the web services endpoint. 
+              That could be something like <codeInline>CN=genericworker.contoso.com</codeInline>, 
+              assuming you own the <fictitiousUri>contoso.com</fictitiousUri> domain.
+              Please note that you will not be able to acquire a certificate for the host name 
+              cloudyscience.cloudapp.net, because cloudapp.net is registered to Microsoft, not to you. 
+              The certificate must be in PKCS#12 format (a pfx or .p12 file), i.e. also containing the private key. 
+            </para>
+            <para>
+              For easy ramp-up of the scenarios, security is currently turned off, i.e. the web service interfaces 
+              use a simple SOAP binding without security and federated identity. This means that you still need to 
+              supply a PFX file, but it doesn’t have to be a production SSL certificate, but can be a self-issued 
+              test certificate. 
+            </para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example --> 
+	<procedure>
+        <title>Create a self signed certificate (two alternative ways)</title>
+        
+        <steps class="ordered">
+			<step>
+	        <content>
+	            <para>Using Visual Studio command prompt (run as administrator):</para>
+	            <code lang="none" title="Visual Studio command prompt">
+	                makecert -r -pe -n "CN=AzureMgmt" -a sha1 -len 2048 -sky exchange –sr localmachine -ss My "AzureMgmt.cer"
+	            </code>
+	            <para>To import an existing certificate use:</para>
+	            <code lang="none" title="Visual Studio command prompt">
+	                certmgr –add "&lt;Location&gt;\cert.cer" –s –r localMachine 
+	            </code>
+	            <para>Register the certificate on the <externalLink>
+			<linkText>Azure Portal</linkText>
+			<linkUri>https://windows.azure.com/</linkUri>
+			<linkTarget>_blank</linkTarget>
+			</externalLink>.</para>
+	        </content>
+	        </step>
+	        <step>
+	        <content>
+	            <para>Using IIS Manager:</para>
+	            <para>Just search iis in the windows start menu.</para>
+	            <para>Start IIS Manager and doubleclick IIS->Server Certificates.</para>
+	         	<para>Now select "Create Self Signed Certificate" in the Actions sidebar.</para>
+	        </content>
+	        </step>
+      </steps>
+   </procedure>
+    <procedure>
+      <title>X.509 certificate upload</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              Clicking on "Add Certificate" allows us to upload a certificate to Windows Azure. 
+              I created a test certificate in a password-protected PFX container:
+            </para>
+            <mediaLink><image placement="center" xlink:href="image12"/></mediaLink>
+            
+            <para>After upload of the certificate, you can see it under the hosted service:</para>
+            <mediaLink><image placement="center" xlink:href="image13"/></mediaLink>
+            <para>
+              Please copy the value of the Thumbprint (on the right-hand side), because we also need that value 
+              for the configuration of our deployment:
+            </para>
+            <code title="Thumbprint" lang="none">57CD0F54CC82E97B7F4B960F7C6B8DA9467A819C</code>
+            <para>
+              Besides protection of the web service messages, this certificate can be used for enabling 
+              remote access (RDP) to the Azure virtual machines. Please refer to 
+              <externalLink>
+                <linkText>MSDN</linkText>
+                <linkUri>http://msdn.microsoft.com/en-us/library/gg443832.aspx</linkUri>
+              </externalLink> for details.
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

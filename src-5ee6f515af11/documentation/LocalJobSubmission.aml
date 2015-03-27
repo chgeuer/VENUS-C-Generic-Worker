@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="50be658b-c551-4247-9b49-3103fe0e88c0" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Explanation on how an application running on top of generic worker can submit jobs locally</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+            <title>Local Job Submission</title>
+            <content>
+            	<para>
+            	In order to submit local job, you need to have a GenericWorkerJobSubmissionClient whose endPoint address
+            	should be the same as the localJobSubmissionService. The Service Bending of the GenericWorkerJobSubmissionClient
+            	does not need to be secure, since localJobSubmissionService check the caller and accepts the request which are
+            	created locally.
+            	</para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="CreateLocalJobSubmissionClient" title="Creating Local Job Submission Client" />
+                <para>
+                You can submit the local job exactly as the external job submission. SubmitVENUSJob method of the GenericWorkerJobSubmissionClient 
+                is called.
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SubmitASingleLocalJob" title="Declairing a job description" />
+                
+                <para>By using the local job submission feature of the Generic Woker, hieararchy between the jobs can be created. 
+                In hiearhical jobs customer jobIDs should be start with "jobid://". In order to test whether the JobID for a 
+                given job is suitable for hierarchical job type, JobID can be tested by TryParse method.</para>
+				
+				<code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+                region="TestJobID" title="Submitting a job" />
+                <para>The hierachy between the jobs are established by JobIDs, i.e. root job with jobID = "jobid://Root" is the parent of 
+                the job with jobID = "jobid://Root/Child1".</para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+                region="SubmitAHierarchicalJob" title="Submitting a job" />
+                <para>
+                Hieararchical jobs can also submit single jobs, i.e. "jobid://Root" can both submit
+                JobID = "jobid://Root/Child1" and JobID = "Some Job ID". However, there is no parent child relation ship between Root and single job
+                </para>
+               <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SubmitASingleLocalJob" title="Declairing a job description" />
+            </content>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

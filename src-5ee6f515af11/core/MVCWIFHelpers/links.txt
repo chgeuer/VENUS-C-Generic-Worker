@@ -1,0 +1,4 @@
+﻿
+http://www.paraesthesia.com/archive/2011/02/01/working-with-windows-identity-foundation-in-asp-net-mvc.aspx
+http://aaronweiker.com/2010/12/22/getting-the-most-out-of-wif-on-azure
+http://blogs.msdn.com/b/mcsuksoldev/archive/2010/07/07/windows-identity-foundation-101-s-ws-federation-passive-requestor-profile-part-1-of-2.aspx

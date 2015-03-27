@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="353ec394-6eee-4b45-ac02-85332c2fa0af" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>In order to speed up the development process you can also deploy on your own machine.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section address="Requirements for running the Generic Worker locally">
+      	<title>Requirements for running the Generic Worker locally</title>
+         <content>
+			<list class="bullet">
+			<listItem>
+				<para>CPU min. 1,6 GHz, better 2 GHz with at least 2 GB RAM</para>
+			</listItem>
+			<listItem>
+				<para>Windows XP (x86) SP3 or Windows Vista (x86, x64) SP2, better Windows 7 (x86, x64)</para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Azure SDK, Visual Studio Express + SQL Server Express</linkText>
+				<linkAlternateText>Azure SDK, Visual Studio Express + SQL Server Express</linkAlternateText>
+				<linkUri>http://www.microsoft.com/windowsazure/getstarted/</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+				<alert class="note">
+				  <para>SQL Server is needed for the Azure Storage Emulator</para>
+				</alert>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Generic Worker</linkText>
+				<linkAlternateText>Generic Worker</linkAlternateText>
+				<linkUri>https://projects.venus-c.eu/svn/venus_opencall/GenericWorker/ </linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>			
+			<listItem><para><externalLink>
+				<linkText>Microsoft Internet Information Server 7 (default available in Windows 7)</linkText>
+				<linkAlternateText>Microsoft Internet Information Server 7 (default available in Windows 7)</linkAlternateText>
+				<linkUri>http://www.microsoft.com/download/en/details.aspx?id=2143</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Windows Powershell 2.0 (default available in Windows 7)</linkText>
+				<linkAlternateText>Windows Powershell 2.0 (default available in Windows 7)</linkAlternateText>
+				<linkUri>http://www.microsoft.com/download/en/default.aspx</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Windows Identity Foundation Runtime</linkText>
+				<linkAlternateText>WIF Runtime</linkAlternateText>
+				<linkUri>http://www.microsoft.com/download/en/details.aspx?displaylang=en&amp;id=17331</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Windows Identity Foundation SDK</linkText>
+				<linkAlternateText>WIF SDK</linkAlternateText>
+				<linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c148b2df-c7af-46bb-9162-2c9422208504</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+				<alert class="note">
+				  <para>You only need to install <application>WindowsIdentityFoundation-SDK-4.0.msi</application></para>
+				</alert>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>ASP.Net MVC3</linkText>
+				<linkAlternateText>ASP.Net MVC3</linkAlternateText>
+				<linkUri>http://download.microsoft.com/download/3/4/A/34A8A203-BD4B-44A2-AF8B-CA2CFCB311CC/AspNetMVC3Setup.exe</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>HG (Mercurial) extension for Visual Studio</linkText>
+				<linkAlternateText>Mercurial extension for VS</linkAlternateText>
+				<linkUri>http://visualstudiogallery.msdn.microsoft.com/9bc074fa-9e1f-4ce2-a75d-b90e65f7475a?SRC=VSIDE</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink> (optional)</para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Azure Storage Explorer</linkText>
+				<linkAlternateText>Azure Storage Explorer</linkAlternateText>
+				<linkUri>http://azurestorageexplorer.codeplex.com/</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink> (optional)</para>
+			</listItem>
+		</list>
+      	</content>
+    </section>
+    <section address="DeploymentInDevFabric">
+        <title>Deployment in the DevFarbic</title>
+        <content>
+        <para>
+        The GW Web Role then runs in the compute emulator on your machine. Now you can continue to use the cloud storage or move even the storage to your own machine. In this case the cloud storage is emulated by the storage emulator.  To use the storage emulator you only need to set the <codeInline>DataConnectionString "UseDevelopmentStorage=true"</codeInline>
+        </para>
+        <para>
+        When the deployment is running in the DevFabric the GW retrieves its settings from your registry. For this reason you have setup your registry.
+        </para>
+        </content>
+        </section>
+        <section>
+            <title>Setup the registry</title>
+            <content>
+            <list class="bullet">
+                <listItem><para>Open <codeInline>commons\Settings.DomainPasswordForWithinCorpnetTMG.reg</codeInline> in an editor</para></listItem>
+                <listItem><para>Enter your username and password for your domain</para></listItem>
+                <listItem><para>Open <codeInline>commons\Settings.All.reg</codeInline> in an editor</para></listItem>
+                <listItem><para>Replace <codeInline>chgeuer</codeInline> with your name/alias  
+                        The name/alias is only used for having separate tables and containers for researchers that are using the same storage account in the cloud.
+                </para><alert class="note"><para>please use only characters or digits [a-zA-Z0-9]</para></alert>
+                </listItem>
+                <listItem><para>Replace <codeInline>AppStoreOnAzureCertificateThumbprint</codeInline> value with the generated certificate 
+                thumbprint (from <link xlink:href="#CreateSignedCertificate">Create a self signed certificate</link>), to do so run <codeInline>ls cert:\LocalMachine\My</codeInline> in Powershell and look for <codeInline>CN=AzureMgmt</codeInline> or
+                your registered thumbprint in the AzurePortal. For testing security in the local deployment you have to own the private key to your certificate.
+                </para></listItem>
+                <listItem><para>Set the HostSwitch to DevelopmentFabric or Cloud</para></listItem>
+                <listItem><para>Save the the modified files in a folder which is not version controlled</para></listItem>
+                <listItem><para>Doubleclick the modified files to install/update the keys in your registry</para></listItem>
+            </list>
+            <para>You can use the other registry files in  the commons folder to switch compute between DevFabric(local) and Cloud, and switch storage between local(UseDevelopmentStorage=true) and cloud(Azure connectionstring).</para>
+
+            </content>
+        </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

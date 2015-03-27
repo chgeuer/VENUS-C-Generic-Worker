@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="53d4a5b7-ad09-4864-959d-43fd25f85f18" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>
+        In the previous section we saw how to use the group id or Job id or job owner name to manage/Handle/Terminate Jobs. But it has to be kept in mind that all these activities were being done on the same machine from where the jobs were being submitted - which does provide us all the information that is required to use the methods available by the class GenericWorkerJobManagementClient for cancelling jobs or group of jobs or heirarchy of jobs and even terminating jobs.
+        
+      
+      </para>
+
+      <para>
+        In this section we will be looking into a way using which we can do all of the above activities on a different system altogether or on the same system after you accidently closed the client using which you were submitting and managing the jobs. 
+      </para>
+
+     
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="Section1">
+      <title>Methods for handling, managing and terminating jobs</title>
+      <content>
+        <!-- Uncomment this to create a sub-section outline
+        <autoOutline /> -->
+        <para>Before diving into how to accompolish this task over a different machine, let us look at the different methods available for handling/managing/cancelling or terminating jobs via the class which provides these actions over the jobs: GenericWorkerJobManagementClient class.   </para>
+
+        <list class="bullet">
+          <listItem>
+            <para>
+              public TerminateActivitiesResponse TerminateActivities(List_EndpointReferenceType jobs)
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              public new List OGF.BES.EndpointReferenceType GetHierarchy(EndpointReferenceType root, int page = -1)
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              public new OGF.BES.EndpointReferenceType GetRoot(EndpointReferenceType job)
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              public new void CancelHierarchy(EndpointReferenceType root)
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              public new List EndpointReferenceType GetJobsByGroup(string owner, string groupName, int page = -1)
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              public new void CancelGroup(string owner, string groupName)
+            </para>
+          </listItem>
+          
+        </list>
+
+        <para>
+          All of these methods either make use of EndpointReferenceType or Owner name in conjunction with Group Name.
+        </para>
+
+        <para>
+          If we were to get the status of job or a group of jobs or a Heirarchy of jobs, the only method available to us is this one:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              public GetActivityStatusesResponse GetActivityStatuses(List EndpointReferenceType  jobs)
+            </para>
+          </listItem>
+        </list>
+        <alert>
+          <para>  <legacyBold>Job Status checking using internal job id: </legacyBold>
+          <link xlink:href="351ce921-8b9e-4837-83de-247e2c588430">List and poll jobs using Internal JobId</link>
+          </para>
+        </alert>
+        <para>
+          Now the question arises of what do we do with the group of jobs or a Heirarchy of jobs, In that case we will have to get individual job's internal job id which is stored in the EndPointReferenceType object associated with each job. 
+        </para>
+
+        <para>
+          Remember in previous section we talked about listing and polling of jobs by making use of our own dictionary of matching internal Job id and Job Name. We will have to maintain the <legacyBold>internal JobId </legacyBold> after we have submitted the job like as shown below:  
+      
+      </para>
+
+        <code title="Utilize Job Submission function call return data">
+          var job = jobSubmissionPortal.SubmitVENUSJob(mySimpleJobDescription); // job now would contain the InternalJobId information
+
+          var internalJobId = job.ActivityIdentifier.ReferenceParameters.Any.Find(r => r.Name == "Id").InnerText
+
+        </code>
+
+
+        <para>
+          We can get the internal JobIds using the group name and owner name as well, this can be done in the following way: 
+        </para>
+
+
+        <code title="Get a list of EndPointReferenceType objects by calling GetJobsByGroups methods from an object of GenericWorkerJobManagementClient class">
+          var endPointreferencetypeList = jobSubmissionPortal.GetJobsByGroup(user, groupName);  // returns a list of EndPointReferenceType
+
+          foreach (var jobsInList in endPointreferencetypeList)
+          {
+
+          var internalJobId = endPointreferencetypeList.ReferenceParameters.Any.Find(r => r.Name == "Id").InnerText;
+
+          }
+
+        </code>
+
+        <para>
+          Now using the internalJobId we can use the methods available in GenericWorkerJobManagementClient class for either getting the job status or cancelling a job or a Heirarchy of jobs. But remember we need the InternalJobId stored in the EndPointReferenceType Object associated to each job submitted to the cloud. 
+        </para>
+        <para>
+          <legacyBold>Next Topic : </legacyBold>
+
+          
+          <link xlink:href="312c008a-bf4b-41b1-8b65-ad2a9af6e54a">Submitting and retrieving job hierarchy under the root</link>
+        </para> </content>
+      <!-- If a section contains a sections element, its content creates
+           sub-sections.  These are not collapsible.
+      <sections>
+          <section address="SubSection1">
+              <title>Sub-section 1</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+          <section address="SubSection2">
+              <title>Sub-section 2</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+      </sections> -->
+    </section>
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

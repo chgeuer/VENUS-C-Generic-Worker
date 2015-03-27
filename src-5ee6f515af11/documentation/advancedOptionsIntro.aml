@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7866dfd9-a7aa-4575-95ad-2662e4cc7e81" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>In the previous section we saw the different modes of using the Azure's cloud computing platform namely</para>
+      <list class="bullet">
+        <listItem>
+          <para><link xlink:href="91ac6cd8-5e0c-4c02-9e09-df7de9507f03">Cloud Deployment Tutorial</link>
+        </para>
+        </listItem>
+        <listItem>
+          <para>
+            <link xlink:href="69ee4241-36ac-42d4-a956-aa90d3a664d1">Local Deployment Tutorial</link>
+          </para>
+        </listItem>
+      </list>
+    </introduction>
+
+    <section>
+     
+      <content>
+        
+     
+      <para>
+        Here in this Chapter we will see some more tweaks that can be done on the azure platform to accommodate your requirements. 
+      </para>
+
+      <list class="bullet">
+        <listItem>
+          <para>
+            <link xlink:href="a6a1e6c5-3362-4672-a473-ca3596bcbadf">Custom VM ROLE The VM Role</link>
+          </para><para>VM Role is
+              one of three role types available for applications developed for Windows Azure. You must ensure that the VM Role is right for your application before you start the development process.
+          </para>
+          <alert>
+            <para>
+              When you create an application using the VM Role, you are responsible for creating, configuring, and managing the operating system image that is deployed to Windows Azure, thus allowing you alot of flexibility.
+            </para>  
+          </alert>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="45a1763c-9966-4c3b-9982-94d249874381">Azure Accounting Components</link>
+          </para>
+
+          <para>
+            In the Generic Worker Introductory section, we dealt with the possibility of accounting through Generic worker in the section: <link xlink:href="b6305c2f-e953-46eb-acd6-b22a55a30624">How Accounting works?</link>, 
+            here in this section we will see how the accounting capabilities of Generic worker can be enabled and what other softwares will have to installed to accomplish this task.
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="76059fae-8011-485d-b377-05410e9471a1">Powershell Deployment</link>
+          </para>
+          <para>
+             Deploying in Powershell by using Azure Management Commandlets, this is very similar to the <link xlink:href="ce7a4231-501d-4f9e-9ea8-463bd20cb292">UserPrerequisites section</link> but with a major difference which is - in the case of
+            section: UserPrerequisites, using powershell we just install the application on the cloud but in this section, we will deal with a complete end to end cloud deployment in Powershell by using Azure Management Commandlets.
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="09b63345-c9fc-4ac2-9c34-3a4905220ff9">Runtime configuration - How to configure the deployed system</link>
+          </para>
+
+          <para>
+            This section deals with a scenario wherein you need to change the configuration of your cloud deployment at Runtime.
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            <link xlink:href="ec6b1774-9bff-4364-b9bb-5708ef143e81">Data Driven Notification</link>
+
+          </para>
+
+          <para>
+            This section of the tutorial illustrates means of getting notification or illustrates means to monitor a job or a workflow of jobs that you are interested in. 
+            This is particularly important in the case where the jobs run for a long period of time.
+          </para>
+        </listItem>
+      </list>
+
+
+        <para>
+          In the next chapter we will dealing with programming guide to implementing your own cloud client and most of the available methods of job grouping for easier
+          management of jobs -  <link xlink:href="b20c7149-6fdc-450b-924f-62b58ddbee28">programming guide: Assembly Overview</link>
+
+        </para>
+      </content>
+    </section>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

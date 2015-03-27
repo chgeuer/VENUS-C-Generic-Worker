@@ -1,0 +1,22 @@
+﻿REM reg add HKLM\Software\Microsoft\PowerShell\1\ShellIds\Microsoft.PowerShell /v ExecutionPolicy /d Unrestricted /f
+REM powershell -ExecutionPolicy Unrestricted -File "%~dp0install.ps1" >> install.log 2>&1
+REM E:\approot\bin\SetupScripts\psexec.exe /i /e /s %windir%\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe
+
+# $time = [System.DateTime]::UtcNow.ToString("yyyy-MM-dd--hh-mm-ss-fff")
+# $roleid = [Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment]::CurrentRoleInstance.Id
+# $deploymentid = [Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment]::DeploymentId
+# $id = "$time-$deploymentid-$roleid"
+
+# $username = "gwtest001"
+# $password = "test123.-"
+# $system32 = [Environment]::SystemDirectory
+# . "$system32\net.exe" USER $username $password /ADD /ACTIVE:YES /COMMENT:"Generic Worker Test User $username" /FULLNAME:"Generic Worker User $username" /PASSWORDCHG:NO /LOGONPASSWORDCHG:NO 
+# CreateUsersFolder -folder $gwusersfolder -username $username
+
+# For psexec.exe, see http://technet.microsoft.com/en-us/sysinternals/bb897553
+#$permissionscript = "$currentDir\Set-Permissions.ps1"
+#$system32 = [Environment]::SystemDirectory
+#$powershell = "$system32\WindowsPowerShell\v1.0\powershell.exe"
+#$gwappsfolder = ( [Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment]::GetLocalResource("GWApps") ).RootPath
+#$gwusersfolder = ( [Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment]::GetLocalResource("GWUsers") ).RootPath
+# .\psexec.exe -i -s -e -w $currentDir $powershell -File $permissionscript $id $roleid $gwappsfolder $gwusersfolder

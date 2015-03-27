@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="82b70a61-2a55-493c-bd3a-a501eb2f9ab9" revisionNumber="1">
+  <developerWhitePaperDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <summary>
+      <para>Generic Worker</para>
+    </summary>
+    <byline>
+      <para>by MSR ATL Europe Cloud4Science Team</para>
+    </byline>
+    <date>
+      <para>April 2013</para>
+    </date>
+    <summarySection>
+      <content>
+        <para><legacyBold>The research leading to these results has received funding from the European Union
+Seventh Framework Programme (FP7/2007- 2013) under grant agreement n° 261565.</legacyBold>
+</para>
+      </content>
+    </summarySection>
+    <introduction>
+      <para>This document gives an overview over the Generic Worker and provides tutorials and guidlines how to program cloud clients and deploy the Generic Worker. </para>
+    </introduction>
+    <section address="Section1">
+      <title>Links to this document</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            <para>
+              Learn how to deploy the Generic Worker on Windows Azure: <link xlink:href="91ac6cd8-5e0c-4c02-9e09-df7de9507f03" />
+            </para>
+          </listItem>
+         
+        </list>
+      </content>
+    </section>
+    <conclusion>
+      <content>
+        <!-- <para>Conclusion content</para> -->
+      </content>
+    </conclusion>
+  </developerWhitePaperDocument>
+</topic>

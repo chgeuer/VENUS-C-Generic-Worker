@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="76059fae-8011-485d-b377-05410e9471a1" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Deploying in Powershell by using Azure Management Commandlets</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+
+       <section address="InstallAPC">
+                <title>Install the Azure Powershell Commandlets:</title>
+                <content>
+                	<section>
+                	<title>Automatic</title>
+                	<content>
+                
+                    
+                    <para>Download and install the commandlets from: 
+	                    <externalLink>
+						<linkText>http://wappowershell.codeplex.com/</linkText>
+						<linkAlternateText>http://wappowershell.codeplex.com/</linkAlternateText>
+						<linkUri>http://wappowershell.codeplex.com/</linkUri>
+						<linkTarget>_blank</linkTarget>
+						</externalLink>
+                    </para>
+                    </content>
+                    </section>
+                    <section>
+                    <title>Manually</title>
+                    <content>
+                    <code lang="pshell">
+                        Set-alias installutil $env:windir\Microsoft.NET\Framework\v2.0.50727\installutil.exe
+                        installutil -i Microsoft.Samples.AzureManagementTools.PowerShell.dll</code>
+                    <para>(use a 32-bit/x86 version of powershell to initiate this command)</para>
+                    </content>
+                    </section>
+                </content>
+                </section>
+                            
+        <section>
+        <title>Check if the commandlets were installed properly</title>
+        <content>
+        <code lang="pshell">
+        Get-pssnapin –registered</code>
+        <para>If not please re-install them, before go to next steps.</para>
+        </content>
+        </section>
+        
+        <section>
+        <title>Add the Snapins to your Powershell session</title>
+        <content>
+        <code lang="pshell">
+        Add-PSSnapin AzureManagementToolsSnapIn</code></content>
+        </section>
+        
+        <section>
+                            <title>Using the Azure Management Commandlets to manage your deployment</title>
+                            <content>
+                            <section>
+                                <title>A list of all Azure Management Commandlets</title>
+                                <content>
+                                    <code lang="pshell">
+                                    Get-Command -PSSnapin AzureManagementToolsSnapIn</code>
+                                </content>
+                            </section>
+                            <section>
+                                <title>To simplify the usage of these commandlets we recommend you to set some useful variables in your powershell profile settings</title>
+                                <content>
+                                    <para>
+                                    <codeInline>&lt;USERFOLDER&gt;\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1</codeInline> (create the path if it does not exist)
+                                    </para>
+                                    <para>
+                                    There you should set:
+                                    </para>
+                                    <code lang="none" title="Microsoft.PowerShell_profile.ps1">
+                                    $thumbprintInUpperCase = "&lt;YOUR CERTIFICATES THUMBPRINT&gt;"
+                                    $serviceName = "&lt;THE GENERIC WORKER SERVICE NAME&gt;"
+                                    $subid = "&lt;YOUR SUBSCRIPTION ID&gt;"
+                                    $cert = (get-item cert:\CurrentUser\My\$thumbprintInUpperCase) #Depending on the location of the certificate
+                                    $pkg = "&lt;CSPKG_FILE&gt;" #Path to your PKG file
+                                    $cscfg="&lt;CSCFG_FILE&gt;" #Path to your ServiceConfiguration.cscfg file</code>
+                                    <para>
+                                    When you now start PowerShell(x86) then these variables are already set.
+                                    </para>
+                                </content>
+                                </section>
+                            <section>
+                                <title>Retrieve the hosted service</title>
+                                <content>
+                                    <code lang="pshell">
+                                    $hostedservice = Get-HostedService -ServiceName "$serviceName" -SubscriptionId $subid -Certificate $cert</code>
+                                </content>
+                            </section>
+                            <section>
+                                <title>Deploy on azure</title>
+                                <content>
+                                    <code lang="pshell">
+                                    New-Deployment -subscriptionId $subid -certificate $cert -serviceName $serviceName -slot staging -package $pkg -configuration $cscfg -name TestDeploy -label TestLabelStaging
+                                    </code>
+                                    <para>It is recommended to first deploy to the staging slot (the service runs on a randomly picked URL of the form &lt;some-guid&gt;.cloudapp.net ) and switch the deployment to the production slot (URL: servicename.cloudapp.net ) once everything is running smooth.</para>
+                                </content>
+                            </section>
+                            <section>
+                                <title>Swap staging to production</title>
+                                <content>
+                                    <code lang="pshell">
+                                    echo $hostedservice | Get-Deployment -slot staging | Move-Deployment  | Get-OperationStatus –WaitToComplete
+                                    </code>
+                                </content>
+                            </section>
+                            <section>
+                                <title>Retrieve the deployment</title>
+                                <content>
+                                    <code lang="pshell">
+                                    $deployment = echo $hostedservice | Get-Deployment production
+                                    </code>
+                                </content>
+                            </section>
+                            <section>
+                                <title>Run the deployment</title>
+                                <content>
+                                    <code lang="pshell">
+                                    echo $deployment | Set-DeploymentStatus running | Get-OperationStatus –WaitToComplete
+                                    </code>
+                                </content>
+                            </section>
+                            <section>
+                                <title>Stop the deployment</title>
+                                <content>
+                                    <code lang="pshell">
+                                    echo $deployment | Set-DeplaymentStatus suspended | Get-OperationStatus –WaitToComplete
+                                    </code>
+                                </content>
+                            </section>
+                            <section>
+                                <title>Remove the deployment</title>
+                                <content>
+                                    <code lang="pshell">
+                                    echo $deployment | Remove-Deployment
+                                    </code>
+                                </content>
+                            </section>
+                            </content>
+                            </section>
+                            
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+    <link xlink:href="8da06954-83a6-4f38-bc28-c97357b7c2bf">Certificate acquisition</link>
+    <link xlink:href="8da06954-83a6-4f38-bc28-c97357b7c2bf">Initial Configuration</link>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

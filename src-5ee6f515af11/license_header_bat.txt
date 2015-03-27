@@ -1,0 +1,5 @@
+rem (c) Copyright Microsoft Corporation.
+rem This source is subject to the Microsoft Public License (Ms-PL).
+rem Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+rem All other rights reserved.
+

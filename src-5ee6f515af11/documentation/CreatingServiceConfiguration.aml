@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5f289c39-8ab0-42ca-bf79-e6a814c65b55" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>The Generic Worker must be downloaded and configured with the correct parameters before deployment.</para>
+      <para>
+        Download the latest GenericWorker version and configuration file <externalLink>
+          <linkText>here</linkText>
+          <linkAlternateText>Login</linkAlternateText>
+          <linkUri>http://resources.venus-c.eu/gw/cloud/</linkUri>
+          <linkTarget>_blank</linkTarget>
+        </externalLink>. To learn more about the package sizes, click <externalLink>
+          <linkText>here</linkText>
+          <linkAlternateText>Login</linkAlternateText>
+          <linkUri>http://msdn.microsoft.com/en-us/library/windowsazure/ee814754.aspx</linkUri>
+          <linkTarget>_blank</linkTarget>
+        </externalLink>.
+      </para>
+      <para>The file “ServiceConfiguration.cscfg” contains all necessary settings for the GenericWorker. It is necessary that these settings are completed / adopted by you. As the ServiceConfiguration.cscfg is a XML file a simple editor is sufficient for editing the settings.</para>
+      <code lang="xml" language="xml"
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+                  title="ServiceConfiguration.cscfg - Generic Worker Settings"
+                  region="Generic Worker Settings" />
+
+      <para>And the certificate configuration: </para>
+
+      <code lang="xml" language="xml"
+            source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+            title="ServiceConfiguration.cscfg - Generic Worker Certificates"
+            region="Certificate Settings" />
+      
+      <alert class="note">
+        <para>
+          You can also use the Service Configuration Modifier utility to edit the settings listed below. <link xlink:href="dae1965c-5769-4d9d-845b-bd2ffaa98c25">Here</link> is detailed information about this utility.
+        </para>
+      </alert>
+
+      <para>The thumbprints of the certificates uploaded to the hosted service are required in the ServiceConfiguration. There are two sections where the thumbprints have to be completed.</para>
+
+    </introduction>
+    <!-- <prerequisites><content>Optional prerequisites info</content></prerequisites> -->
+    <!-- One or more procedure or section with procedure -->
+
+    <procedure>
+      <title>Editing certificate thumbprints</title>  
+
+      <steps class="ordered">
+        <step>
+          <content>
+            <procedure>
+              <title>Certificates Area</title>
+              <steps class="bullet">
+                <step>
+                  <content>
+                    <para>The certificates belonging to the thumbprints in this section are installed in the certificate store of every VM.</para>
+                    <para>The thumbprint of a certificate can be found in the right panel when clicking on a certificate of a hosted service.</para>
+                    <mediaLink>
+                      <image xlink:href="newDeploymentImage13"/>
+                    </mediaLink>
+                    <para>Following the examples for creating the certificates in this tutorial, the thumbprint of “MyAzureSTS” has to be used for the settings “Microsoft.EMIC.Cloud.SSLCert” and “Microsoft.EMIC.Cloud.STSCert”. The example value for these settings like "&lt;YOUR CERTIFICATE THUMBPRINT UPPERCASE&gt;E04FB18B3317F79D5D70B1B6FF9A4C1D45630B01" has to be replaced completely by the thumbprint only.</para>
+                    <para>The thumbprint of the management certificate is used for the setting “Microsoft.EMIC.Cloud.MgmtCert”.</para>
+
+                    <para>There is one additional setting called “Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption”. This setting is required for enabling RDP access to VMs. As this is only for advanced users and normally not needed, the thumbprint of any certificate of the hosted service can be used. If you leave this setting as it is, an error will be raised by Azure during the deployment process.</para>
+
+                  </content>
+                </step>
+              </steps>
+            </procedure>
+          </content>
+        </step>
+        <step>
+          <content>
+            <procedure>
+              <title>Settings Area</title>
+              <steps class="bullet">
+                <step>
+                  <content>
+                    <para>While the certificates area just specifies which certificates are installed on a VM, the settings area defines which certificate is used by the different services of the GenericWorker. This is necessary because there can be many different certificates on the VMs and the GenericWorker exactly needs to know which of them should be used for what purpose.</para>
+                    <para>There are two settings for telling the GenericWorker which certificates should be used. These are “Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint” and “Microsoft.EMIC.Cloud.Azure.MgmtCertThumbprint”.</para>
+                    <para>The values of these settings have to be changed in the same way as for the certificates area and with the same thumbprints of “MyAzureSTS” and “MyAzureMgmt”.</para>
+                  </content>
+                </step>
+              </steps>
+            </procedure>
+          </content>
+
+        </step>
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    
+    <!-- Optional additional procedure or section with procedure -->
+    <procedure>
+      <title>Editing URLs</title>
+      <steps class="bullet">
+        <step>
+          <content>
+            <para>There are various settings ending with “URL”. These settings need to contain valid URLs representing the published GenericWorker endpoints. The URLs are basically used by the SecurityTokenService of the GenericWorker so that this component knows, for which endpoints it is allowed to generate SecurityTokens.</para>
+            <para>The ending of the URLs can be left as it is but the DNS name must be changed. The setting “Microsoft.EMIC.Cloud.STS.URL” for example has the value “http://&lt;YOUR SERVICE HOST&gt;my.genericworker.net/STS/UsernamePassword.svc”. This is changed to the value “http://ADemoService.cloudapp.net/STS/UsernamePassword.svc”. The DNS name of a deployment is always “&lt;DNS Prefix&gt;.cloudapp.net” and the DNS Prefix can be found on the right panel when selecting a hosted service.</para>
+            <mediaLink>
+              <image xlink:href="newDeploymentImage15"/>
+            </mediaLink>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Editing Scaling / Subscription Settings</title>
+      <steps class="bullet">
+        <step>
+          <content>
+            <para>All settings containing the keyword “ConnectionString” have to be modified to represent a valid connectionstring for Azure Storage Services. If you do not have a storage account yet, you can create one by the following steps from the previous section Creating Connection String.</para>
+            <para>To enable scaling support it is necessary to adopt another two settings in addition to the management thumbprint.</para>
+            <para>The first setting is “Microsoft.EMIC.Cloud.Azure.ServiceName” and the value must exactly be the DNS Prefix of the hosted service as shown in the figure below.</para>
+            <para>The second setting is “Microsoft.EMIC.Cloud.Azure.SubscriptionId”. The Subscription ID can be found "Configure" link of your cloud service deployment portal as shown in figure below.</para>
+            <mediaLink>
+              <image xlink:href="newDeploymentImage16"/>
+            </mediaLink>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+    <!-- Optional next steps info
+    <nextSteps>
+      <content><para>Next steps info goes here</para></content>
+    </nextSteps>
+    -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>

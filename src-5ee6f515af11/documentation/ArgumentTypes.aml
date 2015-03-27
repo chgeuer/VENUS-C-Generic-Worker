@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6dd926cc-56b3-4789-8b40-67d6fc566bb6" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>An application has to define some arguments, e.g. for input and output files. 
+      This document gives an overview about the important argument types and their proper using.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section>
+      <title>Argument Types</title>
+          <content>
+            
+<definitionTable>
+  <definedTerm>SingleLiteralArgument</definedTerm>
+  <definition><para>You should use the SingleLiteralArgument if you want to submit a string or number for a spesific argument.</para>
+  
+<code lang="none" title="SingleLiteralArgument Examples">
+programm.exe -user "Bill"
+server.exe -instances 5
+</code>
+	
+<alert class="note">
+  <para>You also use the <quoteInline>SingleLiteralArgument</quoteInline> for files, if the program handles the fetching on its own. For example for parsing a website</para>
+</alert>
+<code lang="none" title="SingleLiteralArgument Examples">
+parser.exe -url "http://www.example.com/jobs.xml"
+</code>
+
+  </definition>
+  <definedTerm>Switch</definedTerm>
+  <definition><para>The <quoteInline>Switch</quoteInline> argument type is used for commandline arguments which trigger specific settings of the program.</para></definition>
+  <code lang="none" title="Switch Examples">
+server.exe -DebugOn
+</code>
+  <definedTerm>SingleReferenceInputArgument</definedTerm>
+  <definition><para>This argument type is used if the program doesn't fetch files of its own. These files get downloaded before executing, and their path gets forwarded to the program.</para>
+  
+  </definition>
+  <definedTerm>SingleReferenceOutputArgument</definedTerm>
+  <definition><para>This argument type triggers an empty file and submit its path to the program. When the program exits, the Generic Worker writes this file to the specified storage path.</para>
+  
+
+
+  </definition>
+  <definedTerm>MultipleReferenceInputArgument</definedTerm>
+  <definition><para>Same as <quoteInline>SimpleReferenceInputArgument</quoteInline> but for multiple files.</para></definition>
+  <definedTerm>MultipleReferenceOutputArgument</definedTerm>
+  <definition><para>Same as <quoteInline>SimpleReferenceOutputArgument</quoteInline> but for multiple files.</para></definition>
+</definitionTable>
+
+<para>
+If you want to add some upload/download actions to your application, you have to define them in the job description.
+If you want to download a file before the application gets executed use <codeInline>Download</codeInline>, if you want to
+upload files after the application executed (e.g. result files) use <codeInline>Upload</codeInline>.
+</para>
+<alert class="note">
+  <para>Please note, that if you define a download task, the job gets not executed until every file is available.</para>
+</alert>
+<code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#" language="c#"
+              region="DownloadUploadJobDescription"
+              title="Download/upload tasks in job description" />
+
+<para>
+The <codeInline>ResultZipFileName</codeInline> can be specified, to create a zip file after the generic worker has successfully executed.
+The file is names after the properties value. If it's not specified no zip files gets created.
+The zip files contains every file in the execution folder.
+</para>
+          </content>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c5b5c7a3-7e24-4bcd-81f9-adb0117d5dd2" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>It is required to create two certificates to deploy and run applications. 
+      One for managing the deployment (e.g. scaling) and one for securing the endpoints (SSL / STS). 
+      There are many ways for generating certificates. </para>
+    </introduction>
+    <!-- <prerequisites><content>Optional prerequisites info</content></prerequisites> -->
+    <!-- One or more procedure or section with procedure -->    
+    <section>
+    <title>Creating SSL / STS Certificate</title>
+      <content>
+      <para>At least one certificate is needed for securing the endpoints like JobManagement endpoint for submitting jobs or 
+      Scaling endpoint for increasing or decreasing the amount of virtual machines used by the GenericWorker.</para>
+      <para>For the first try, the same certificate for SSL and STS can be used. So basically this certificate is used when 
+      calling the endpoints using https and for encrypting / signing security tokens issued by the STS.</para>
+
+        <procedure>
+          <title>Using makecert</title>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Start a command prompt as administrator.
+                  Windows 7 this can be done as shown by searching “cmd” in the windows start menu,
+                  right-clicking “cmd.exe” and then selecting “Run as administrator”.
+                </para>
+                <mediaLink>
+                  <image xlink:href="image21"/>
+                </mediaLink>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Go to the directory where makecert.exe is located.
+                  Usually this is a path like this: “C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin”
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Enter the following line in the command prompt:</para>
+                <code lang="none" title="Visual Studio command prompt">makecert -r -pe -n "CN=MyAzureSTS" -a sha1 -len 2048 -sky exchange -sr localmachine -ss My -sv "C:\Certificates_Test\MyAzureSTS.pvk" "C:\Certificates_Test\MyAzureSTS.cer"</code>
+                <para>You can define a CN name for your certificate on your own, this is not fixed to “MyAzureSTS”. </para>
+                <para>You are also free to change the directory and / or names of the files storing your public and private key (*.cer / *.pvk).</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>You will be prompted for a password protecting the private key of your certificate.</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  After executing this command, you should get the message “Succeeded” in the command prompt and
+                  there should be the two files “AzureSTS.pvk” and “AzureSTS.cer” in the directory you have specified.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>You now have a certificate, but in order to use it within Azure the public and private key have to be packaged into a single container file.</para>
+                <para>This can be done by entering the following command:</para>
+                <code lang="none" title="Visual Studio command prompt">pvk2pfx.exe -pvk "C:\Certificates_Test\MyAzureSTS.pvk" -spc "C:\Certificates_Test\MyAzureSTS.cer" -pfx "C:\Certificates_Test\MyAzureSTS.pfx" -po YOUR_PASSWORD_HERE</code>
+                <para>
+                  It is very important to enter a password for the pfx-file again, otherwise you will not be able to use the certificate in Azure. You will also be prompted for the password you entered when executing the makecert command.
+                  Note that you have to adopt the filenames and paths if you changed them in the first command.
+                </para>
+
+                <mediaLink>
+                  <image xlink:href="image22"/>
+                </mediaLink>
+              </content>
+            </step>
+
+          </steps>
+        </procedure>
+        <procedure>
+          <title>Using openssl</title>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Start a command prompt as administrator.
+                  This can be done by searching “cmd” in the windows start menu, right-clicking “cmd.exe” and then selecting “Run as administrator”.
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>
+                  Go to the directory where OpenSSL has been installed. For this example the path is like this: “C:\Program Files\OpenSSL-Win64\bin”
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Enter the following line in the command prompt:</para>
+                <code lang="none" title="Visual Studio command prompt">openssl req -x509 -nodes -days 365 -subj /CN=MyAzureSTS -newkey rsa:2048 -keyout C:\Certificates_Test\MyAzureSTS.pem -out C:\Certificates_Test\MyAzureSTS.pem</code>
+                <para>You can define a CN name for your certificate on your own, this is not fixed to “MyAzureSTS”. You are also free to change the directory and / or name of the file storing your public and private key (*.pem).</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>After executing this command, you should be able to find the file “MyAzureSTS.pem” in the directory you have specified.</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>You now have a certificate, but in order to use it within Azure the public and private key have to be packaged into a single container file.</para>
+                <para>This can be done by entering the following command:</para>
+                <code lang="none" title="Visual Studio command prompt">openssl pkcs12 -export -out C:\Certificates_Test\MyAzureSTS.pfx -in C:\Certificates_Test\MyAzureSTS.pem</code>
+                <para>You will be asked for a password for protecting your certificate. It is very important to enter a password for the pfx-file, otherwise you will not be able to use the certificate in Azure.</para>
+                <para>Install the certificate in your local personal store by double-clicking it. </para>
+              </content>
+            </step>
+          </steps>
+
+        </procedure>
+
+        <mediaLink>
+          <image xlink:href="image23"/>
+        </mediaLink>
+        <para>Note that when using the commands above the keys in pem file are not encrypted and visible to everyone.</para>
+      </content>
+      
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </section>
+    <!-- Optional additional procedure or section with procedure -->
+    <section>
+      <title>Creating Management certificate</title>
+      <content>
+      <para>Another certificate is needed for managing your deployment which is basically increasing or decreasing the number of 
+      virtual machines (VMs). Azure uses public / private key authorization for managing the deployment. This means, a public key 
+      is installed in Azure and everyone who knows the corresponding private key is able to manage the deployment. Therefore it is 
+      highly recommended to use different certificates for securing the endpoints and doing the management. </para>
+      <para>Please use the same ways described before to create a management certificate.</para>
+      <para>If you use OpenSSL, for the managing certificate another small step is required. 
+      The certificate is available in pem and pfx format. Both formats include public and private key.
+      To be able to use this certificate as a managing certificate, the public key is needed in a single file.</para>
+      <para>The public key can be extracted by the following command:</para>
+       <code lang="none" title="Visual Studio command prompt">openssl x509 -outform der -in C:\Certificates_Test\MyAzureSTS.pem -out C:\Certificates_Test\MyAzureSTS.cer</code>
+        <para>
+          Besides protection of the web service messages, the certificates can be used for enabling
+          remote access (RDP) to the Azure virtual machines. Please refer to
+          <externalLink>
+            <linkText>MSDN</linkText>
+            <linkUri>http://msdn.microsoft.com/en-us/library/gg443832.aspx</linkUri>
+          </externalLink> for details.
+        </para>
+      </content>
+      
+    </section>
+    <!-- Optional next steps info
+    <nextSteps>
+      <content><para>Next steps info goes here</para></content>
+    </nextSteps>
+    -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>

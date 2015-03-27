@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4c70a6ec-deb8-4f89-8d15-f3a1df106f3f" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>
+        The registry file “\commons\Settings.All.reg” must be edited to setup the parameters.
+        The Thumbprints of the certificates, table names, connection strings must be changed accordingly.
+      </para>
+
+      <para>
+        The registry file must be edited with the thumbprints of the created certificates.
+        The thumbprints can be seen in the Certificate Store by following these steps:
+      </para>
+    </introduction>
+    <!-- <prerequisites><content>Optional prerequisites info</content></prerequisites> -->
+    <!-- One or more procedure or section with procedure -->
+    <procedure>
+      <title>Editing the Thumbprints of the Certificates</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Type mmc in the Windows Start Menu and press Enter.</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>On the File menu, click Add/Remove Snap In. </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>In the Add Standalone Snap-in dialog box, select Certificates. Click Add.</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>In the Certificates snap-in dialog box, select My User account and click Next. </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Open the STS certificate and in the Details tab, scroll below and select Thumbprint. </para>
+            <mediaLink>
+              <image xlink:href="image45"/>
+            </mediaLink>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>This Thumbprint must be entered as uppercase letters to the “\commons\Settings.All.reg” file in the Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint field. For this example, it should be entered as following "Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint"="57F404B1B48120BE275C79DB02D6617B2367058D" </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Repeat the two steps above for the management certificate in the Microsoft.EMIC.Cloud.Azure.MgmtCertThumbprint field.</para>
+          </content>
+        </step>
+
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <!-- Optional additional procedure or section with procedure -->
+    <section address="Section1">
+      <title>Editing Table Names</title>
+      <content>
+        <para>If needed, the table names in the “\commons\Settings.All.reg” registry file can be edited to create user specific tables in the Azure Storage. The specified tables will be created on startup.</para>
+        <para>The following entries can be edited:</para>
+        <para>• Microsoft.EMIC.Cloud.Demo.User.BlobName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.BlobName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.NotificationSubscriptionsBlobName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.IndexTableName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.DetailsTableName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.LocalJobSubmissionTable</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.HygieneTableName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.STS.Azure.UserTableName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.AccountingTableName</para>
+        <para>• Microsoft.EMIC.Cloud.Development.GenericWorker.ProgressQueueName</para>
+
+        <!-- <conclusion>Optional conclusion</conclusion> -->
+      </content>
+    </section>
+
+    <section address="Section2">
+      <title>Editing Connection Strings</title>
+      <content>
+        <para>The Connection Strings can be edited in the “\commons\Settings.All.reg” registry file. If the Azure Storage Emulator will be used as data storage, enter the value “UseDevelopmentStorage=true”, otherwise enter the Connection String with AccountName and AccountKey.</para>
+
+        <para>The following fields must be edited to change the Connection Strings:</para>
+
+        <para> • Microsoft.EMIC.Cloud.GenericWorker.ConnectionString</para>
+        <para> • Microsoft.EMIC.Cloud.Demo.User.ConnectionString</para>
+        <para> • Microsoft.EMIC.Cloud.Tests.ConnectionString</para>
+        <para> • Microsoft.EMIC.Cloud.STS.Azure.ConnectionString</para>
+        <para> • Microsoft.EMIC.Cloud.LiveTests.ConnectionString</para>
+      </content>
+    </section>
+    <section address="Section3">
+      <title>Writing Registry Values</title>
+      <content>
+        <para>When you are finished with editing registry values in the “\commons\Settings.All.reg”, run the file to add the registry values. </para>
+
+        <para>
+          If the corporate credentials in your environment force you to use domain authentication in Azure, you must write your domain user name and password in the
+          “\commons\Settings.DomainPasswordForWithinCorpnetTMG.reg” registry file and run this file like the previous file to add the registry values. Otherwise you can skip this step.
+        </para>
+
+        <para>The other registry files in the “\commons” folder are subsets of the “Settings.All.reg”, to change a specific group of parameters without affecting the other parameters. </para>
+
+        <para>Settings.Certificates is for changing the certificate information.</para>
+        <para>Settings.Deployment.localhost81 is for changing the web services used in the local computer.</para>
+        <para>Settings.Host.Switch is for changing the host.</para>
+        <para>Settings.Storage.Emulator is for running the emulator in the storage emulator.</para>
+        <para>Settings.Storage.Production is for running the emulator in the Azure Storage.</para>
+        <para>Settings.TableNames is for changing the table information.</para>
+
+      </content>
+    </section>
+    <!-- Optional next steps info
+    <nextSteps>
+      <content><para>Next steps info goes here</para></content>
+    </nextSteps>
+    -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>

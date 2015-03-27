@@ -1,0 +1,83 @@
+<!-- #region appdescription -->
+<?xml version="1.0"?>
+<VENUSApplicationDescription xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ApplicationIdentificationURI>http://www.microsoft.com/emic/cloud/demo/SimpleMathApp</ApplicationIdentificationURI>
+  <CommandTemplate>
+    <Executable>SimpleMathConsoleApp.exe</Executable>
+    <Args>
+      <CommandLineArgument>
+        <Name>InputFile</Name>
+        <Required>Mandatory</Required>
+        <CommandLineArgType>SingleReferenceInputArgument</CommandLineArgType>
+        <FormatString>-infile {0}</FormatString>
+      </CommandLineArgument>
+      <CommandLineArgument>
+        <Name>OutputFile</Name>
+        <Required>Mandatory</Required>
+        <CommandLineArgType>SingleReferenceOutputArgument</CommandLineArgType>
+        <FormatString>-outfile {0}</FormatString>
+      </CommandLineArgument>
+      <CommandLineArgument>
+        <Name>Operation</Name>
+        <Required>Optional</Required>
+        <CommandLineArgType>Switch</CommandLineArgType>
+        <FormatString>-sum</FormatString>
+      </CommandLineArgument>
+      <CommandLineArgument>
+        <Name>Multiply</Name>
+        <Required>Optional</Required>
+        <CommandLineArgType>SingleLiteralArgument</CommandLineArgType>
+        <FormatString>-mul {0}</FormatString>
+      </CommandLineArgument>
+    </Args>
+    <Path />
+  </CommandTemplate>
+</VENUSApplicationDescription>
+<!-- #endregion -->
+<!-- #region jobdescription -->
+<?xml version="1.0"?>
+<CreateActivity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ActivityDocument>
+    <JobDefinition id="SimpleMathConsoleApp Job 10/6/2011 11:26:46 AM" xmlns="http://schemas.ggf.org/jsdl/2005/11/jsdl">
+      <JobDescription>
+        <JobIdentification>
+          <JobName>some job name</JobName>
+        </JobIdentification>
+        <Application>
+          <ApplicationName>http://www.microsoft.com/emic/cloud/demo/SimpleMathApp</ApplicationName>
+          <emic:Args xmlns:emic="http://www.microsoft.com/emic/cloud/GW">
+            <SingleReference Name="InputFile" xmlns="http://www.microsoft.com/emic/cloud/GW">
+              <Reference>
+                <AzureBlobReference ConnectionString="DefaultEndpointsProtocol=https;AccountName=adminstorage;AccountKey=EK ... jk==" DataAddress="sampleInputFileAdressURI" />
+              </Reference>
+            </SingleReference>
+            <SingleReference Name="OutputFile" xmlns="http://www.microsoft.com/emic/cloud/GW">
+              <Reference>
+                <AzureBlobReference ConnectionString="DefaultEndpointsProtocol=https;AccountName=adminstorage;AccountKey=EK ... jk==" DataAddress="sampleOutputFileAdressURI" />
+              </Reference>
+            </SingleReference>
+            <ArgSwitch Name="Operation" Value="True" xmlns="http://www.microsoft.com/emic/cloud/GW" />
+            <LiteralArgument Name="Multiply" Value="3" xmlns="http://www.microsoft.com/emic/cloud/GW" />
+          </emic:Args>
+          <emic:PkgRef xmlns:emic="http://www.microsoft.com/emic/cloud/GW">
+            <Reference xmlns="http://www.microsoft.com/emic/cloud/GW">
+              <AzureBlobReference ConnectionString="DefaultEndpointsProtocol=https;AccountName=adminstorage;AccountKey=EK ... jk==" DataAddress="https://adminstorage.blob.core.windows.net/applicationcontainer/http%253a%252f%252fwww.microsoft.com%252femic%252fcloud%252fdemo%252fSimpleMathApp_App" />
+            </Reference>
+          </emic:PkgRef>
+          <emic:DescRef xmlns:emic="http://www.microsoft.com/emic/cloud/GW">
+            <Reference xmlns="http://www.microsoft.com/emic/cloud/GW">
+              <AzureBlobReference ConnectionString="DefaultEndpointsProtocol=https;AccountName=adminstorage;AccountKey=EK ... jk==" DataAddress="https://adminstorage.blob.core.windows.net/applicationcontainer/http%253a%252f%252fwww.microsoft.com%252femic%252fcloud%252fdemo%252fSimpleMathApp_Desc" />
+            </Reference>
+          </emic:DescRef>
+        </Application>
+        <emic:Uploads xmlns:emic="http://www.microsoft.com/emic/cloud/GW" />
+        <emic:Downloads xmlns:emic="http://www.microsoft.com/emic/cloud/GW" />
+      </JobDescription>
+    </JobDefinition>
+  </ActivityDocument>
+</CreateActivity>
+<!-- #endregion -->
+
+<!-- #region Accounting -->
+<Setting name="Microsoft.EMIC.Cloud.GenericWorker.IsAccountingOn" value="true" />
+<!-- #endregion -->

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:JobDefinition xmlns:ns2="http://schemas.ggf.org/jsdl/2005/11/jsdl" xmlns:ns4="http://www.w3.org/2005/08/addressing" xmlns:ns3="http://schemas.ggf.org/jsdl/2006/07/jsdl-hpcpa" xmlns:ns5="http://schemas.ggf.org/bes/2006/08/bes-factory" xmlns:ns6="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns7="http://schemas.ggf.org/bes/2006/08/bes-management">
+  <ns2:JobDescription>
+    <ns2:JobIdentification>
+      <ns2:JobName>UPVBLAST</ns2:JobName>
+      <ns2:Description>VENUS-C BLAST</ns2:Description>
+    </ns2:JobIdentification>
+    <ns2:Application>
+      <ns2:ApplicationName>Blast</ns2:ApplicationName>
+      <ns3:HPCProfileApplication>
+        <ns3:Executable>blast.Blast</ns3:Executable>
+        <ns3:Argument>true</ns3:Argument>
+        <ns3:Argument>/home/user/binary/blastall</ns3:Argument>
+        <ns3:Argument>/sharedDisk/swissprot/swissprot</ns3:Argument>
+        <ns3:Argument>/sharedDisk/sargasso_1MB.fasta</ns3:Argument>
+        <ns3:Argument>20</ns3:Argument>
+        <ns3:Argument>/home/user/</ns3:Argument>
+        <ns3:Argument>/home/user/IT/blast.Blast/out.txt</ns3:Argument>
+        <ns3:Argument>-v 10 -b 10 -e 1e-10</ns3:Argument>
+      </ns3:HPCProfileApplication>
+    </ns2:Application>
+    <ns2:Resources>
+      <ns2:OperatingSystem>
+        <ns2:Description>venuscdebianbase</ns2:Description>
+      </ns2:OperatingSystem>
+      <ns2:IndividualDiskSpace>
+        <ns2:Exact>1.0</ns2:Exact>
+      </ns2:IndividualDiskSpace>
+      <ns2:TotalCPUCount>
+        <ns2:Range>
+          <ns2:LowerBound>0.0</ns2:LowerBound>
+          <ns2:UpperBound>4.0</ns2:UpperBound>
+        </ns2:Range>
+      </ns2:TotalCPUCount>
+    </ns2:Resources>
+    <ns2:DataStaging>
+      <ns2:FileName>Blast</ns2:FileName>
+      <ns2:Source>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/repo/Blast.tar.gz" /&gt;</ns2:URI>
+      </ns2:Source>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>swissprot/</ns2:FileName>
+      <ns2:Source>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/databases/swissprot/" /&gt;</ns2:URI>
+      </ns2:Source>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>sargasso_1MB.fasta</ns2:FileName>
+      <ns2:Source>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/sequences/sargasso_1MB.fasta" /&gt;</ns2:URI>
+      </ns2:Source>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>out.txt</ns2:FileName>
+      <ns2:Target>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/results/out.txt" /&gt;</ns2:URI>
+      </ns2:Target>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>it.log</ns2:FileName>
+      <ns2:Target>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/results/COMPSs.log" /&gt;</ns2:URI>
+      </ns2:Target>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>resources.log</ns2:FileName>
+      <ns2:Target>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/results/Resources.log" /&gt;</ns2:URI>
+      </ns2:Target>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>UPVBLAST.out</ns2:FileName>
+      <ns2:Target>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/results/UPVBLAST.out" /&gt;</ns2:URI>
+      </ns2:Target>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>UPVBLAST.err</ns2:FileName>
+      <ns2:Target>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/results/UPVBLAST.err" /&gt;</ns2:URI>
+      </ns2:Target>
+    </ns2:DataStaging>
+    <ns2:DataStaging>
+      <ns2:FileName>jobs/</ns2:FileName>
+      <ns2:Target>
+        <ns2:URI>&lt;CDMIReference Credential="Username=rrafanelbsc;Password=xxxx" Address="http://bscgrid20.bsc.es:2365/rrafanelbsc/Blast/results/jobs_log" /&gt;</ns2:URI>
+      </ns2:Target>
+    </ns2:DataStaging>
+  </ns2:JobDescription>
+</ns2:JobDefinition>
+

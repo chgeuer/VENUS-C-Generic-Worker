@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e4af267a-e39b-4d8f-9be2-f007fab9d708" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>This sample introduces a simple math application tool, which is used in this documentation to demonstrate
+      the proper using of the Generic Worker. The application takes a .csv-file as input, sums every
+      integer in it, optionally multiplies it with a given integer and writes the result to an outputfile. </para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section>
+      <title>SimpleMathApplication</title>
+          <content>
+            <para>
+            The application should be called this way to calculate the integers. The <quoteInline>-mul</quoteInline> argument is optional.
+            </para>
+            	<code source="../core/Test.SimpleMathConsoleApp/Program.cs" lang="C#" language="c#"
+              region="UsedAlsoForDocumentation - SimpleMath Usage"
+              title="Usage of SampleMathConsoleApp" />
+              <para>
+              The main part of the application is pretty much selfexplaining. First there is a function declaired 
+              which returns the representing input of an argument. Then the arguments are fetched from the commandline.
+              After that, the inputfile is read, and the sum gets calculated. At least the sum is optionally multiplied by a 
+              given integer value and finally the result is written to the output file.
+              </para><code source="../core/Test.SimpleMathConsoleApp/Program.cs" lang="C#" language="c#"
+              region="UsedAlsoForDocumentation - SimpleMath main part"
+              title="Main of SampleMathConsoleApp" />
+              
+<alert class="note">
+  <para>Please note: The application does not contain any error handling, because of demonstration purposes.</para>
+</alert>
+
+          </content>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

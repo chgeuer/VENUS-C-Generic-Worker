@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="18fabf37-b73c-426e-ae0b-497ac27177ce" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Sample code to scale up the azure deployment by one</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+        <section>
+        <title>Retrieve number of deployed azure instances and increase them by one</title>
+        <content>
+        	<para>
+        	To retrieve the state of your deployments and to change them, you need first of all to create a secure scaling client to be able to communicate with the scaling service.        	   
+        	</para>
+            <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+            region="CreateScalingClient" title="get a secure scaling client" />
+            <alert class="note">
+            	<para>With the default security policy only the Administrator can update a deployment (scale up/down). Researcher can only list deployments.</para>
+            </alert>
+            <para>
+            You can now use the scaling client to retrieve a list of your deployments
+            </para>
+            <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+            region="getDeploymentsList" title="retrieve a list of your deployments" />
+            <para>
+            Filter this list to get the current instance count on your favourite cloud provider, and scale up your deployment by one instance using the the UpdateDeployment method of the scaling service.
+            </para>
+            <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+            region="increaseInstanceNumber" title="modify a deployment" />
+            <alert class="note">
+            	<para>The deployment cannot be removed by setting the instance count to zero. In fact any update to an instance count smaller than or equal to zero will lead to a not supported exception.</para>
+            </alert>
+            <para>
+              Configuring the scaling service for Azure.
+              In order to enable scaling in Azure, you need to upload your Azure management certificate also as service certificate for your hosted service.
+              Also do not forget to provide the thumbprint of your certificate in your service configuration file as Microsoft.EMIC.Cloud.MgmtCert .
+            </para>
+          <code lang="xml" language="xml"
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+                  title="ServiceConfiguration.cscfg - Generic Worker Certificates"
+                  region="Certificate Settings" />
+           
+            <para>
+            	Other important configuration settings that you need for elasticity are:
+				</para>
+          <code lang="xml" language="xml"
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+                  title="ServiceConfiguration.cscfg - Generic Worker Elasticity Settings"
+                  region="Elasticity Settings" />            	
+                  <para>The ServiceName is the name of your service in Azure: ServiceName.cloudapp.net</para>
+                  <para>You can lookup your subscription id in the Azure portal.</para>
+                  <para>The ManagementCertificate you provide here, should be registered as management certificate in your Azure acccount, and as service certificate in your service.</para>
+            
+            
+        </content>
+    </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8d93a155-3481-4520-9f44-a9a248cda185" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Adapting the Generic Worker setting to your deployment.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+
+            <section address="GWConfiguration">
+			
+            <title>ServiceConfiguration.cscfg</title>
+            
+            <content>
+            <procedure>
+      <title>Configuring the generic worker</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              A Windows Azure deployment consists of two parts. The actual software cloud service package
+              (an encrypted ZIP file with the file extension .cspkg), and the cloud service configuration
+              (an XML file with the extension .cscfg). 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image14"/>
+            </mediaLink>
+            <para>
+              Before uploading both files through the Windows Azure Management portal, 
+              we need to modify the XML file to configure the deployment:
+            </para>
+
+            <code lang="xml" language="xml" 
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg" 
+                  title="ServiceConfiguration.cscfg - Generic Worker Settings" 
+                  region="Generic Worker Settings" />
+
+            <para>And the certificate configuration: </para>
+
+            <code lang="xml" language="xml"
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+                  title="ServiceConfiguration.cscfg - Generic Worker Certificates"
+                  region="Certificate Settings" />
+            <alert class="note">
+            	<para>Certificates that are referenced by their thumbprints in this section will be installed on the Azure instances in LocalMachine\My. Hence, these certificates must be registered as service certificates in the Azure portal.</para>
+            	<para>The management certificates that you specify in the config should be registered as management certificates in the Azure portal.</para>
+            	<para>For the beginning you can also use one single certificate for everything.</para>
+            	<para>Information about how to create a certificate is provided under: <link xlink:href="8da06954-83a6-4f38-bc28-c97357b7c2bf" /> </para>
+            </alert>            
+            
+            <para>In the above XML fragements, you see the addresses and keys of the services:</para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.ApplicationStore.URL</codeInline> setting contains the endpoint through which 
+                  scientific applications can be uploaded to the infrastructure.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.STS.URL</codeInline> setting contains the endpoint of the 
+                  security token service (where researchers authenticate to get access to the generic worker).
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.GenericWorker.ConnectionString</codeInline> setting contains the 
+                  storage account name and key of the Windows Azure storage account, in which the 
+                  generic worker infrastructure stores the internal job management data and state.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.ApplicationStore.Azure.ConnectionString</codeInline> setting contains the storage 
+                  account name and key of the Windows Azure storage account, in which the application repository 
+                  persists the scientific application packages.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The 
+                  <codeInline>Microsoft.EMIC.Cloud.ApplicationStore.Certificate.Thumbprint</codeInline> 
+                  and 
+                  <codeInline>Microsoft.EMIC.Cloud.SSLCert</codeInline> 
+                  contain the actual base64-encoded SHA1 thumbprint of the certificates used to protect the 
+                  web service endpoints of the application repository and the job submission service.
+                </para>
+              </listItem>
+            </list>
+            <para>
+              One last setting which deserves extra attention is the count attribute of the 
+              <codeInline>&lt;Instances&gt;</codeInline> element. 
+              This integer value specifies on how many virtual machines the generic worker is installed/deployed. 
+              Selecting a single machine means than only one job can be processed at a time. 
+              Selecting a higher number corresponds to more parallel nodes processing jobs. 
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+            
+            <procedure>
+            <title>These changes are need for your Generic Worker configuration</title>
+			<steps class="bullet">
+				<step><content><para>Replace the <literal>URL</literal> hostname with the hostname for your service</para>
+								<para>e.g. <codeInline>&lt;SERVICE-NAME&gt;.cloudapp.net</codeInline></para>
+					</content>
+				</step>
+				<step><content><para>Replace the <literal>certificate</literal> information with your thumbprints</para>
+				
+<alert class="note">
+  <para>The certificate must be registered at the Azure portal.</para>
+</alert>
+
+				</content></step>
+				<step><content><para>Point the <literal>ConnectionString</literal>s to your cloud storage</para></content></step>
+				<step><content><para>For RemoteAccess change your configuration file according to your wishes.</para>
+				
+<alert class="security">
+  <para>Your password MUST be at least 6 characters long, and has to contain one upper-/lowercase and nummeric character.</para>
+  <para>You can use the <application>GeneratePassword.ps1</application>-PowerShell script to generate a working password.</para>
+</alert>
+
+<alert class="note">
+  <para>The RemoteUser certificate must be registered to your storage account in the Azure portal.</para>
+</alert>
+
+
+				</content></step>
+			</steps>
+			</procedure>
+            </content>
+            </section>
+			<section address="GWConfiguration">
+			
+            <title>app.config</title>
+            <content>
+            
+<alert class="note">
+  <para>You need to configure the following settings for each application you want to deploy.</para>
+</alert>
+
+
+<definitionTable>
+  <definedTerm>ApplicationStoreUrl</definedTerm>
+  <definition><para>The URL to your AppStore service</para></definition>
+  <definedTerm>GenericWorkerUrl</definedTerm>
+  <definition><para>The URL to your job submission service</para></definition>
+  <definedTerm>JobManagementUrl</definedTerm>
+  <definition><para>The URL to your job management</para></definition>
+ </definitionTable>
+ 
+<alert class="note">
+  <para>Usually, you'll only need to change the hostname, e.g. <literal>&lt;SERVICE-NAME&gt;.cloudapp.net</literal></para>
+</alert>
+
+ <definitionTable>
+  <definedTerm>UserDataStoreConnectionString</definedTerm>
+  <definition><para>The connection string to your cloud storage need to be placed here</para></definition>
+</definitionTable>
+
+			</content>
+			</section>
+
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+    <link xlink:href="8da06954-83a6-4f38-bc28-c97357b7c2bf">Certificate acquisition</link>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

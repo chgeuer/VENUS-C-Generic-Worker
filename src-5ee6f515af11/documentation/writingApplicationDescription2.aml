@@ -1,0 +1,274 @@
+﻿  <?xml version="1.0" encoding="utf-8"?>
+  <topic id="aff93c1d-2909-41c4-a66b-e24be9f1aaa8" revisionNumber="1">
+    <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+      <!--
+  <summary>
+  <para>Optional summary abstract</para>
+  </summary>
+  -->
+
+      <introduction>
+        <!-- Uncomment this to generate an outline of the section and sub-section
+  titles. Specify a numeric value as the inner text to limit it to
+  a specific number of sub-topics when creating the outline. Specify
+  zero (0) to limit it to top-level sections only. -->
+        <!-- <autoOutline /> -->
+
+
+      </introduction>
+
+      <!-- Add one or more top-level section elements. These are collapsible.
+  If using <autoOutline />, add an address attribute to identify it
+  and specify a title so that it can be jumped to with a hyperlink. -->
+      <section address="ox5">
+
+        <content>
+
+
+          <para>
+            Now that the ApplicationDescription is complete, we can go ahead and write the code to zip the application execuatbles. And the code to upload the zipped application files and the application description.
+          </para>
+
+          <para>
+            This step to zip the application is a necessary step for the reason that the GenericWorker expects a zip file, So its always necessary to write the below code to zip the executable file.
+          </para>
+
+          <para>
+            Steps to accomplish the uploading task are:
+          </para>
+          <procedure>
+            <title>
+
+            </title>
+            <steps class ="bullet">
+              <step>
+                <content>
+                  <para>
+                    <legacyBold> Zipping the application file</legacyBold>
+
+                  </para>
+                  <code title="Zip app files">
+                    string[] appFiles = { "MySimpleApplication.bat" };
+
+                    // All files are then zipped in memory
+                    MemoryStream appZipBytes = new MemoryStream();
+                    using (var zip = new ZipFile())
+                    {
+                    foreach (string file in appFiles)
+                    {
+                    zip.AddFile(file, "");
+                    }
+                    zip.Save(appZipBytes);
+                    }
+                  </code>
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para address="ox6">
+                    <legacyBold>
+                      Uploading the application executable and application Description
+                    </legacyBold>
+                  </para>
+
+
+                  <para>
+                    The reason for this necessary action is as follows - till the last step, we have created Application description referencing the Application we want to run on the cloud (which is just a class being populated with certain fields as seen in application description code, but this application description needs to be accessible to the GenericWorker in the Cloud - thus the need to upload the application description which means create a blobcontainer and store this application description in the cloud).
+                  </para>
+                  <para>
+                    we have the Application executable which again is an executable residing on your desktop hardrive which again is inaccessible to the GenericWorker from the Cloud, thus even this application executable has to uploaded to the Cloud.
+                  </para>
+
+                  <para>
+                    There are multiple points to be taken care off for a smooth and successful upload process, and those are as follows :
+                  </para>
+                  <para>
+                    <legacyBold>
+                      Step 1.
+                    </legacyBold> ConnectionString : you will need this to establish a link between your client and the cloud. ConnectionString is of this form <legacyBold>"DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey]"</legacyBold>
+                  </para>
+                  <para> The AccountName and AccountKey values are obtained while configuring the ConnectionString.</para>
+                  <para>
+                    The steps to create and retrieve this information can be found in the <link xlink:href="5f289c39-8ab0-42ca-bf79-e6a814c65b55">Editing Connection Strings section</link> of the Creating Service Configuration tutorial.
+                    Complete information about connectionString
+                    <externalLink>
+                      <linkText>click here</linkText>
+                      <linkAlternateText>ConnectionString Info</linkAlternateText>
+                      <linkUri>http://msdn.microsoft.com/en-us/library/windowsazure/ee758697.aspx</linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+
+
+
+                  <code title="ConnectionString and blobClient creation for uploading Application Description">
+                    var UserDataStoreConnectionString = "UseDevelopmentStorage=true"; //Assigning the connection string to a variable in the client program.
+                    var account = CloudStorageAccount.Parse(UserDataStoreConnectionString); // Assigning the parsed version of the connection string to the variable named account in the client program.
+                    var blobClient = account.CreateCloudBlobClient(); // Using the variable account created in the previous line, creating a blobClient which encapsulates account data within it for establishing connection.
+                  </code>
+                  <para>
+                    <legacyBold>
+                      Step 2.
+                    </legacyBold> In the previous step we created a blobClinet containing ConnectionString data (the protocol,the account name, and key to connect to the cloud), thus enabling the blobClient to be able to connect to the cloud.
+                  </para>
+                  <para>
+                    By having this channel of communication with the cloud, we can create placeholders like CloudBlobContainers.
+                  </para>
+                  <para>
+                    For more info on How to Programmatically access Blob Storage
+                    <externalLink>
+                      <linkText>click here</linkText>
+                      <linkAlternateText>Windows Azure</linkAlternateText>
+                      <linkUri>http://www.windowsazure.com/en-us/develop/net/how-to-guides/blob-storage/#configure-access</linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+                  <code title="CloudBlobContainer creation using blobClient for uploading Application Description">
+
+                    // Create a new container (folder) for storing the application
+                    CloudBlobContainer appDataContainer = blobClient.GetContainerReference("applicationcontainer"); //placeholders
+                    appDataContainer.CreateIfNotExist();
+
+                    var appDescriptionBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_Desc"; // url encode the applicationDescription.ApplicationIdentificationURI containing "http://MySimpleApplication" and then add "_Desc" to it and store it in appDescriptionBlobName.
+                    // using the data in appDescriptionBlobName the GenericWorker can get the ApplicationDescription after uploading the application description
+                    // the location where it is uploaded in the cloud is referenced using the data in appDescriptionBlobName
+
+                  </code>
+                  <para>
+                    <legacyBold>
+                      Step 3.
+                    </legacyBold> In this step we serialize the data inside applicationDescription which is of type "VENUSApplicationDescription" and write the serialized data into a MemoryStream object
+                  </para>
+
+                  <code title="Serialization of Application Description data for uploading Application Description">
+                    //data that is sent needs to be serialized to be understood and reconstructed correctly on the other side of communication link
+                    DataContractSerializer dcs = new DataContractSerializer(applicationDescription.GetType());
+                    MemoryStream msxml = new MemoryStream();
+                    dcs.WriteObject(msxml, applicationDescription);
+
+                  </code>
+
+
+                  <para>
+                    <legacyBold>
+                      Step 4.
+                    </legacyBold>In this step we upload the data in the MemoryStream object using the appDataContainer a CloudBlobContainer object created in Step 2 (remember appDataContainer contains information about blobClient which in turn contains the ConnectionString data).
+                  </para>
+
+                  <code title="Serialization of Application Description data for uploading Application Description">
+                    CloudBlob xmlBlob = appDataContainer.GetBlobReference(appDescriptionBlobName);
+                    xmlBlob.Properties.ContentType = "text/xml";
+                    xmlBlob.UploadByteArray(msxml.ToArray());
+
+                  </code>
+
+                  <para>
+                    <legacyBold>
+                      Step 5.
+                    </legacyBold>In this step we upload the application executable using the appDataContainer a CloudBlobContainer object created in Step 2 (remember appDataContainer contains information about blobClient which in turn contains the ConnectionString data).
+                  </para>
+
+                  <code title="uploading the zipped application files">
+                    var appZipBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_App"; // url encode the applicationDescription.ApplicationIdentificationURI containing "http://MySimpleApplication" and then add "_App" to it and store it in appZipBlobName.
+                    // using the data in appZipBlobName the GenericWorker can get the Application executable after the executable is uploaded
+                    // the location where it is uploaded in the cloud is referenced using the data in appZipBlobName
+                    CloudBlob applicationBlob = appDataContainer.GetBlobReference(appZipBlobName);
+                    applicationBlob.UploadByteArray(appZipBytes.ToArray());
+                  </code>
+                  <para>
+                    <legacyBold>
+                      Complete code for the ApplicationDescription and Application executable uploading task.
+                    </legacyBold>
+                  </para>
+                  <code title="uploading zip app files and Application Description">
+                    var UserDataStoreConnectionString = "UseDevelopmentStorage=true";
+                    var account = CloudStorageAccount.Parse(UserDataStoreConnectionString);
+                    var blobClient = account.CreateCloudBlobClient();
+
+                    // Create a new container (folder) for storing the application
+                    CloudBlobContainer appDataContainer = blobClient.GetContainerReference("applicationcontainer"); //placeholders
+                    appDataContainer.CreateIfNotExist();
+
+                    var appDescriptionBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_Desc";
+
+                    //data that is sent needs to be serialized to be understood and reconstructed correctly on the other side of communication link
+                    DataContractSerializer dcs = new DataContractSerializer(applicationDescription.GetType());
+                    MemoryStream msxml = new MemoryStream();
+                    dcs.WriteObject(msxml, applicationDescription);
+
+
+                    CloudBlob xmlBlob = appDataContainer.GetBlobReference(appDescriptionBlobName);
+                    xmlBlob.Properties.ContentType = "text/xml";
+                    xmlBlob.UploadByteArray(msxml.ToArray());
+
+
+                    var appZipBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_App";
+                    CloudBlob applicationBlob = appDataContainer.GetBlobReference(appZipBlobName);
+                    applicationBlob.UploadByteArray(appZipBytes.ToArray());
+
+
+                  </code>
+                </content>
+              </step>
+
+            </steps>
+          </procedure>
+
+          <para>
+            <legacyBold>
+              Next Topic:
+            </legacyBold>
+            <link xlink:href="7b6ab8f1-9ecc-4d60-83a4-ec241d5436fd">
+              Understanding Job Description class and its Mandatory fields
+            </link>
+          </para>
+
+        </content>
+      </section>
+
+
+
+      <relatedTopics>
+        <!-- One or more of the following:
+  - A local link
+  - An external link
+  - A code entity reference
+
+  <link xlink:href="Other Topic's ID"/>
+  <link xlink:href="Other Topic's ID">Link inner text</link>
+
+  <externalLink>
+  <linkText>Link text</linkText>
+  <linkAlternateText>Optional alternate link text</linkAlternateText>
+  <linkUri>URI</linkUri>
+  </externalLink>
+
+  <codeEntityReference>API member ID</codeEntityReference>
+
+  Examples:
+
+  <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+  <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+  <externalLink>
+  <linkText>SHFB on CodePlex</linkText>
+  <linkAlternateText>Go to CodePlex</linkAlternateText>
+  <linkUri>http://shfb.codeplex.com</linkUri>
+  </externalLink>
+
+  <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+  <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+  <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+  <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+  <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+  <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+  <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+  -->
+      </relatedTopics>
+    </developerConceptualDocument>
+  </topic>

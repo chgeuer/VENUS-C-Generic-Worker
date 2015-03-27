@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6f5ab85a-82e8-4e1b-9db2-e1ecf7018b62" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="oX3">
+     
+      <content>
+
+        <para>
+          Now that we have the software in place for utilizing this option, let’s go ahead with the script writing part which ensures the successful installation of the prerequisite software.
+        </para>
+
+        <para>
+          For this tutorial we will take an example of installation of JRE on one of the cloud machines.
+        </para>
+        <alert class="note">
+          <para>
+            Installation of the JRE will have to be a <legacyBold>Silent Install</legacyBold> because this installation is via a script, there is no means of accomplishing an interactive mode of installation.
+          </para>
+        </alert>
+
+        <list class="bullet">
+
+          <listItem>
+            <para>
+              Get location of the installable on the cloud machine.
+            </para>
+            <code title="PowerShell Script to get the JRE installables location on the Cloud machine">
+
+
+              function Get-ProgramFilesDirX86()
+               {
+                (Get-Item "Env:ProgramFiles").Value  // returns the program files folder's location since these are virtual machines residing in the cloud
+                }
+
+              [string]$currentDirUser = get-location   // Gets the current location of the powershell script which would be a temp folder on the cloud machine where this poweshell script resides.
+              
+              [string]$JREinstallerlocation = [System.IO.Path]::Combine($currentDirUser, "jre-7u5-windows-x64.exe") //store the JRE installable location as an concatenation of the current Directory and the JRE installable name into a local variable named $installerlocationJRE
+              
+              [string]$programFilesforJREInstall = Get-ProgramFilesDirX86  // gets the program files folder location stored in $programFilesforJREInstall
+              
+              [string]$JREinstallDestination = [System.IO.Path]::Combine($programFilesforJREInstall, "Java\jre1.7.0_05")  // concatenate $programFilesforJREInstall with string "Java\jre1.7.0_05"
+              
+              [IO.Directory]::CreateDirectory($installDestination)   // create a folder in program files folder for the installation of JRE.
+
+
+            </code>
+            <alert class="note">
+              <para>
+                The Powershell script and the JRE installable are required to be zipped as userprerequisites.zip file and placed in a folder named "userprerequisites" in the cloud storage using the Azure storage explorer, this folder will correspond to the "temp" folder of the cloud machine. This mapping of userprerequisites folder mapped to temp folder of the cloud machine is taken care by GW. More on this in latter steps.
+              </para>
+
+
+            </alert>
+
+            <alert class="note">
+              <para>
+                GW also takes care of unzipping the zip file and stores the content of the userprerequisites.zip file into the temp folder.
+              </para>
+
+
+            </alert>
+
+          </listItem>
+
+          <listItem>
+            <para>
+              Specify the location of the JRE installable install log
+            </para>
+
+            <code title="PowerShell Script to store a location for JRE install log">
+
+              [string]$logJava = [System.IO.Path]::Combine($currentDirUser, "JavaSetup.log") //JRE install log would be necessary for latter troubleshooting
+            </code>
+
+          </listItem>
+
+          <listItem>
+            <para>
+              Installing the JRE
+            </para>
+
+            <code title="PowerShell Script to JRE installation on the Cloud machine">
+
+              Start-Process -FilePath $installerlocationJRE -ArgumentList @("/s","STATIC=1", "/L $logJava", "INSTALLDIR=$currentDirUser") -wait -PassThru
+
+              //Start-Process - starts a process on the cloud machine, this command requires a script file or an executable.
+              //-FilePath - specifies the JRE executable in our case (remember JRE executable path was stored in $installerlocationJRE)
+              //-ArgumentList - specifies the arguments that are to be passed for the JRE installation command and this ArgumentList is the following string @("/s", "/L $logJava", "INSTALLDIR=$currentDirUser")
+              // "/s" - specifies this JRE install is a Silent Install
+              // "/L" - specifies that JRE install should create a log file at location $LogJava
+              // "INSTALLDIR" - specifies where is this JRE to be installed, for simplicity of this example, we take the temp directory itself and thus the Install Directory would be assigned the value in variable named $currentDirUser (remember first line of the powershell script, we got a location and stored that in $currentDirUser)
+
+              // -wait  - Waits for the specified process to complete before accepting more input. This parameter suppresses the command prompt or retains the window until the process completes
+              //-PassThru - Returns a process object for each process that the cmdlet started. By default, this cmdlet does not generate any output.
+              //STATIC=1 - means "static JRE installation is never overwritten by another JRE version" and doesnt allow any Auto-updates to the JRE install.
+
+            </code>
+
+            <alert class="note">
+              <para>
+                More info on Silent JRE installation options refer this link 
+                <externalLink>
+                <linkText>JRE Installer Options</linkText>
+                <linkAlternateText>JRE Installer Options</linkAlternateText>
+                <linkUri>http://docs.oracle.com/javase/7/docs/webnotes/install/windows/jre-installer-options.html</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+                
+               
+              </para>
+            </alert>
+
+
+          </listItem>
+
+          <listItem>
+            <para>
+              Setting the Environment Varibale for Java_Home
+            </para>
+
+            <code title="PowerShell Script to set env variable" >
+              [string]$javaExeDir = [System.IO.Path]::Combine($JREinstallDestination,'\bin') // concatenate  $JREinstallDestination folder path and the '\bin' because in 'bin' folder we will find the .java executable and this 'bin' folder is located in the 'program files\Java\jre1.7.0_05' folder since we installed the JRE in the 'program files\Java\jre1.7.0_05' folder itself.
+              [environment]::SetEnvironmentVariable('JAVA_HOME', $installDir, 'machine')   // setting the env variable with the location of the .java file.
+            </code>
+
+            <alert class="note">
+              <para>
+                Example Powershell script for a silent install of JRE.
+              </para>
+            </alert>
+            <code title="The Complete PowerShell Script to install JRE looks like this">
+              #####################################################
+              # This script is executed automatically by the GenericWorker during startup  #
+              #####################################################
+
+              Write-Host "UserPrerequisites.ps1 is now running..."
+              Write-Host "Installing Java Runtime..."
+
+              # For a safe determination of the location for the application, some helper functions are needed
+              # Functions from: http://geekswithblogs.net/Lance/archive/2009/12/29/program-files-environment-variable-in-powershell.aspx
+
+              function is64bit()
+               {
+                 return ([IntPtr]::Size -eq 8)
+                }
+
+              function Get-ProgramFilesDirX86()
+                {
+                    if (is64bit -eq $true)
+                    {
+                       (Get-Item "Env:ProgramFiles(x86)").Value
+                     }
+                   else
+                    {
+                       (Get-Item "Env:ProgramFiles").Value
+                     }
+               }
+
+              [string]$currentDirUser = get-location
+              [string]$jREinstallerlocation = [System.IO.Path]::Combine($currentDirUser, "jre-7u5-windows-x64.exe")
+              [string]$logJavaInstallLocation = [System.IO.Path]::Combine($currentDirUser, 'javaSetup.log')
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jREinstallerlocation value is ..."
+              write-Host "$jREinstallerlocation"
+              write-Host "...logJavaInstallLocation value is ..."
+              write-Host "$logJavaInstallLocation"
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+
+              [string]$programFilesforJREinstall = Get-ProgramFilesDirX86
+              [string]$jREinstallDestination = [System.IO.Path]::Combine($programFilesforJREinstall, 'java\jre1.7.0_05')
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jREinstallDestination value is ..."
+              write-Host "$jREinstallDestination"
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+
+              [IO.Directory]::CreateDirectory($jREinstallDestination)
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jREinstallDestination's directory created successfully ..."
+              write-Host "...jre install starts now..."
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+
+              # Installing JRE
+              Start-Process -FilePath $jREinstallerlocation -ArgumentList @("/s", "STATIC=1", "/L $logJavaInstallLocation", "INSTALLDIR=\`"$jREinstallDestination\`"") -wait -PassThru
+
+              [string]$javaExeDir = [System.IO.Path]::Combine($jREinstallDestination,'bin')
+              #[environment]::SetEnvironmentVariable('JAVA_HOME', $javaExeDir, 'machine')
+              [string]$existingPathJRE = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+              [string]$expandedPathJRE = [System.String]::Format("{0};{1}", $existingPathJRE, $javaExeDir)
+              [System.Environment]::SetEnvironmentVariable("Path", $expandedPathJRE, [System.EnvironmentVariableTarget]::Machine)
+
+              $timenow=[system.DateTime]::Now
+
+              write-Host "...jre install ends successfully now..."
+              write-Host "..time now is ..."
+              write-Host "$timenow"
+              Write-Host "JRE install finished"
+            </code>
+
+          </listItem>
+
+          <listItem>
+            <para address="uploadingTheZippedFilesToUserprerequisitesFolder">
+              The Powershell Script will run on the cloud machine, thus needs the completed powershell script and JRE installable zipped together in a zip file named UserPrerequisites.zip and uploaded into the cloud storage using Azure Storage Explorer into a folder named "userprerequisites".
+            </para>
+
+            <mediaLink>
+              <image xlink:href="userprerequistes2"/>
+            </mediaLink>
+            <mediaLink>
+              <image xlink:href="userprerequistes3"/>
+            </mediaLink>
+          </listItem>
+
+          <listItem>
+            <para>
+              After uploading the UserPrerequisites.zip file, the GW takes care of unzipping this file and store the contents of this zip file into the 'temp' folder of the cloud machine. To have the script to be run, you will have to either reboot the virtual machine or perform a reimage of the virtual machine from the Windows Azure-Management portal.
+              
+            </para>
+            <para>
+             GW will initiate the powershell script and thus doesn’t need any initiation or instigation to start the JRE install explicitly.
+            </para>
+            <alert class="note">
+              <para>
+                Continue to write your client as mentioned in <link xlink:href="5bcbb1cf-8765-4823-9f3e-a51377cf4788">Implementing your own cloud client</link> because this user prerequisites option just removes JRE installation every time alone but you still need a client to utilize the JRE installed on the cloud machine.
+              </para>
+            </alert>
+          </listItem>
+        </list>
+        <para>
+          <legacyBold>
+            Next Topic:
+          </legacyBold>
+          <link xlink:href="71b29e94-4470-4de4-b5c0-983a2754831d">Install the prerequisite software in silent mode together with an Application</link>
+        </para>
+
+      </content>
+      <!-- If a section contains a sections element, its content creates
+           sub-sections.  These are not collapsible.
+      <sections>
+          <section address="SubSection1">
+              <title>Sub-section 1</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+          <section address="SubSection2">
+              <title>Sub-section 2</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+      </sections> -->
+    </section>
+
+
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

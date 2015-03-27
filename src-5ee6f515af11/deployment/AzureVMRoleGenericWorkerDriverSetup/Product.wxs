@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="A7FD358F-6D22-443A-8559-9080BF3142BA" Name="AzureVMRoleGenericWorkerDriverHost" Language="1033" Version="!(bind.FileVersion.GenericWorker)" Manufacturer="Microsoft ATL Europe" UpgradeCode="DB364A0F-6246-4003-B8A4-68898DA734AC">
+		<Package Description="Azure VM Role Generic Worker Driver Host" Manufacturer="Microsoft ATL Europe" InstallScope="perMachine"
+			InstallerVersion="200" Compressed="yes" />
+
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+				<Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+					<Directory Id="INSTALLLOCATION" Name="Azure VM Role Generic Worker Driver Host">
+						<Directory Id="AdministratorHostDir" Name="AdministratorHost">
+
+						</Directory>
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<DirectoryRef Id="INSTALLLOCATION">
+			<Component Id="ProductComponent" Guid="3270E765-5417-44E0-BCF5-1A7251E93E33">
+				<File Id="GenericWorkerDriverHost" Name="AzureVMRoleGenericWorkerDriverHost.exe" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\AzureVMRoleGenericWorkerDriverHost.exe" KeyPath="yes"/>
+				<File Id="GenericWorkerDriverHostConfig" Name="AzureVMRoleGenericWorkerDriverHost.exe.config" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\AzureVMRoleGenericWorkerDriverHost.exe.config"/>
+				<File Id="IonicZip" Name="Ionic.Zip.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Ionic.Zip.dll"/>
+				<File Id="KTHGWCDMI" Name="KTH.GenericWorker.CDMI.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\KTH.GenericWorker.CDMI.dll"/>
+				<File Id="AzureSettings" Name="Microsoft.EMIC.Cloud.AzureSettings.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.AzureSettings.dll"/>
+				<File Id="AzureAccounting" Name="Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+				<File Id="AzureProvider" Name="Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+				<File Id="GenericWorker" Name="Microsoft.EMIC.Cloud.GenericWorker.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="SampleNotifications" Name="Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications.dll"/>
+				<File Id="AzureStorage" Name="Microsoft.EMIC.Cloud.Storage.Azure.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+				<File Id="WindowsService" Name="Microsoft.EMIC.Cloud.WindowsService.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.WindowsService.dll"/>
+				<File Id="ManagementService" Name="Microsoft.WindowsAzure.Samples.Management.Service.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+				<File Id="StorageClient" Name="Microsoft.WindowsAzure.StorageClient.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll"/>
+				<File Id="OutputWrapper" Name="OutputWrapper.exe" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\OutputWrapper.exe"/>
+				<File Id="ParallelExtensionsExtras" Name="ParallelExtensionsExtras.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\ParallelExtensionsExtras.dll"/>
+				<ServiceInstall Id="ServiceInstaller" Type="ownProcess" Vital="yes" Name="GenericWorkerDriverHost" DisplayName="Generic Worker Driver Host" Start="demand" Interactive="no" ErrorControl="ignore">
+
+				</ServiceInstall>
+				<ServiceControl Id="StartService" Stop="both" Remove="uninstall" Name="GenericWorkerDriverHost" Wait="yes" Start="install"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="AdministratorHostDir">
+			<Component Id="AdministratorHostCopy" Guid="F0FED21E-17C8-4D57-9057-F750241C9C2C">
+				<File Id="AdministratorHost" Name="Microsoft.EMIC.Cloud.Administrator.Host.exe" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe"/>
+				<File Id="AdministratorHostConfig" Name="Microsoft.EMIC.Cloud.Administrator.Host.exe.config" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe.config"/>
+				<File Id="GenericWorkerAdmin" Name="Microsoft.EMIC.Cloud.GenericWorker.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\AdministratorHost\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="ParallelExtensionsExtrasAdmin" Name="ParallelExtensionsExtras.dll" Source="..\..\core\AzureVMRole\AzureVMRoleGenericWorkerDriverHost\bin\Debug\AdministratorHost\ParallelExtensionsExtras.dll"/>
+			</Component>
+		</DirectoryRef>
+
+		<Feature Id="ProductFeature" Title="GenericWorkerDriverSetup" Level="1">
+			<ComponentRef Id="ProductComponent" />
+			<ComponentRef Id="AdministratorHostCopy"/>
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+    <UIRef Id="WixUI_Minimal" />
+	</Product>
+</Wix>

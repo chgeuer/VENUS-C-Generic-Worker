@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="312c008a-bf4b-41b1-8b65-ad2a9af6e54a" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      
+
+      
+    </introduction>
+
+    <section>
+      <title>
+        Submitting and retrieving a Hierarchy of jobs
+      </title>
+      <content>
+        
+      
+      <para>In the last section we learnt about the ways in a number of jobs can be grouped together for easier maintenance or even better easier understanding of which were the jobs that were submitted by a particular user when multiple people are using the same connectionstring to connect to the cloud. </para>
+
+      <para>
+        In this section we will look into another mode of job submission and the subsequent job grouping procedure. The other mode of job submission is the Local Job Submission which was introduced in earlier in the document under the name: <link xlink:href="50be658b-c551-4247-9b49-3103fe0e88c0">Local Job Submission</link>
+      </para>
+
+      <para>
+        Just before getting into the job grouping process in the Local Job Submission procedure, we will have to keep in mind the fact that in Local Job Submission - what would be happening is that the Job we are submitting would spawn new jobs locally in the cloud - for a better picture think of it as the job you submitted would in turn submit new jobs locally to the cloud while it is inside the cloud.
+      </para>
+      </content>
+    </section>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="Section1">
+      <title>Heirarchy of Jobs</title>
+      <content>
+
+        <para>
+          Local Job Submission procedure provides us an oppurtunity to run a job which could be divided into multiple parallel concurrent jobs, thus allowing us to accommodate a situation wherein we dont know how long the program would take to execute completely but yet we could divide the job up into different other, smaller jobs.
+        </para>
+
+        <para>
+          In this section of Heirarchy of Jobs we are going to look at a means of grouping these parallely running jobs under one Root Job(The parent job which spawns all the parallely running smaller jobs), This grouping of jobs does help us alot for the simple reason as seen in the previous section, where the jobs were grouped on the basis of a group name, and in this section the jobs will be grouped on the basis of their Parent Root Job Id(The job which creates all these jobs which are running now).
+        </para>
+        <para>
+          To explain Heirarchy of Jobs, we will be taking an example code which depicts how is this accomplished and what are all the components required to have this job accomplished without issues. So now we will see what are the components that are required.
+
+        </para>
+
+        <list class="bullet">
+          <listItem>
+            <para>
+              A client which connects to the cloud, creates the Application Description, Job Description and uploads the Application executable to the cloud.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The executable which is uploaded to the cloud by the client has to be a program which accepts as inputs the number of new jobs that are to be spawned.
+            </para>
+          </listItem>
+
+          <listItem>
+            <para>
+              The executable is another client which inturn has its own set of Application description, Job Description and Application executable - but the difference in this client is the fact that this client is going to submit jobs locally to the cloud. unlike the other client which is running on your desktop and connecting to the cloud.
+            </para>
+          </listItem>
+        </list>
+      </content>
+      </section>
+    
+        <section>
+          <title>
+            Implementation of the Hierarchy of Jobs in a step by step 
+          </title>
+          <content>
+          <list class="ordered">
+
+            <listItem>
+              <para>
+                Root Client needs to upload application executables
+              </para>
+
+              <code title="Root Client needs to upload the following exes">
+                namespace RootClient
+                {
+                   class Program
+                     {
+                        string[] appFiles = {
+                       "CloudClient.exe" ,  // The 2nd client which will run in the cloud to submit local jobs
+                       "SimpleMath.exe"     // the actual application exe which will be submitted by the CloudClient submitting local jobs
+                      };
+
+              </code>
+            </listItem>
+
+            <listItem>
+              <para>
+                Root Client needs to define application description according to the cloud client requirement
+              </para>
+              
+              <code title ="Root Client needs to declare a Application Description which fits well with CloudClient.exe">
+
+
+                VENUSApplicationDescription applicationDescription = new VENUSApplicationDescription();
+
+                // The application needs a unique name so that the GenericWorker can identify the application.
+                var myApplicationName = "http://CloudClient";
+                applicationDescription.ApplicationIdentificationURI = myApplicationName;
+
+                // Now we need to define arguments for the commandline
+                VENUSCommandTemplate myTemplate = new VENUSCommandTemplate();
+                myTemplate.Path = string.Empty;                   // You could a path here, which is added to the environment PATH variable
+                myTemplate.Executable = "CloudClient.exe";    // This is the executable which will be lunched by the GenericWorker
+                myTemplate.Args = new List(CommandLineArgument)()
+                {
+                  // For this application only one argument without any files involved is needed, so we create a SingleLiteralArgument
+                  new CommandLineArgument()
+                  {
+                    Name = "NumberOfNewJobs",
+                    FormatString = "{0}",
+                    Required = Required.Mandatory,
+                    CommandLineArgType = CommandLineArgType.SingleLiteralArgument
+                    }
+                };
+
+                applicationDescription.CommandTemplate = myTemplate;
+
+              </code>
+            </listItem>
+
+            <listItem>
+              <para>
+                Job Description of the Root Client which is done the same way as explained in section:<link xlink:href="ee610498-48f6-4cad-a83e-37abd74110e5">Writing your own Job Description</link>
+              </para>
+              <alert>
+                <para>
+                  According to the application description a literal value variable is required by the cloud client, this is the way Root Client's Job Description code instructs the CloudClient to spawn whatever no of new jobs the root clients requires.
+                </para>
+              </alert>
+            </listItem>
+            
+
+            <listItem>
+              <para>
+                Use a jobmanagement client in the root client and submit the root job - refer section:<link xlink:href="fec92d86-badf-4499-9186-b5f4aca2c4fc">Job Submission step</link> 
+              </para>
+            </listItem>
+            
+            <listItem>
+              <para>
+                Now coming to the part where we are going to look at how the cloudclient is being implemented so that heirarchy of jobs is achieved
+              </para>
+              <para>
+                The Cloud client needs to know how many jobs does it have to spawn
+              </para>
+              <code title="CloudClient part of the code to get to know how many new jobs to create">
+                namespace CloudClient
+                {
+                       class Program
+                        {
+                          static void Main(string[] args)
+                          {
+                            int newJobs = -1;
+                            if (!int.TryParse(args[0], out newJobs) || newJobs lessThan 0)
+                            {
+                              Console.Error.WriteLine("Argument must be a positive number!");
+                              Environment.Exit(-1);
+                              }
+              </code>
+
+              <alert>
+                <para>
+                  Remember that we used the cloudclient's executable to populate the application description feild of Root Client, So when Root client submits the job, it executes the cloud client which gets the literal value variable as an input to the cloudclient.
+                </para>
+              </alert>
+              
+            </listItem>
+            
+
+
+            <listItem>
+              <para>
+                Cloud Client needs to know what is the parentJobId
+              </para>
+
+              <code title ="CloudClient part of the code for parent id and subsequent Child job ids">
+                if (newJobs > 0)
+                {
+                     Console.WriteLine(String.Format("There is still some work to do. Launching {0} new job(s)..", newJobs));
+
+                     string childJobId = "";
+                     try
+                       {
+                          var parentId = new JobID(System.Environment.GetEnvironmentVariable("jobId"));
+                          childJobId = parentId.CreateChildJob("DemoApp_Child_Job").ToString();
+                        }
+                    catch (NotSupportedException e)
+                      {
+                          Console.Error.WriteLine("Something went wrong when creating the child job id:");
+                           Environment.Exit(-1);
+                        }
+              </code>
+              
+            </listItem>
+
+            <listItem>
+              <para>
+                The Cloudclient needs a different application description since this client is going to be running a different executable
+              </para>
+
+
+              <code title ="CloudClient part of the Application Description and uploading the application description into a different container">
+                VENUSApplicationDescription applicationDescriptionCloudClient = new VENUSApplicationDescription();
+
+                // The application needs a unique name so that the GenericWorker can identify the application.
+                var myApplicationName = "http://SimpleMath";
+                applicationDescriptionCloudClient.ApplicationIdentificationURI = myApplicationName;
+
+                // Now we need to define arguments for the commandline
+                VENUSCommandTemplate myTemplate = new VENUSCommandTemplate();
+                myTemplate.Path = string.Empty;                   // You could a path here, which is added to the environment PATH variable
+                myTemplate.Executable = "SimpleMath.exe";    // This is the executable which will be lunched by the GenericWorker
+                myTemplate.Args = new List(CommandLineArgument)()
+                {
+                // For this application only one argument without any files involved is needed, so we create a SingleLiteralArgument
+                    new CommandLineArgument()
+                     {
+                          Name = "NumberOfNewJobs",
+                         FormatString = "{0}",
+                         Required = Required.Mandatory,
+                        CommandLineArgType = CommandLineArgType.SingleLiteralArgument
+                        }
+                   };
+
+                applicationDescriptionCloudClient.CommandTemplate = myTemplate;
+
+                CloudBlobContainer appDataContainer_for_new_app_desc = blobClient.GetContainerReference("applicationcontainer_for_new_app_desc");
+                appDataContainer.CreateIfNotExist();
+
+                // The application description needs to be serialized for uploading to the storage.
+                // The serialization is done in memory again.
+                var appDescriptionBlobName = HttpUtility.UrlEncode(applicationDescription.ApplicationIdentificationURI) + "_Desc";
+                DataContractSerializer dcs = new DataContractSerializer(typeof(VENUSApplicationDescription));
+                MemoryStream msxml = new MemoryStream();
+                dcs.WriteObject(msxml, applicationDescription);
+
+              </code>
+              
+            </listItem>
+
+
+            <listItem>
+
+              <para>
+                In this section the CloudClient will need a Job description to be configured and we will have to keep in mind that the Root Client has a different Application Description and the Cloud client has a different one, but the Application executable folder will contain both the executables  ( "CloudClient.exe" - The 2nd client which will run in the cloud to submit local jobs and "SimpleMath.exe" - the actual application exe which will be submitted by the CloudClient submitting local jobs )
+              </para>
+              <code title="CloudClient's Job Description">
+                VENUSJobDescription mySimpleJobDescription = new VENUSJobDescription();
+                mySimpleJobDescription.ApplicationIdentificationURI = myApplicationName;    // This needs to be the same URI as used when creating the application description
+                mySimpleJobDescription.JobName = "DemoApp Child Job Name";
+
+                // The GenericWorker needs to know where to find the application and description
+
+                mySimpleJobDescription.AppPkgReference = new Reference(new AzureBlobReference(appDataContainer.GetBlobReference(HttpUtility.UrlEncode(mySimpleJobDescription.ApplicationIdentificationURI) + "_App"), UserDataStoreConnectionString));
+                mySimpleJobDescription.AppDescReference = new Reference(new AzureBlobReference(appDataContainer_for_new_app_desc.GetBlobReference(HttpUtility.UrlEncode(mySimpleJobDescription.ApplicationIdentificationURI) + "_Desc"), UserDataStoreConnectionString));
+
+                // First and only Reference is the number for specifying the amount of new jobs.
+                // In this case now more child jobs are needed.
+                LiteralArgument newJobsArgument = new LiteralArgument();
+                newJobsArgument.Name = "NumberOfNewJobs";     // This has to be the same name as in the application description
+                newJobsArgument.LiteralValue = "0";
+
+                // Finally all parameters / arguments have to be added to the job description
+                mySimpleJobDescription.JobArgs.Add(newJobsArgument);
+
+
+                // As the new jobs should be submitted using the local endpoint, this binding has to be created manually.
+                Console.WriteLine("Create LocalJobSubmissionClient");
+                var serviceBinding = new WS2007HttpBinding(SecurityMode.None, reliableSessionEnabled: false);
+
+                // There is an environment variable available containing the adress of the local endpoint.
+                Console.WriteLine("Environment jobSubmissionEndpoint: \"" + System.Environment.GetEnvironmentVariable("jobSubmissionEndpoint") + "\"");
+                var localJobSubmissionUri = System.Environment.GetEnvironmentVariable("jobSubmissionEndpoint");
+
+                // If the environment doesn't tell us the endpoint, it is possible to try the default one.
+                if (localJobSubmissionUri == null)
+                {
+                     Console.WriteLine("localJobSubmissionUri is null");
+                      localJobSubmissionUri = "http://localhost/AcceptLocalJobs/dev_Enviroment_Port1";
+                   }
+
+                // Now time has come to connect to the endpoint
+                var localJobSubmissionClient = new GenericWorkerJobManagementClient(serviceBinding, new EndpointAddress(new Uri(localJobSubmissionUri)));
+
+
+                // Connection is there, so the new jobs can be submitted.
+                Console.WriteLine("Start submitting jobs");
+                for (int i = 0; i lessThan newJobs; i++)
+                {
+                   mySimpleJobDescription.CustomerJobID = (String.Format(childJobId + "{0}", i+1));
+                   Console.WriteLine("Adding child job \"" + mySimpleJobDescription.CustomerJobID + "\"");
+                    var response = localJobSubmissionClient.SubmitVENUSJob(mySimpleJobDescription);
+                      if (response.Fault != null)
+                       {
+                         Console.WriteLine("Fault: \"" + response.Fault.Faultstring + "\"");
+                         }
+                   }
+              </code>
+            </listItem>
+
+          </list>
+
+            <para>
+              <legacyBold>Next Topic : </legacyBold>
+              <link xlink:href="fe48750b-c4aa-4057-83a3-21cc3a7898f1">Termination of Jobs by Heirarchy(by cancelling the Root of the Heirarchy) or Job Id or Group Id</link>
+            </para>
+
+          </content>
+        </section>
+
+    
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,15 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@using Site.JobManagement.Controllers
+
+
+@model IPagedList
+
+<link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+
+<table>
+<tr>
+<td>@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page, pagesize = Model.PageSize }))</td>
+<td>@Html.PagedListSizeSelection(pagesize => Url.Action("Index", new { page = 1, pagesize = pagesize }))</td>
+</tr>
+</table>

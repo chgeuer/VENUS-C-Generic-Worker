@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="4ecb7585-10fb-4d62-8b7e-1639f931b3df" Name="STSInitializer" Language="1033" Version="!(bind.FileVersion.GenericWorker)" Manufacturer="Microsoft ATL Europe" UpgradeCode="311e822e-2a7c-4858-8c16-24f3aeadd098">
+    <Package InstallerVersion="200" Compressed="yes" />
+
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />    
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="STSInitializer"/>
+      </Directory>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+          <Directory Id="INSTALLLOCATION" Name="STSInitializer">
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <Component Id="ProductComponent" Guid="076231a5-9aea-4573-b7bf-2e62923f4e27">
+        <!-- TODO: Insert files, registry keys, and other resources here. -->
+        <File Id="IonicZip" Name="Ionic.Zip.dll" Source="..\..\tools\STSInitializer\bin\Debug\Ionic.Zip.dll"/>
+        <File Id="AzureSecurity" Name="Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll" Source="..\..\tools\STSInitializer\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll"/>
+        <File Id="GenericWorker" Name="Microsoft.EMIC.Cloud.GenericWorker.dll" Source="..\..\tools\STSInitializer\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="StorageClient" Name="Microsoft.WindowsAzure.StorageClient.dll" Source="..\..\tools\STSInitializer\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="ParallelExtensionsExtras" Name="ParallelExtensionsExtras.dll" Source="..\..\tools\STSInitializer\bin\Debug\ParallelExtensionsExtras.dll"/>
+        <File Id="STSInitializer" Name="STSInitializer.exe" Source="..\..\tools\STSInitializer\bin\Debug\STSInitializer.exe" KeyPath="yes"/>
+        <File Id="STSInitializerConfig" Name="STSInitializer.exe.config" Source="..\..\tools\STSInitializer\bin\Debug\STSInitializer.exe.config"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="95C2D897-25FC-484F-A469-A67EC5048E11">
+        <Shortcut Id="STSInitializerStartMenu" Name="STSInitializer 1.0.0" Description="Initializer for the STS Table on Azure" Target="[INSTALLLOCATION]STSInitializer.exe" WorkingDirectory="INSTALLLOCATION"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft ATL Europe\STSInitializer" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+
+
+    <Feature Id="ProductFeature" Title="STSInitializer" Level="1">
+      <!-- TODO: Remove the comments around this ComponentRef element and the Component above in order to add resources to this installer. -->
+      <ComponentRef Id="ProductComponent" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+      <ComponentGroupRef Id="Product.Generated" />
+     
+    </Feature>
+
+    <UIRef Id="WixUI_Minimal" />
+    
+  </Product>
+</Wix>

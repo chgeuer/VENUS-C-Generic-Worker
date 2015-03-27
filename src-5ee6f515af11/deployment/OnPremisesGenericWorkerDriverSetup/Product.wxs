@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="518ca92d-d755-443c-91c3-3516e7e81a68" Name="OnPremisesGenericWorkerDriverHost" Language="1033" Version="!(bind.FileVersion.GenericWorker)" Manufacturer="Microsoft ATL Europe" UpgradeCode="51e70283-50fb-4c95-bbca-8e6f4b8d55d1">
+		<Package Description="On Premises Generic Worker Driver Host" Manufacturer="Microsoft ATL Europe" InstallScope="perMachine"
+			InstallerVersion="200" Compressed="yes" />
+
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+				<Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+					<Directory Id="INSTALLLOCATION" Name="On Premises Generic Worker Driver Host">
+            <Directory Id="AdministratorHostDir" Name="AdministratorHost">
+            
+            </Directory>
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="ProductComponent" Guid="C3A8659E-E184-49C3-A519-3989FC678C70">
+        <File Id="GenericWorkerDriverHost" Name="OnPremisesGenericWorkerDriverHost.exe" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\OnPremisesGenericWorkerDriverHost.exe" KeyPath="yes"/>
+        <File Id="GenericWorkerDriverHostConfig" Name="OnPremisesGenericWorkerDriverHost.exe.config" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\OnPremisesGenericWorkerDriverHost.exe.config"/>
+        <File Id="IonicZip" Name="Ionic.Zip.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Ionic.Zip.dll"/>
+        <File Id="KTHGWCDMI" Name="KTH.GenericWorker.CDMI.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\KTH.GenericWorker.CDMI.dll"/>
+        <File Id="AzureAccounting" Name="Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+        <File Id="AzureProvider" Name="Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+        <File Id="GenericWorker" Name="Microsoft.EMIC.Cloud.GenericWorker.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="SampleNotifications" Name="Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications.dll"/>
+        <File Id="AzureStorage" Name="Microsoft.EMIC.Cloud.Storage.Azure.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+        <File Id="WindowsService" Name="Microsoft.EMIC.Cloud.WindowsService.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.EMIC.Cloud.WindowsService.dll"/>
+        <File Id="ManagementService" Name="Microsoft.WindowsAzure.Samples.Management.Service.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+        <File Id="StorageClient" Name="Microsoft.WindowsAzure.StorageClient.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="OnPremisesSettings" Name="OnPremisesSettings.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\OnPremisesSettings.dll"/>
+        <File Id="OutputWrapper" Name="OutputWrapper.exe" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\OutputWrapper.exe"/>
+        <File Id="ParallelExtensionsExtras" Name="ParallelExtensionsExtras.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\ParallelExtensionsExtras.dll"/>
+        <File Id="Registery" Name="Settings.All.reg" Source="..\..\commons\Settings.All.reg"/>
+        <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Vital="yes" Name="GenericWorkerDriverHost" DisplayName="Generic Worker Driver Host" Start="demand" Interactive="no" ErrorControl="ignore">
+
+        </ServiceInstall>
+        <ServiceControl Id="StartService" Stop="both" Remove="uninstall" Name="GenericWorkerDriverHost" Wait="yes" Start="install"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="AdministratorHostDir">
+      <Component Id="AdministratorHostCopy" Guid="0805FA06-749D-4B36-8453-408C0F72EDB9">
+        <File Id="AdministratorHost" Name="Microsoft.EMIC.Cloud.Administrator.Host.exe" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe"/>
+        <File Id="AdministratorHostConfig" Name="Microsoft.EMIC.Cloud.Administrator.Host.exe.config" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe.config"/>
+        <File Id="GenericWorkerAdmin" Name="Microsoft.EMIC.Cloud.GenericWorker.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\AdministratorHost\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="ParallelExtensionsExtrasAdmin" Name="ParallelExtensionsExtras.dll" Source="..\..\core\OnPremisesServices\OnPremisesGenericWorkerDriverHost\bin\Debug\AdministratorHost\ParallelExtensionsExtras.dll"/>
+      </Component>
+    </DirectoryRef>
+    
+		<Feature Id="ProductFeature" Title="GenericWorkerDriverSetup" Level="1">
+			<ComponentRef Id="ProductComponent" />
+      <ComponentRef Id="AdministratorHostCopy"/>
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+    <UIRef Id="WixUI_Minimal" />
+    <!--<Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+    <Condition  Message="This installer can only be used by admin users."  >Installed OR (Privileged AND AdminUser)</Condition>-->
+	</Product>
+</Wix>

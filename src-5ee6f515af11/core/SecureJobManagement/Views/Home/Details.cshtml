@@ -1,0 +1,12 @@
+﻿@model Microsoft.EMIC.Cloud.GenericWorker.IJob
+@{
+    ViewBag.Title = "Job Details";
+}
+
+<h2>Details</h2>
+@Html.Partial("_JobDetailsPartialView", Model)
+
+<p>
+    @Html.ActionLink("Stop Job", "Stop", new { internalJobId = Model.InternalJobID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

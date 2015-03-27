@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bb1db1ea-7854-447a-a6a3-4508a3d55f46" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>This document gives you an overview, how the Generic Worker functions.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section>
+        <title>Quick Overview</title>
+        <content>
+        	<para>The functionality of the Generic Worker can be described in six easy steps. A more
+        	detailed version can be found further below.</para>
+        	<mediaLink>
+              <image placement="center" xlink:href="Slide1"/>
+            </mediaLink>
+			<steps class="ordered">
+			<step><content><para>Looking for submitted jobs</para></content></step>
+			<step><content><para>Fetching job details</para></content></step>
+			<step><content><para>Download application</para></content></step>
+			<step><content><para>Download required files</para></content></step>
+			<step><content><para>Run application</para></content></step>
+			<step><content><para>Write back result files</para></content></step>
+        </steps>
+        </content>
+    </section>
+    <section>
+    	<title>Detailed Overview</title>
+        <content>
+			<procedure>
+      <title>Generic Worker workflow</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Each running WebRole of a deployment is looking in the jobtable if there are any <quoteInline>submitted</quoteInline> jobs. If a WebRole
+            findes a submitted job in the table, it starts to claim for it.</para>
+            <mediaLink>
+              <image placement="center" xlink:href="Slide2"/>
+            </mediaLink>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>If a WebRole has successfully claimed for a job, the job is marked, to block it
+            from the other WebRoles. Otherwise the WebRole returns to looking for a new job.</para>
+            <mediaLink>
+              <image placement="center" xlink:href="Slide3"/>
+            </mediaLink>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>After fetching the job description, the WebRole checks if every required file, the job needs to process, is available. If there 
+            are data sources missing, the status of the job is turned back to <quoteInline>submitted</quoteInline> and 
+            the WebRole begins to look for another job.</para>
+            <mediaLink>
+              <image placement="center" xlink:href="Slide4"/>
+            </mediaLink>
+          </content>
+        </step>        
+        <step>
+          <content>
+            <para>If all files are available, the WebRole downloads and installs the application
+            from the appstore, downloads every required file from the datastore and runs the application with the given parameters.</para>
+            <para>After successfully processing the job, the result file is written back to the datastore. The WebRole
+            then deletes all downloaded files. Finally the job status turns <quoteInline>finished</quoteInline> in the jobtable.</para>
+            <mediaLink>
+              <image placement="center" xlink:href="Slide5"/>
+            </mediaLink>
+          </content>
+        </step>
+       <step>
+          <content>
+            <para>The WebRole begins to search for a new job in the jobtable. (Status: Ready)</para>
+          </content>
+        </step>
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+        </content>
+    </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

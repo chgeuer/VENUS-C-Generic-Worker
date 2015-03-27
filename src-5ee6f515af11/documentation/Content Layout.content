@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="82b70a61-2a55-493c-bd3a-a501eb2f9ab9" visible="True" title="Generic Worker Overview">
+    <Topic id="8323f7c7-4510-45a8-871a-531726d668e9" visible="True" title="Folder structure explanation" linkText="Folder structure explanation" />
+    <Topic id="bb1db1ea-7854-447a-a6a3-4508a3d55f46" visible="True" title="Generic Worker functionality" linkText="Generic Worker functionality" />
+    <Topic id="a84ddafe-4ce1-4fa0-8e9d-9e99c8847195" visible="True" title="Installing Applications" linkText="Installing Applications">
+      <Topic id="202b2c4a-bb90-40ea-90d6-3deb268ffe8d" visible="True" title="What's in an Application Description" linkText="What's in an Application Description" />
+      <Topic id="6dd926cc-56b3-4789-8b40-67d6fc566bb6" visible="True" title="Argument Types and their proper using" linkText="Argument Types and their proper using" />
+    </Topic>
+    <Topic id="0bac105e-a510-45ba-90e7-7839bfbc40bb" visible="True" title="Submitting Jobs" linkText="Submitting Jobs">
+      <Topic id="00e994ec-09ab-46c3-b86e-6012dd2087ba" visible="True" title="What's in a Job Description" linkText="What's in a Job Description" />
+    </Topic>
+    <Topic id="bd6dfab6-64be-49c5-9e5d-6d64c71a1a85" visible="True" noFile="true" title="Security">
+      <Topic id="1c62f335-6a59-40ec-b42f-afe3ebe456e2" visible="True" title="Secure Clients" />
+      <Topic id="cc85ed0a-9bea-4741-966c-1f9d0c765a7b" visible="True" title="Usertable and the security policy" />
+    </Topic>
+    <Topic id="cb34e4ff-7fa3-4ef1-98b8-f5dcd9f36944" visible="True" noFile="true" title="Accounting">
+      <Topic id="b6305c2f-e953-46eb-acd6-b22a55a30624" visible="True" title="How Accounting works?" linkText="How Accounting works?" />
+      <Topic id="f745ee03-0571-49da-893e-e299f9bab366" visible="True" title="How to Push Accounting Info to Biliing Service?" linkText="How to Push Accounting Info to Biliing Service?" />
+    </Topic>
+  </Topic>
+  <Topic id="596fc812-d647-468e-87f6-3b0da8076fa2" visible="True" title="Operations Guide" linkText="Operations Guide">
+    <Topic id="aa29c3a8-d807-4755-9224-bf9e5c6c0f18" visible="True" noFile="true" title="Prerequistes before deployment tutorial" linkText="Prerequistes before deployment tutorial">
+      <Topic id="c5b5c7a3-7e24-4bcd-81f9-adb0117d5dd2" visible="True" title="Creating Certificates" linkText="Creating Certificates" />
+      <Topic id="11c8294c-9929-4e94-bb5a-3a13278ff9bf" visible="True" title="Import Certificate to Certificarte Store" linkText="Import Certificate to Certificarte Store" />
+    </Topic>
+    <Topic id="91ac6cd8-5e0c-4c02-9e09-df7de9507f03" visible="True" title="Cloud Deployment Tutorial" tocTitle="Cloud Deployment Tutorial" linkText="Cloud Deployment Tutorial">
+      <Topic id="4418576a-8642-4f19-8290-ef1d4bd2cf98" visible="True" title="Creating Hosted Service" tocTitle="Creating Hosted Service" linkText="Creating Hosted Service" />
+      <Topic id="aa286ad1-0f19-4138-bf16-f4c88df4874c" visible="True" title="Uploading Certificates" tocTitle="Uploading Certificates" linkText="Uploading Certificates" />
+      <Topic id="efbf0f40-cb4c-4ca5-b42f-833ecae954b8" visible="True" title="Creating Connection String" tocTitle="Creating Connection String" linkText="Creating Connection String" />
+      <Topic id="7630f09e-4143-48ee-8990-405994496e89" visible="True" title="Introduction of Service Configuration Modification" tocTitle="Introduction of Service Configuration Modification" linkText="Introduction of Service Configuration Modification">
+        <Topic id="dae1965c-5769-4d9d-845b-bd2ffaa98c25" visible="True" title="Service Configuration Modifier" tocTitle="Service Configuration Modifier" linkText="Service Configuration Modifier" />
+        <Topic id="5f289c39-8ab0-42ca-bf79-e6a814c65b55" visible="True" title="Modifying Service Configuration" tocTitle="Modifying Service Configuration" linkText="Modifying Service Configuration" />
+      </Topic>
+      <Topic id="d9c5409b-4498-4f33-9d5a-1a710a2abfda" visible="True" title="Creating Deployment" tocTitle="Creating Deployment" linkText="Creating Deployment" />
+      <Topic id="b8b0ed96-cdca-455b-9309-92337e7ff717" visible="True" title="STSInitializer" tocTitle="STSInitializer" linkText="STSInitializer" />
+    </Topic>
+    <Topic id="69ee4241-36ac-42d4-a956-aa90d3a664d1" visible="True" title="Local Deployment Tutorial">
+      <Topic id="4c70a6ec-deb8-4f89-8d15-f3a1df106f3f" visible="True" title="Registry Settings" tocTitle="Registry Settings" linkText="Registry Settings" />
+      <Topic id="8edda1b3-42f5-477b-b1e6-1eded85a6c01" visible="True" title="On Premises Installation Tutorial" tocTitle="On Premises Installation Tutorial" linkText="On Premises Installation Tutorial" />
+    </Topic>
+    <Topic id="7866dfd9-a7aa-4575-95ad-2662e4cc7e81" visible="True" title="Advanced Options " tocTitle="Advanced Options " linkText="Advanced Options ">
+      <Topic id="a6a1e6c5-3362-4672-a473-ca3596bcbadf" visible="True" title="Creating a Custom VM Role image for Venus-C" tocTitle="Creating a Custom VM Role image for Venus-C" linkText="Creating a Custom VM Role image for Venus-C" />
+      <Topic id="45a1763c-9966-4c3b-9982-94d249874381" visible="True" title="Azure Accounting Components" tocTitle="Azure Accounting Components" linkText="Azure Accounting Components" />
+      <Topic id="76059fae-8011-485d-b377-05410e9471a1" visible="True" title="Powershell Deployment" tocTitle="Powershell Deployment" linkText="Powershell Deployment" />
+      <Topic id="09b63345-c9fc-4ac2-9c34-3a4905220ff9" visible="True" title="Runtime configuration - How to configure the deployed system" tocTitle="Runtime configuration - How to configure the deployed system" linkText="Runtime configuration - How to configure the deployed system" />
+      <Topic id="ec6b1774-9bff-4364-b9bb-5708ef143e81" visible="True" title="Data Driven Notification" tocTitle="Data Driven Notification" linkText="Data Driven Notification" />
+    </Topic>
+  </Topic>
+  <Topic id="f15055ac-0c9b-4309-a477-72f0ad95efa6" visible="True" isExpanded="true" title="Programming Guide" linkText="Programming Guide">
+    <Topic id="5baec933-e74a-440a-abda-0fb106ff2ec4" visible="True" title="Development tools" linkText="Development tools" />
+    <Topic id="b20c7149-6fdc-450b-924f-62b58ddbee28" visible="True" title="Required Assemblies (DLLs)" tocTitle="Required Assemblies (DLLs)" linkText="Required Assemblies (DLLs)" />
+    <Topic id="97b2f194-6e49-4e7d-bd94-2fe507665508" visible="True" title="Using statements" linkText="Using statements" />
+    <Topic id="f9d0e75e-9b2d-4f8e-bfd6-1f2df762ab24" visible="True" title="Upload Applications" linkText="Upload Applications">
+      <Topic id="edc01277-473a-497e-b7e4-680d9d3c7cb7" visible="True" title="ZIPping an application" linkText="ZIPping an application" />
+      <Topic id="b2d2afb2-4f04-451e-b8c9-932c66f8155a" visible="True" title="Describing an application" linkText="Describing an application" />
+    </Topic>
+    <Topic id="c99210d6-6f06-4272-86f9-6f6590989591" visible="True" isExpanded="true" title="Submit Jobs" linkText="Submit Jobs">
+      <Topic id="50be658b-c551-4247-9b49-3103fe0e88c0" visible="True" title="Local Job Submission" />
+      <Topic id="a60d66fd-f4f6-4156-bdfd-c4ce95d18183" visible="True" title="Submit Jobs with arbitrary number of references" tocTitle="Submit Jobs with arbitrary number of references" />
+    </Topic>
+    <Topic id="3e7511cf-a929-4fc6-aca7-874d36d82e06" visible="True" isExpanded="true" title="Managing and Handling Jobs" tocTitle="Managing and Handling Jobs" linkText="Managing and Handling Jobs">
+      <Topic id="351ce921-8b9e-4837-83de-247e2c588430" visible="True" title="Handling jobs using Internal Job ID" tocTitle="Handling jobs using Internal Job ID" linkText="Handling jobs using Internal Job ID" />
+      <Topic id="d1ee0639-809e-48f4-9612-bea4af22e275" visible="True" title="Submitting and Handling Group of Jobs" tocTitle="Submitting and Handling Group of Jobs" linkText="Submitting and Handling Group of Jobs" />
+      <Topic id="53d4a5b7-ad09-4864-959d-43fd25f85f18" visible="True" isSelected="true" title="Handling Jobs using EndPointReferenceType Class" tocTitle="Handling Jobs using EndPointReferenceType Class" linkText="Handling Jobs using EndPointReferenceType Class" />
+      <Topic id="312c008a-bf4b-41b1-8b65-ad2a9af6e54a" visible="True" title="Submitting and Handling Hierarchy of Jobs " tocTitle="Submitting and Handling Hierarchy of Jobs " linkText="Submitting and Handling Hierarchy of Jobs " />
+      <Topic id="fe48750b-c4aa-4057-83a3-21cc3a7898f1" visible="True" title="Terminate and Remove Jobs" tocTitle="Terminate and Remove Jobs" linkText="Terminate and Remove Jobs" />
+    </Topic>
+    <Topic id="7d1df782-e3b2-4746-a7f2-bc7dec3975d0" visible="True" title="Setup Notifications for your jobs" tocTitle="Setup Notifications for your jobs" />
+    <Topic id="18fabf37-b73c-426e-ae0b-497ac27177ce" visible="True" title="Scale your deployment" linkText="Scale your deployment" />
+    <Topic id="5bcbb1cf-8765-4823-9f3e-a51377cf4788" visible="True" title="Implementing your own GW client" tocTitle="Implementing your own GW client" linkText="Implementing your own GW client">
+      <Topic id="e4af267a-e39b-4d8f-9be2-f007fab9d708" visible="True" title="Sample: SimpleMathApplication" />
+      <Topic id="f323c747-351d-4da6-a1e5-4fe76d87787e" visible="True" noFile="true" title="Writing your own Application Description" tocTitle="Writing your own Application Description" linkText="Writing your own Application Description">
+        <Topic id="8e9fde66-8469-4594-94e6-01731adbbd35" visible="True" title="Writing your own Application Description" tocTitle="Understanding Application Description class and its Mandatory fields" linkText="Understanding Application Description class and its Mandatory fields" />
+        <Topic id="0bb6bb94-8409-4fe6-b7ca-07039245a234" visible="True" title="Writing your own Application Description" tocTitle="Mapping Commandline Arguments for the application execution to the CommandLineArguments Class of the Application Description" linkText="Mapping Commandline Arguments for the application execution to the CommandLineArguments Class of the Application Description" />
+        <Topic id="d8424506-ccfe-427e-bd32-d751a9a42e83" visible="True" title="Writing your own Application Description" tocTitle="Zipping and Uploading ApplicationDescription and Application executable files to the Cloud" linkText="Zipping and Uploading ApplicationDescription and Application executable files to the Cloud" />
+      </Topic>
+      <Topic id="ee610498-48f6-4cad-a83e-37abd74110e5" visible="True" noFile="true" title="Writing your own Job Description" tocTitle="Writing your own Job Description" linkText="Writing your own Job Description">
+        <Topic id="e3d9d0a6-c7a3-46a0-9708-5edc4dfa84fb" visible="True" title="Writing your own Job Description" tocTitle="Understanding Job Description class and its Mandatory fields" linkText="Understanding Job Description class and its Mandatory fields" />
+        <Topic id="7e60539b-775d-4eb4-b0e7-f971cfadeeeb" visible="True" title="Writing your own Job Description" tocTitle="Modeling Job Description according to its Application Description" linkText="Modeling Job Description according to its Application Description" />
+        <Topic id="fec92d86-badf-4499-9186-b5f4aca2c4fc" visible="True" title="Writing your own Job Description" tocTitle="Job Submission Step" linkText="Job Submission Step" />
+      </Topic>
+    </Topic>
+    <Topic id="ce7a4231-501d-4f9e-9ea8-463bd20cb292" visible="True" title="How to install Java &amp; others on GW" tocTitle="How to install Java &amp; others on GW" linkText="How to install Java &amp; others on GW">
+      <Topic id="6f5ab85a-82e8-4e1b-9db2-e1ecf7018b62" visible="True" title="Introduction to the use of GW's UserPrerequisites" tocTitle="Writing a script in powershell to install the prerequisite software in silent mode" linkText="Writing a script in powershell to install the prerequisite software in silent mode" />
+      <Topic id="71b29e94-4470-4de4-b5c0-983a2754831d" visible="True" title="Introduction to the use of GW's UserPrerequisites" tocTitle="Install the prerequisite software in silent mode together with an Application" linkText="Install the prerequisite software in silent mode together with an Application" />
+      <Topic id="88ba9fcc-f644-4b82-a9df-5d2186b04be0" visible="True" title="Introduction to the use of GW's UserPrerequisites" tocTitle="Writing a script in powershell to install the prerequisite MatLab in silent mode" linkText="Writing a script in powershell to install the prerequisite MatLab in silent mode" />
+    </Topic>
+  </Topic>
+  <Topic id="e0099417-8464-45b2-bdd7-9cffaa6c8bdf" visible="True" title="Support and contact information" linkText="Support and contact information" />
+  <Topic id="07e65e1a-895d-45f4-a94a-6d89f711956f" visible="True" apiParentMode="InsertAsChild" />
+</Topics>

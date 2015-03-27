@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3e7511cf-a929-4fc6-aca7-874d36d82e06" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Sample code to list jobs and poll their statuses</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section>
+      <title>Retrieve a jobmanagement client and use it to get a list of your jobs and poll them for their statuses </title>
+      <content>
+        <para>
+          First of all you have to create a jobmanagement client. You can do this as it is shown here.
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+          region="JobSubmissionSecurity" title="JobSubmission secure client" />
+        <para>
+          Once you have a jobmanagement client you can get a list of your jobs
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+        region="ListJobs" title="List your jobs" />
+        <alert class="note">
+          <para>
+            If security is enabled a user gets a security exception if GetJobs is called on another users jobs.
+            The Administrator can retrieve everyones jobs.
+          </para>
+        </alert>
+        <para>
+          In the current default security policy the Administrator can use <codeInline>GetAllJobs()</codeInline> to get a list of all jobs in the system
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+        region="ListAllJobs" title="List all jobs in the system (if your are admin)" />
+
+        <para>
+          If you have too many jobs in the system, the result of <codeInline>GetAllJobs()</codeInline> can be bigger than the maximum size for a WCF message.
+          If this is the case you should specify the page number for the results that you want to get.
+        </para>
+        <para>The pagesize can be set in the ServiceConfiguration.cscfg. The default value is set to 100 entries.</para>
+        <code lang="xml" language="xml"
+  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+  title="ServiceConfiguration.cscfg - Generic Worker Settings"
+  region="Number of Page Entries" />
+        <para>
+          If you have 150 jobs in the system, <codeInline>GetAllJobs(0)</codeInline> would return you the jobs 1 to 100.
+          <codeInline>GetAllJobs(1)</codeInline> would return you the jobs 101 to 150, and <codeInline>GetAllJobs(2)</codeInline> would return an empty list of jobs.
+          The page number parameter is optional. Negative page numbers have no effect. You would get all the jobs in the system as if you would have called GetAllJobs() without parameters.
+        </para>
+        <para>
+          A parameter for pagenumbers was also added to <codeInline>GetJobs</codeInline>, <codeInline>GetJobsByGroup</codeInline> , and <codeInline>GetHierarchy</codeInline>
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+        region="ListAllJobsPaged" title="Use paging to list all jobs in the system (if your are admin)" />
+        <alert class="note">
+          <para>
+            If you use our client the page parameter is optional. The default behavior of the client is to send a -1 as page parameter to the service.
+            The service performs no paging if the page parameter is negative.
+          </para>
+        </alert>
+        
+        <para>If you want to get a mapping of your jobs and their statuses </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+        region="JobStatusMapping" title="Retrieve Job Status Mapping" />
+
+        <para>
+          If you just want to get the number of jobs with a specific status that are in the system, you can use GetNumberOfJobs.
+          Here we have an example how to get the number of submitted jobs for a user.
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+        region="GetNumberOfJobs" title="Retrieve the number of submitted jobs" />
+        <alert class="note">
+          <para>
+            If security is enabled a user gets a security exception if the owner specified in the GetNumberOfJobs call is not matching to the identity of the caller.
+            The Administrator can retrieve information on all users.
+          </para>
+          <para>
+            Be aware that the information provided by this method is only a snapshot. Job statuses can quickly change.
+            This is valid for all methods that provide information about the current state of the system.
+          </para>
+        </alert>
+      </content>
+    </section>
+   
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b2d2afb2-4f04-451e-b8c9-932c66f8155a" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section address="CreateApplicationDescription">
+      <title>Create an application description</title>
+      <content>
+        <para>This is how an application description could look like. This example describes the <link xlink:href="e4af267a-e39b-4d8f-9be2-f007fab9d708">SimpleMathApplication</link>.</para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#" language="c#"
+              region="CreateApplicationDescription"
+              title="Create an application description" />
+        <para>
+        	The <codeInline>Path</codeInline> argument is a string.
+        	Put there all paths (relative to the root of the zip) where you have
+        	executables stored, that are launched from within another executable. Seperate more paths with
+        	semicolons. The Generic Worker looks in these paths for the executables.
+        </para>
+          
+<alert class="note">
+  <para>For a detailed explanation of all argument types, please take a look at <link xlink:href="6dd926cc-56b3-4789-8b40-67d6fc566bb6">Argument Types and there proper using</link></para>
+</alert>
+
+      </content>
+    </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

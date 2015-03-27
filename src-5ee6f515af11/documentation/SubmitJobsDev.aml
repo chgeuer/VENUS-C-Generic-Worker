@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c99210d6-6f06-4272-86f9-6f6590989591" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Sample code to submit a job. This sample uses the 
+      SimpleMathApplication introduced <link xlink:href="e4af267a-e39b-4d8f-9be2-f007fab9d708">here</link>.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+            <section>
+            <title>Upload/reference input data and submit jobs</title>
+            <content>
+            	<para>
+            	To upload data to the datastore you need to open a storage container first.
+            	If you want to upload a new input file you can use the provided <codeInline>uploadFile()</codeInline> method.
+            	If the job uses an already existing file (existing file in the datastore) or want to 
+            	set the position of the outputfile you can call the <codeInline>getBlobAdress()</codeInline> method.
+            	</para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="UploadUserDataAndJobPreperation" title="Upload input data and set result file" />
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="uploadFileMethod" title="Method for uploading file to a storage container"/>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="getBlobAdressMethod" title="Method for getting an already existing file or for a output file" />
+                <para>
+                After setting up the relevant data, you have to provide a job description. You can map
+                your input data to the specific command line arguments defined in your <link xlink:href="b2d2afb2-4f04-451e-b8c9-932c66f8155a">application description</link>.
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="ProvideJobDescription" title="Declairing a job description" />
+                <para>You can submit your declaired job with the <codeInline>GenericWorkerJobSubmissionClient</codeInline>.</para>
+				<alert class="note">
+  <para>You can read more about the secure client at <link xlink:href="1c62f335-6a59-40ec-b42f-afe3ebe456e2">Secure Clients</link>.</para>
+</alert>
+				<code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"
+                region="SubmitJob" title="Submitting a job" />
+                <para>After successfully submitting a job you can wait for your resultfile and download it
+                as soon as it appears.
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="DownloadResults" />
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="PollForResults" />
+                <para>This method is used to connect to the Azure Cloud Storage and provide a storage container.</para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="connectTocloudStorageContainerMethod" />
+            </content>
+        </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

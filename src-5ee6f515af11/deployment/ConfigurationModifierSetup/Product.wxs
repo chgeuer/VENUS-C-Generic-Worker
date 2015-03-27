@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="6519ccb2-d9f4-48ea-b1cc-aaaa5a1abb5c" Name="ConfigurationModifier" Language="1033" Version="!(bind.FileVersion.ConfigurationModifier)" Manufacturer="Microsoft ATL Europe" UpgradeCode="0bbca60d-4a16-4e03-8c2c-4a2f9e57dd86">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>    
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="ConfigurationModifier"/>
+      </Directory>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+          <Directory Id="INSTALLLOCATION" Name="ConfigurationModifier">
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <Component Id="ProductComponent" Guid="B2FAB44F-1342-4845-B8D5-E4F1E2F4AEEE">
+        <!-- TODO: Insert files, registry keys, and other resources here. -->
+        <File Id="ConfigurationModifier" Name="ConfigurationModifier.exe" Source="..\..\tools\ConfigurationModifier\ConfigurationModifier\bin\Debug\ConfigurationModifier.exe" KeyPath="yes"/>
+        <File Id="ConfigurationModifierConfig" Name="ConfigurationModifier.exe.config" Source="..\..\tools\ConfigurationModifier\ConfigurationModifier\bin\Debug\ConfigurationModifier.exe.config"/>
+        <File Id="UserControls" Name="UserControls.dll" Source="..\..\tools\ConfigurationModifier\ConfigurationModifier\bin\Debug\UserControls.dll"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="6D2EE22F-6317-4CFC-ADD8-81CBEAB384DA">
+        <Shortcut Id="ConfigurationModifierStartMenu" Name="ConfigurationModifier 1.0.0" Description="Configuration Tool for the Service Configuration File" Target="[INSTALLLOCATION]ConfigurationModifier.exe" WorkingDirectory="INSTALLLOCATION"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft ATL Europe\ConfigurationModifier" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+
+
+    <Feature Id="ProductFeature" Title="ConfigurationModifier" Level="1">
+      <!-- TODO: Remove the comments around this ComponentRef element and the Component above in order to add resources to this installer. -->
+      <ComponentRef Id="ProductComponent" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+      <ComponentGroupRef Id="Product.Generated" />
+
+    </Feature>
+
+    <UIRef Id="WixUI_Minimal" />
+	</Product>
+</Wix>

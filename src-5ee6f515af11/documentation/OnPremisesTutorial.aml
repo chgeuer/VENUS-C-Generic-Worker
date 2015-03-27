@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8edda1b3-42f5-477b-b1e6-1eded85a6c01" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>This section shows how to install Generic Worker on Premises</para>
+    </introduction>
+    <!-- <prerequisites><content>Optional prerequisites info</content></prerequisites> -->
+    <!-- One or more procedure or section with procedure -->
+    <procedure>
+      <title>Requirements</title>
+      <steps class="bullet">
+        <step>
+          <content>
+            <para>
+              <externalLink>
+                <linkText>Microsoft Windows SDK for Windows 7 and .NET Framework 4</linkText>
+                <linkAlternateText>Microsoft Windows SDK for Windows 7 and .NET Framework 4</linkAlternateText>
+                <linkUri>http://www.microsoft.com/download/en/details.aspx?id=8279/</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Windows Internet Information Services</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              <externalLink>
+                <linkText>Windows Azure SDK</linkText>
+                <linkAlternateText>Windows Azure SDK</linkAlternateText>
+                <linkUri>http://www.microsoft.com/download/en/details.aspx?displaylang=en&amp;id=28045</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              <externalLink>
+                <linkText>Windows Identity Foundation Runtime</linkText>
+                <linkAlternateText>WIF Runtime</linkAlternateText>
+                <linkUri>http://www.microsoft.com/download/en/details.aspx?displaylang=en&amp;id=17331</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              <externalLink>
+                <linkText>Windows Identity Foundation SDK</linkText>
+                <linkAlternateText>WIF SDK</linkAlternateText>
+                <linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c148b2df-c7af-46bb-9162-2c9422208504</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+            <alert class="note">
+              <para>
+                You only need to install <application>WindowsIdentityFoundation-SDK-4.0.msi</application>
+              </para>
+            </alert>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              <externalLink>
+                <linkText>ASP.Net MVC3</linkText>
+                <linkAlternateText>ASP.Net MVC3</linkAlternateText>
+                <linkUri>http://download.microsoft.com/download/3/4/A/34A8A203-BD4B-44A2-AF8B-CA2CFCB311CC/AspNetMVC3Setup.exe</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+          </content>
+        </step>        
+        <step>
+          <content>
+            <para>
+              <externalLink>
+                <linkText>Azure Storage Explorer</linkText>
+                <linkAlternateText>Azure Storage Explorer</linkAlternateText>
+                <linkUri>http://azurestorageexplorer.codeplex.com/</linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+          </content>
+        </step>  
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <!-- Optional additional procedure or section with procedure -->
+    <section address="Section1">
+      <title>On Premises Installation</title>
+      <content>
+        <procedure>
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Create certificates as described <link xlink:href="c5b5c7a3-7e24-4bcd-81f9-adb0117d5dd2">here</link>
+                </para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Go to run and type mmc:</para>
+                <mediaLink>
+                  <image xlink:href="image51"/>
+                </mediaLink>
+                <mediaLink>
+                  <image xlink:href="image52"/>
+                </mediaLink>
+                <para>Open mmc.exe and click File-> Add/Remove Snap-in</para>
+              <mediaLink>
+                <image xlink:href="image53"/>
+              </mediaLink>
+                <para>Select Certificates and click Add:</para>
+              <mediaLink>
+                <image xlink:href="image54"/>
+              </mediaLink>
+                <para>Select Computer Account</para>
+              <mediaLink>
+                <image xlink:href="image55"/>
+              </mediaLink>
+                <para>Select Local Computer:</para>
+              <mediaLink>
+                <image xlink:href="image56"/>
+              </mediaLink>
+                <para>You should see the following screen and click ok</para>
+              <mediaLink>
+                <image xlink:href="image57"/>
+              </mediaLink>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Go to certificates\personal\certificates tab and right click for import certificate:</para>
+              </content>
+              <mediaLink>
+                <image xlink:href="image58"/>
+              </mediaLink>
+            </step>
+            <step>
+              <content>
+                <para>Click Next and select the pfx file which has been created:</para>
+              <mediaLink>
+                <image xlink:href="image59"/>
+              </mediaLink>
+                <para>Enter the password and check <legacyBold>"Mark this key as exportable"</legacyBold> option.</para>
+              <mediaLink>
+                <image xlink:href="image60"/>
+              </mediaLink>
+                <para>Click next button until the import is finished. You will see the certificate in the certificates tab:</para>
+              <mediaLink>
+                <image xlink:href="image61"/>
+              </mediaLink>
+                <para>Right click the imported certificate and select manage private keys menu:</para>
+              <mediaLink>
+                <image xlink:href="image62"/>
+              </mediaLink>
+                <para>Click Add Button and Add "network service" as a user who has rights to read the certificate:</para>
+              <mediaLink>
+                <image xlink:href="image63"/>
+              </mediaLink>
+              <para>You will see the network service under the group or user names groupbox:</para>
+              <mediaLink>
+                <image xlink:href="image64"/>
+              </mediaLink>
+                <para>Get the thumbprint of the certificate by double clicking the certificate  and save it.</para>
+                <mediaLink>
+                  <image xlink:href="image65"/>
+                </mediaLink>
+                <para>Repeat the same steps for the management certificate which is going to be used by the Scaling Services</para>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Go to GwDrop\Installers\Onpremises folder and select OnPremises.All.reg for editing:</para>
+              <mediaLink>
+                <image xlink:href="image66"/>
+              </mediaLink>
+                <para>Change the thumbprint of the STS thumbprint which has been saved before:</para>
+                <mediaLink>
+                  <image xlink:href="image67"/>
+                </mediaLink>
+                <para>Change the storage connection strings:</para>
+                <mediaLink>
+                  <image xlink:href="image68"/>
+                </mediaLink>
+                <para>Change the names of the queues and tables according to your settings:</para>
+                <mediaLink>
+                  <image xlink:href="image69"/>
+                </mediaLink>
+                <para>Set the thumbprint for the scaling service:</para>
+                <mediaLink>
+                  <image xlink:href="image70"/>
+                </mediaLink>
+                <para>Set the settings for accounting and insecure access:</para>
+                <mediaLink>
+                  <image xlink:href="image71"/>
+                </mediaLink>
+                <para><legacyBold>IMPORTANT:<legacyUnderline></legacyUnderline></legacyBold> Please be sure that the settting <legacyBold>"Microsoft.EMIC.Cloud.GenericWorker.IsWebRole"</legacyBold> is set to <legacyBold>"false"</legacyBold>. If it is not set to false, you may encounter security problems while submitting jobs via secure channel.</para>
+                <para>Follow the same steps for the Wow6432 Node:</para>
+                <mediaLink>
+                  <image xlink:href="image72"/>
+                </mediaLink>
+              </content>
+            </step>
+            
+             <step>
+              <content>
+                <para>Go to GwDrop\Installers\Onpremises folder and select OnPremises.All.reg for editing:</para>
+              <mediaLink>
+                <image xlink:href="image66"/>
+              </mediaLink>
+                <para>Change the thumbprint of the STS thumbprint which has been saved before:</para>
+                <mediaLink>
+                  <image xlink:href="image67"/>
+                </mediaLink>
+                <para>Change the storage connection strings:</para>
+                <mediaLink>
+                  <image xlink:href="image68"/>
+                </mediaLink>
+                <para>Change the names of the queues and tables according to your settings:</para>
+                <mediaLink>
+                  <image xlink:href="image69"/>
+                </mediaLink>
+                <para>Set the thumbprint for the scaling service:</para>
+                <mediaLink>
+                  <image xlink:href="image70"/>
+                </mediaLink>
+                <para>Set the settings for accounting and insecure access:</para>
+                <mediaLink>
+                  <image xlink:href="image71"/>
+                </mediaLink>
+                <para><legacyBold>IMPORTANT:<legacyUnderline></legacyUnderline></legacyBold> Please be sure that the settting <legacyBold>"Microsoft.EMIC.Cloud.GenericWorker.IsWebRole"</legacyBold> is set to <legacyBold>"false"</legacyBold>. If it is not set to false, you may encounter security problems while submitting jobs via secure channel.</para>
+                <para>Follow the same steps for the Wow6432 Node:</para>
+                <mediaLink>
+                  <image xlink:href="image72"/>
+                </mediaLink>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>Go to GwDrop\Installers\Onpremises folder and select Settings.DomainPasswordForWithinCorpnetTMG for editing:</para>
+
+                <para> As the field names suggests you will have to input your user id and password for the desktop or laptop on which this generic worker is going to be run.</para>
+              </content>
+            </step>
+            
+            
+            
+            <step>
+              <content>
+                <para>Save the registery file after editing has finished.</para>
+                <para>Double click the registry file in or der to save the settings to the registry</para>
+                <para>You will see the saved settings by using registery editor:</para>
+                <mediaLink>
+                  <image xlink:href="image73"/>
+                </mediaLink>
+                <para>The setttings are saved under HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft EMIC\Cloud\VENUS-C:</para>
+                <mediaLink>
+                  <image xlink:href="image74"/>
+                </mediaLink>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>If you want to use STS provided together by the GW, you have to set the data used by the STS. You have to follow the steps below ONLY ONCE, since once the data is set, it is persisted in the storage services.</para>
+                <para>The default STS data can be set by the tool named STS Initializer which can be found under the folder installers\tools:</para>
+                <mediaLink>
+                  <image xlink:href="image75"/>
+                </mediaLink>
+                <para>Run STSInitializer:</para>
+                <mediaLink>
+                  <image xlink:href="image76"/>
+                </mediaLink>
+                <para>Enter the connection string of the storage services and the sts table name. STSInitializer will set the default data to the table given:</para>
+                <mediaLink>
+                  <image xlink:href="image77"/>
+                </mediaLink>
+                <para>You can edit the data according to your settings by using Azure Storage explorer:</para>
+                <mediaLink>
+                  <image xlink:href="image78"/>
+                </mediaLink>
+              </content>
+            </step>
+          </steps>
+        </procedure>
+        <procedure>
+          <title>Installing Generic Worker Driver Host</title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>GW Driver host is the background worker process who runs the jobs. It can be found under  installers\onpremises\GenericWorkerDriverSetup.msi</para>
+                <para>Install the driver to the VM, the "GW Driver Host Service" can be found under ControlPanel\Administrative Tools\Services after successful installation:</para>
+                <mediaLink>
+                  <image xlink:href="image79"/>
+                </mediaLink>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Please note that the service will be started automatically, the status of the service can be checked via services under Control Panel \ Administrative Tools</para>
+              </content>
+            </step>
+          </steps>
+        </procedure>
+        <procedure>
+          <title>Installing IIS Web Services</title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>Web services are the endpoints that they are used for various tasks including security, job management and security.</para>
+                <para>Go to IIS and delete default web page, it will not used anymore.</para>
+                <mediaLink>
+                  <image xlink:href="image80"/>
+                </mediaLink>
+                <mediaLink>
+                  <image xlink:href="image81"/>
+                </mediaLink>
+              </content>
+            </step>
+            <step>
+              <content>
+                <para>Web services installer can be found under installers\onpremises\GWIISServicesSetup.msi. Run the msi and the web site  can be found in the iis:</para>
+              </content>
+              <mediaLink>
+                <image xlink:href="image82"/>
+              </mediaLink>
+            </step>
+            <step>
+              <content>
+                <para>The services can be tested by using IE under localhost:</para>
+                <mediaLink>
+                  <image xlink:href="image83"/>
+                </mediaLink>
+                <para>Now the VM is ready to be used together with the GW.</para>
+              </content>
+            </step>
+          </steps>
+          <!-- <conclusion>Optional conclusion</conclusion> -->
+        </procedure>
+      </content>
+    </section>
+    <!-- Optional next steps info
+    <nextSteps>
+      <content><para>Next steps info goes here</para></content>
+    </nextSteps>
+    -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>

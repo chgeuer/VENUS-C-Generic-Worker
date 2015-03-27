@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="4b43d955-4b60-495f-9432-2aee2d05ea4f" Name="GWAzureAccountingDataFetcher" Language="1033" Version="!(bind.FileVersion.GWAzureAccountingDataFetcher)" Manufacturer="Microsoft ATL Europe" UpgradeCode="98e7ff59-336f-49a1-83c2-4f38e4eccd5a">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+				  <Directory Id="INSTALLLOCATION" Name="GWAzureAccountingDataFetcher">
+					   <Component Id="ProductComponent" Guid="c8563d35-b3c0-4670-9ec5-0a285e4f7447">
+               <File Id="GWAzureAccountingDataFetcher" Name="GWAzureAccountingDataFetcher.exe" Source="..\..\tools\GWAzureAccountingDataFetcher\bin\Debug\GWAzureAccountingDataFetcher.exe" KeyPath="yes"/>
+               <File Id="GWAzureAccountingDataFetcherConfig" Name="GWAzureAccountingDataFetcher.exe.config" Source="..\..\tools\GWAzureAccountingDataFetcher\bin\Debug\GWAzureAccountingDataFetcher.exe.config"/>
+               <File Id="AzureAccounting" Name="Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll" Source="..\..\tools\GWAzureAccountingDataFetcher\bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+               <File Id="WindowsService" Name="Microsoft.EMIC.Cloud.WindowsService.dll" Source="..\..\tools\GWAzureAccountingDataFetcher\bin\Debug\Microsoft.EMIC.Cloud.WindowsService.dll"/>
+               <File Id="StorageClient" Name="Microsoft.WindowsAzure.StorageClient.dll" Source="..\..\tools\GWAzureAccountingDataFetcher\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll"/>
+               <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Vital="yes" Name="GWAzureAccountingDataFetcher" DisplayName="GW Azure Accounting Data Fetcher" Start="demand" Interactive="yes" ErrorControl="ignore">
+                 
+               </ServiceInstall>
+               <ServiceControl Id="StartService" Stop="both" Remove="uninstall" Name="GWAzureAccountingDataFetcher" Wait="yes"/>
+					   </Component>
+				  </Directory>
+        </Directory>
+			</Directory>
+		</Directory>
+
+		<Feature Id="ProductFeature" Title="GWAzureAccountingDataFetcherSetup" Level="1">
+			<!-- TODO: Remove the comments around this ComponentRef element and the Component above in order to add resources to this installer. -->
+			<ComponentRef Id="ProductComponent" />
+			
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+    <UIRef Id="WixUI_Minimal" />
+	</Product>
+</Wix>

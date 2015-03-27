@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">Mixed Platforms</Platform>
+		<ProductName>Microsoft contribution to VENUS-C - Generic Worker</ProductName>
+		<GWCoreDirectory Condition=" '$(GWCoreDirectory)' == '' ">$(MSBuildProjectDirectory)</GWCoreDirectory>
+		<OutputPath Condition=" '$(OutputPath)' == '' ">$(GWCoreDirectory)\drop</OutputPath>
+		<DropDir Condition=" '$(DropDir)' == '' ">C:\temp</DropDir>
+		<!--<VSIDE Condition=" '$(VSIDE)' == '' ">$(MSBuildProgramFiles32)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com</VSIDE>-->
+	</PropertyGroup>
+
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.RegexReplace" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FileUpdate" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Zip" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Sleep" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.User" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Time" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuild.Mercurial\MSBuild.Mercurial.dll" TaskName="MSBuild.Mercurial.HgVersion" />
+	<UsingTask AssemblyFile="$(GWCoreDirectory)\libs\MSBuild.Mercurial\MSBuild.Mercurial.dll" TaskName="MSBuild.Mercurial.HgClone" />
+
+	<ItemGroup>
+		<SolutionFiles Include="$(GWCoreDirectory)\Microsoft.EMIC.Cloud.GenericWorker.sln" />
+		<DropFile Include="$(GWCoreDirectory)\core\KTH.GenericWorker.CDMI\bin\$(Configuration)\KTH.GenericWorker.CDMI.dll" />
+		<DropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.GenericWorker\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.dll" />
+		<DropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.Storage.Azure\bin\$(Configuration)\Microsoft.EMIC.Cloud.Storage.Azure.dll" />
+		<DropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications.dll" />
+
+		<ScenarioDropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.Administrator.Host\bin\$(Configuration)\Microsoft.EMIC.Cloud.Administrator.Host.exe" />
+		<ScenarioDropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.Administrator.Host\bin\$(Configuration)\Microsoft.EMIC.Cloud.Administrator.Host.exe.config" />
+		<ScenarioDropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.AzureSettings\bin\$(Configuration)\Microsoft.EMIC.Cloud.AzureSettings.dll" />
+		<ScenarioDropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll" />
+		<ScenarioDropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.DevelopmentFabric.Utils\bin\$(Configuration)\Microsoft.EMIC.DevelopmentFabric.Utils.dll" />
+		<ScenarioDropFile Include="$(GWCoreDirectory)\core\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll" />
+		
+		<!-- TODO where does this app.publish come from? -->
+		<DropFileCloud Include="$(GWCoreDirectory)\drop\Cloud_xsmall.cspkg" />
+		<DropFileCloud Include="$(GWCoreDirectory)\drop\Cloud_small.cspkg" />
+		<DropFileCloud Include="$(GWCoreDirectory)\drop\Cloud_medium.cspkg" />
+		<DropFileCloud Include="$(GWCoreDirectory)\drop\Cloud_large.cspkg" />
+		<DropFileCloud Include="$(GWCoreDirectory)\drop\Cloud_xlarge.cspkg" />
+		<DropFileCloud Include="$(GWCoreDirectory)\drop\ServiceConfiguration.cscfg" />
+		<DropFileToolsMSI Include="$(GWCoreDirectory)\deployment\ConfigurationModifierSetup\bin\Debug\ConfigurationModifierSetup*.msi" />
+		<DropFileToolsMSI Include="$(GWCoreDirectory)\deployment\GWAzureAccountingDataFetcherSetup\bin\Debug\GWAzureAccountingDataFetcherSetup*.msi" />
+		<DropFileToolsMSI Include="$(GWCoreDirectory)\deployment\STSInitializerSetup\bin\Debug\STSInitializerSetup*.msi" />
+		<DropFileOnPremisesMSI Include="$(GWCoreDirectory)\deployment\OnPremisesGenericWorkerDriverSetup\bin\Debug\OnPremisesGenericWorkerDriverSetup*.msi" />
+		<DropFileOnPremisesMSI Include="$(GWCoreDirectory)\deployment\OnPremisesGWIISServicesSetup\bin\Debug\OnPremisesGWIISServicesSetup*.msi" />
+		<DropFileOnPremisesMSI Include="$(GWCoreDirectory)\commons\OnPremises.All.reg" />
+		<DropFileAzureVMRoleMSI Include="$(GWCoreDirectory)\deployment\AzureVMRoleGenericWorkerDriverSetup\bin\Debug\AzureVMRoleGenericWorkerDriverSetup*.msi" />
+		<DropFileAzureVMRoleMSI Include="$(GWCoreDirectory)\deployment\AzureVMRoleGWIISServicesSetup\bin\Debug\AzureVMRoleGWIISServicesSetup*.msi" />
+		<DropFileDocu Include="$(GWCoreDirectory)\documentation\Help\Microsoft.EMIC.GenericWorker.chm" />
+		<ExternalLibraryDropFile Include="$(GWCoreDirectory)\libs\ParallelExtensionsExtras.dll" />
+		<ExternalLibraryDropFile Include="$(GWCoreDirectory)\libs\Ionic.Zip.dll" />
+	</ItemGroup>
+
+	<Target Name="SetVariables">
+		<HgVersion LocalPath="$(GWCoreDirectory)" Timeout="5000">
+			<Output TaskParameter="Revision" PropertyName="HgRevision" />
+			<Output TaskParameter="Changeset" PropertyName="HgChangeset" />
+		</HgVersion>
+		<User>
+			<Output TaskParameter="UserNameWithDomain" PropertyName="BuildUserID" />
+		</User>
+    <Time Format="yyyyMMdd">
+      <Output TaskParameter="FormattedTime" PropertyName="CurrentDate" />
+    </Time>
+ 	</Target>
+
+	<Target Name="PatchBuildInfo_cs_File" DependsOnTargets="SetVariables">
+		<Copy SourceFiles="$(GWCoreDirectory)\commons\BuildInfo.cs.template" DestinationFiles="$(GWCoreDirectory)\commons\generated\BuildInfo.cs" />
+		
+		<FileUpdate Files="$(GWCoreDirectory)\commons\generated\BuildInfo.cs" Regex="XXXTheAssemblyProductNameStringValueXXX" ReplacementText="$(ProductName) (Changeset $(HgChangeset), Revision $(HgRevision))" />
+		<FileUpdate Files="$(GWCoreDirectory)\commons\generated\BuildInfo.cs" Regex="XXXHgRevisionXXX" ReplacementText="$(HgRevision)" />
+		<FileUpdate Files="$(GWCoreDirectory)\commons\generated\BuildInfo.cs" Regex="XXXHgChangesetXXX" ReplacementText="$(HgChangeset)" />
+		<FileUpdate Files="$(GWCoreDirectory)\commons\generated\BuildInfo.cs" Regex="XXXBuildUserIDXXX" ReplacementText="$(BuildUserID)" />
+	</Target>
+
+	<Target Name="Build" DependsOnTargets="SetVariables">
+		 <MSBuild Projects="@(SolutionFiles)" StopOnFirstFailure="true" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
+	</Target>
+	
+	<Target Name="Rebuild" />
+	<Target Name="Clean" />
+	<Target Name="Test" DependsOnTargets="CC_Test" />
+
+	<Target Name="PatchAzureDeploymentConfiguration">
+		<ItemGroup>
+			 <ConnectionString Include="Item"><Value>Microsoft.EMIC.Cloud.GenericWorker.ConnectionString</Value></ConnectionString>
+			 <ConnectionString Include="Item"><Value>Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString</Value></ConnectionString>
+			 <ConnectionString Include="Item"><Value>Microsoft.EMIC.Cloud.STS.Azure.ConnectionString</Value></ConnectionString>
+			 
+			 <ServiceThumbprint Include="Item"><Value>Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint</Value></ServiceThumbprint>
+			 <ServiceThumbprint Include="Item"><Value>Microsoft.EMIC.Cloud.SSLCert</Value></ServiceThumbprint>
+			 <ServiceThumbprint Include="Item"><Value>Microsoft.EMIC.Cloud.STSCert</Value></ServiceThumbprint>
+			 <ServiceThumbprint Include="Item"><Value>Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption</Value></ServiceThumbprint>
+			 
+			 <ManagementThumbprint Include="Item"><Value>Microsoft.EMIC.Cloud.Azure.MgmtCertThumbprint</Value></ManagementThumbprint>
+			 <ManagementThumbprint Include="Item"><Value>Microsoft.EMIC.Cloud.MgmtCert</Value></ManagementThumbprint>
+			 
+			 <STSURL Include="Item"><Value>Microsoft.EMIC.Cloud.STS.URL</Value></STSURL>
+			 
+			 <GenericWorkerURL Include="Item"><Value>Microsoft.EMIC.Cloud.GenericWorker.URL</Value></GenericWorkerURL>
+			 
+			 <ScalingURL Include="Item"><Value>Microsoft.EMIC.Cloud.ScalingService.URL</Value></ScalingURL>
+			 
+			 <NotificationURL Include="Item"><Value>Microsoft.EMIC.Cloud.NotificationService.URL</Value></NotificationURL>
+			 
+			 <ServiceName Include="Item"><Value>Microsoft.EMIC.Cloud.Azure.ServiceName</Value></ServiceName>
+			 
+			 <SubscriptionID Include="Item"><Value>Microsoft.EMIC.Cloud.Azure.SubscriptionId</Value></SubscriptionID>
+		</ItemGroup>
+		<Message Text="Modifying $(GWCoreDirectory)\drop\ServiceConfiguration.cscfg" />
+
+		
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(ConnectionString.Value)']/@value" 
+						 Value="[YOUR STORAGE ACCOUNT CONNECTION STRING]'DefaultEndpointsProtocol=https%3BAccountName=genericworker%3BAccountKey=sOMESTTRINGPROVIDEDBYAZUREkF4GDGe7wcWFrjcaM34QI9gr6xd0p56OVLeFcqlAiiAQbYVwOo3cMrtg=='" />
+
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(ServiceThumbprint.Value)']/@value" 
+						 Value="[YOUR CERTIFICATE THUMBPRINT UPPERCASE]'E04FB18B3317F79D5D70B1B6FF9A4C1D45630B01'" />
+
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(ManagementThumbprint.Value)']/@value" 
+						 Value="[YOUR MANAGEMENT CERTIFICATE THUMBPRINT UPPERCASE]'2ABE7E381CA712923D5A6D7642C68DDC99AC47D0'" />
+						 
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(STSURL.Value)']/@value" 
+						 Value="http://[YOUR SERVICE HOST]'my.genericworker.net'/STS/UsernamePassword.svc" />
+						 
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(GenericWorkerURL.Value)']/@value" 
+						 Value="http://[YOUR SERVICE HOST]'my.genericworker.net'/JobSubmission/SecureService.svc" />
+						 
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(ScalingURL.Value)']/@value" 
+						 Value="http://[YOUR SERVICE HOST]'my.genericworker.net'/ScalingService/SecureService.svc" />
+						 
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(NotificationURL.Value)']/@value" 
+						 Value="http://[YOUR SERVICE HOST]'my.genericworker.net'/NotificationService/SecureService.svc" />
+						 
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(ServiceName.Value)']/@value" 
+						 Value="[YOUR SERVICE NAME]'genericworker'" />
+						 
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:ConfigurationSettings/x:Setting[@name='%(SubscriptionID.Value)']/@value" 
+						 Value="[YOUR SUBSCRIPTION ID]'88147e04-43f4-48d0-b40c-c34cd2abd03a'" />
+						 
+		 <!--#region Certificates-->
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:Certificates/x:Certificate[@name='%(ServiceThumbprint.Value)']/@thumbprint" 
+						 Value="[YOUR CERTIFICATE THUMBPRINT UPPERCASE]'E04FB18B3317F79D5D70B1B6FF9A4C1D45630B01'" />
+
+		<XmlPoke XmlInputPath="$(FileName)" 
+						 Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration' /&gt;"
+						 Query="//x:ServiceConfiguration/x:Role[@name='Cloud.WebRole']/x:Certificates/x:Certificate[@name='%(ManagementThumbprint.Value)']/@thumbprint" 
+						 Value="[YOUR MANAGEMENT CERTIFICATE THUMBPRINT UPPERCASE]'2ABE7E381CA712923D5A6D7642C68DDC99AC47D0'" />
+		<!--endregion-->
+	</Target>
+
+	<Target Name="PublishCloudPackage" DependsOnTargets="Build">
+		 <MSBuild Projects="$(GWCoreDirectory)\core\Cloud\Cloud.ccproj" Targets="CorePublish" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" 
+							StopOnFirstFailure="true" />
+	</Target>
+	
+  <Target Name="PublishXSmallCloudPackage">
+     <Message Text="PublishXSmallCloudPackage GWCoreDirectory=$(GWCoreDirectory) Platform=$(Platform) OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" />
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/@vmsize" 
+         Value="ExtraSmall" />         
+		 <MSBuild Projects="$(GWCoreDirectory)\core\Cloud\Cloud.ccproj" Targets="CorePublish" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" 
+							StopOnFirstFailure="true" />
+     <Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\bin\Debugapp.publish\Cloud.cspkg" DestinationFiles="$(GWCoreDirectory)\drop\Cloud_xsmall.cspkg" />	
+	</Target>
+	
+  <Target Name="PublishSmallCloudPackage">
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/@vmsize" 
+         Value="Small" /> 
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWApp']/@sizeInMB" 
+         Value="10240" />         
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWUsers']/@sizeInMB" 
+         Value="148480" />
+		 <MSBuild Projects="$(GWCoreDirectory)\core\Cloud\Cloud.ccproj" Targets="CorePublish" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" 
+							StopOnFirstFailure="true" />
+     <Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\bin\Debugapp.publish\Cloud.cspkg" DestinationFiles="$(GWCoreDirectory)\drop\Cloud_small.cspkg" />	
+	</Target>	
+		
+	<Target Name="PublishMediumCloudPackage">
+		 <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+           Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/@vmsize" 
+           Value="Medium" />							
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWApp']/@sizeInMB" 
+         Value="15360" />         
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWUsers']/@sizeInMB" 
+         Value="322560" />           
+		 <MSBuild Projects="$(GWCoreDirectory)\core\Cloud\Cloud.ccproj" Targets="CorePublish" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" 
+							StopOnFirstFailure="true" />	
+     <Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\bin\Debugapp.publish\Cloud.cspkg" DestinationFiles="$(GWCoreDirectory)\drop\Cloud_medium.cspkg" />	
+	</Target>	
+	
+  <Target Name="PublishLargeCloudPackage">
+		 <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\\ServiceDefinition.csdef" 
+           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+           Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/@vmsize" 
+           Value="Large" />
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWApp']/@sizeInMB" 
+         Value="20480" />         
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWUsers']/@sizeInMB" 
+         Value="839680" />           
+		 <MSBuild Projects="$(GWCoreDirectory)\core\Cloud\Cloud.ccproj" Targets="CorePublish" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" 
+							StopOnFirstFailure="true" />
+		 <Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\bin\Debugapp.publish\Cloud.cspkg" DestinationFiles="$(GWCoreDirectory)\drop\Cloud_large.cspkg" />
+	</Target>	
+	
+  <Target Name="PublishXLargeCloudPackage">
+		 <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+           Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+           Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/@vmsize" 
+           Value="ExtraLarge" />					
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWApp']/@sizeInMB" 
+         Value="30720" />         
+     <XmlPoke XmlInputPath="$(GWCoreDirectory)\core\Cloud\ServiceDefinition.csdef" 
+         Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition' /&gt;"
+         Query="//x:ServiceDefinition/x:WebRole[@name='Cloud.WebRole']/x:LocalResources/x:LocalStorage[@name='GWUsers']/@sizeInMB" 
+         Value="189440" />		
+		 <MSBuild Projects="$(GWCoreDirectory)\core\Cloud\Cloud.ccproj" Targets="CorePublish" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)" 
+							StopOnFirstFailure="true" />	
+     <Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\bin\Debugapp.publish\Cloud.cspkg" DestinationFiles="$(GWCoreDirectory)\drop\Cloud_xlarge.cspkg" />	
+	</Target>		
+	
+	<Target Name="Documentation" DependsOnTargets="Build">
+		 <MSBuild Projects="$(GWCoreDirectory)\documentation\Microsoft.EMIC.Cloud.GenericWorker.shfbproj" 
+							Properties="Configuration=$(Configuration);Platform=$(Platform)" 
+							StopOnFirstFailure="true" />
+	</Target>
+ 
+	<Target Name="ZipSources" DependsOnTargets="SetVariables;PatchBuildInfo_cs_File"> 
+		<RemoveDir Directories="$(GWCoreDirectory)\drop\src" ContinueOnError="true" />
+		<MakeDir Directories="$(GWCoreDirectory)\drop\src" />
+		<HgClone LocalPath="$(GWCoreDirectory)"  Source="$(GWCoreDirectory)" Destination="$(GWCoreDirectory)\drop\src\" />
+		<MakeDir Directories="$(GWCoreDirectory)\drop\src\commons\generated" />
+		<Copy SourceFiles="$(GWCoreDirectory)\commons\generated\BuildInfo.cs" DestinationFolder="$(GWCoreDirectory)\drop\src\commons\generated" />
+		<RemoveDir Directories="$(GWCoreDirectory)\drop\src\.hg" /> 
+		  <Sleep Milliseconds="1500" />
+		<ItemGroup>
+		  <ZipFiles Include="$(GWCoreDirectory)\drop\src\**\*.*" />
+		</ItemGroup>
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="PatchAzureDeploymentConfiguration" Properties="FileName=$(GWCoreDirectory)\drop\src\core\cloud\ServiceConfiguration.cscfg"/>
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="PatchAzureDeploymentConfiguration" Properties="FileName=$(GWCoreDirectory)\drop\src\core\cloud\ServiceConfiguration.Production.cscfg"/>
+		<Sleep Milliseconds="1500" />
+		<Exec Command='"$(GWCoreDirectory)\Microsoft.EMIC.RemoveSCCBindings.exe" $(GWCoreDirectory)\drop\src\  ' />
+		<Sleep Milliseconds="1500" />
+    <!-- Exec WorkingDirectory="$(GWCoreDirectory)\drop\src" Command='powershell -NoProfile -File $(GWCoreDirectory)\drop\src\licensing_cleanup.ps1 ' />
+		<Sleep Milliseconds="1500" / -->
+		<Exec WorkingDirectory="$(GWCoreDirectory)\drop\src" Command='$(GWCoreDirectory)\drop\src\prepend_gw_license_header.bat ' />
+		<Sleep Milliseconds="1500" />
+		<Zip ZipFileName="$(GWCoreDirectory)\drop\src-$(HgChangeset).zip" Files="@(ZipFiles)" WorkingDirectory="$(GWCoreDirectory)\drop\src" ZipLevel="9" /> 
+	</Target>
+  
+	<Target Name="Copy" DependsOnTargets="SetVariables">
+		<Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\ServiceConfiguration.cscfg" DestinationFiles="$(GWCoreDirectory)\drop\ServiceConfiguration.cscfg" />
+		<Copy SourceFiles="$(GWCoreDirectory)\core\Cloud\bin\$(Configuration)app.publish\Cloud.cspkg" DestinationFiles="$(GWCoreDirectory)\drop\Cloud.cspkg" />
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="PatchAzureDeploymentConfiguration" Properties="FileName=$(GWCoreDirectory)\drop\ServiceConfiguration.cscfg"/>
+	</Target>
+  
+	<Target Name="Drop" DependsOnTargets="Build;Documentation;ZipSources;PublishCloudPackage;Copy"> 
+    <PropertyGroup>
+      <DropDir>$(GWCoreDirectory)\drop\$(CurrentDate)_$(HgChangeset)__$(Configuration)</DropDir>
+    </PropertyGroup>
+		<Copy SourceFiles="@(DropFile);@(ExternalLibraryDropFile);@(DropFileDocu)" DestinationFolder="$(DropDir)" /> 
+		<Copy SourceFiles="$(GWCoreDirectory)\drop\ServiceConfiguration.cscfg" DestinationFolder="$(DropDir)" /> 
+		<Copy SourceFiles="$(GWCoreDirectory)\drop\src-$(HgChangeset).zip" DestinationFolder="$(DropDir)" /> 
+	</Target>
+	
+	<Target Name="CC_Test">
+	  <Message Text="CC_Test WorkingDir=$(MSBuildProjectDirectory)" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command='"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\mstest.exe" /testcontainer:core\Tests\bin\Debug\Tests.dll /resultsfile:TestResults\results.trx ' />
+	</Target>	
+	
+	<Target Name="CC_LongRunningTest">
+	  <Message Text="CC_LongRunningTest WorkingDir=$(MSBuildProjectDirectory)" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command='"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\mstest.exe" /testcontainer:core\Tests.LongRunning\bin\Debug\Tests.LongRunning.dll /resultsfile:TestResults\longrunningresults.trx ' />
+	</Target>	
+	
+	<Target Name="CC_LiveTest">
+	  <Message Text="CC_LiveTest WorkingDir=$(MSBuildProjectDirectory)" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command='"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\mstest.exe" /testcontainer:core\Tests.Live\bin\Debug\Tests.Live.dll /resultsfile:TestResults\liveresults.trx ' />
+	</Target>	
+	
+	<Target Name="CC_Drop" DependsOnTargets="SetVariables;Documentation;ZipSources;Copy" >
+    <PropertyGroup>
+      <Date>$([System.DateTime]::Now.ToString("yyyy_MM_dd"))</Date>
+    </PropertyGroup>
+		<Copy SourceFiles="$(GWCoreDirectory)\drop\src-$(HgChangeset).zip" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\src' /> 
+		<Copy SourceFiles="@(DropFileCloud)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\cloud' />
+		<Copy SourceFiles="@(DropFileOnPremisesMSI)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\installers\onpremises' />
+		<Copy SourceFiles="@(DropFileAzureVMRoleMSI)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\installers\azurevmrole' />
+		<Copy SourceFiles="@(DropFileToolsMSI)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\installers\tools' />
+		<Copy SourceFiles="@(DropFileDocu)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\docs' />
+		<Copy SourceFiles="@(DropFile);@(ExternalLibraryDropFile)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\sdk' />
+	</Target>
+
+	<Target Name="Quick_Drop" DependsOnTargets="SetVariables;Copy" >
+    <PropertyGroup>
+      <Date>$([System.DateTime]::Now.ToString("yyyy_MM_dd"))</Date>
+    </PropertyGroup>
+		<Copy SourceFiles="$(GWCoreDirectory)\drop\src-$(HgChangeset).zip" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\src' /> 
+		<Copy SourceFiles="@(DropFileCloud)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\cloud' />
+		<Copy SourceFiles="@(DropFileOnPremisesMSI)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\installers\onpremises' />
+		<Copy SourceFiles="@(DropFileAzureVMRoleMSI)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\installers\azurevmrole' />
+		<Copy SourceFiles="@(DropFileToolsMSI)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\installers\tools' />
+		<Copy SourceFiles="@(DropFileDocu)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\docs' />
+		<Copy SourceFiles="@(DropFile);@(ExternalLibraryDropFile)" DestinationFolder='$(DropDir)\$(Date)__$(HgChangeset)\sdk' />
+	</Target>    
+	<Target Name="CC_Deploy" DependsOnTargets="PublishCloudPackage">
+        <Message Text="CC_Deploy WorkingDir=$(MSBuildProjectDirectory)" />
+        <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command='"%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "$(MSBuildProjectDirectory)\deploytoazure.ps1" -action deploy -DeployDir "$(DeployDir)"' />
+	</Target>
+    
+    <Target Name="CC_RemoveDeploy">
+        <Message Text="CC_RemoveDeploy WorkingDir=$(MSBuildProjectDirectory)" />
+        <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command='"%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" "$(MSBuildProjectDirectory)\deploytoazure.ps1" -action remove' />
+    </Target>
+    
+	<Target Name="ScenarioDrop">
+		<Copy SourceFiles="@(DropFile);@(ExternalLibraryDropFile);@(ScenarioDropFile)" DestinationFolder="$(ScenarioDropLibs)" /> 
+	</Target>
+</Project>

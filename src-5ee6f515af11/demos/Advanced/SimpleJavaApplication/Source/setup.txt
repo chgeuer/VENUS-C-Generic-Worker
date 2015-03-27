@@ -1,0 +1,5 @@
+1-) set CLASSPATH=
+2-) javac SimpleMathConsole.java
+3-) java SimpleMathConsole -infile input.csv -outfile output.csv
+4-) jar cvfm SimpleMathConsole.jar manifest.txt SimpleMathConsole.class
+5-) java -jar SimpleMathConsole.jar -infile input.csv -outfile output.csv

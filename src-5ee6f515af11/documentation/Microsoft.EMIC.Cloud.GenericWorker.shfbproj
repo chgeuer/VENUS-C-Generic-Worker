@@ -1,0 +1,862 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{386e26d6-3120-4993-a101-0ef1e12f201a}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>Microsoft.EMIC.GenericWorker</HtmlHelpName>
+    <Language>en-US</Language>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\core\Microsoft.EMIC.Cloud.GenericWorker\Microsoft.EMIC.Cloud.GenericWorker.csproj" platform="Any CPU" />
+<DocumentationSource sourceFile="..\core\Microsoft.EMIC.DevelopmentFabric.Utils\Microsoft.EMIC.DevelopmentFabric.Utils.csproj" platform="Any CPU" />
+<DocumentationSource sourceFile="..\core\OGF.BES\OGF.BES.csproj" platform="Any CPU" /></DocumentationSources>
+    <HelpTitle>Documentation for the Microsoft EMIC Generic Worker, a contribution to the VENUS-C project</HelpTitle>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False" />
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud" isDocumented="True">Root namespace for core types. </NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.ApplicationRepository" isDocumented="True">For managing applications for the Generic Worker. </NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.DataManagement" isDocumented="True">For data transfer. </NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.GenericWorker" isDocumented="True">Core types for the Generic Worker</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.Security" isDocumented="True">Security-related types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.UserAdministration" isDocumented="True">For creating local user accounts on Windows. </NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.Utilities" isDocumented="True">Utility classes</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Microsoft.EMIC.Cloud.GenericWorker.AzureProvider" isDocumented="True">Implements the </NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <ProjectSummary>Documents the Microsoft EMIC Generic Worker. </ProjectSummary>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <ApiFilter />
+    <ComponentConfigurations />
+    <HelpAttributes />
+    <PlugInConfigurations />
+    <BuildLogFile />
+    <HtmlHelp1xCompilerPath />
+    <HtmlHelp2xCompilerPath />
+    <SandcastlePath />
+    <WorkingPath />
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="ApplicationDescription.aml" />
+    <None Include="ArgumentTypes.aml" />
+    <None Include="AssemblyOverview.aml" />
+    <None Include="AccountingListener.aml" />
+    <None Include="AccountingPusher.aml" />
+    <None Include="AzureWMRoleTutorial.aml" />
+    <None Include="AzureAccountingComponents.aml" />
+    <None Include="advancedOptionsIntro.aml" />
+    <None Include="programmingGuideIntroduction.aml" />
+    <None Include="CreatingServiceConfiguration.aml" />
+    <None Include="IntroductionOfServiceConfigurationModification.aml" />
+    <None Include="creatingConnectionString.aml" />
+    <None Include="introductionToOperationsGuide.aml" />
+    <None Include="endpointreferencetypeDocumentation.aml" />
+    <None Include="HeirarchyOfJobs.aml" />
+    <None Include="TerminateJobsByUserNameGroupIdJobIdHeirarchy.aml" />
+    <None Include="ListandPollJobs1.aml" />
+    <None Include="ListandPollJobs2.aml" />
+    <None Include="ListandPollJobs3.aml" />
+    <None Include="tutorialCloudClient.aml" />
+    <None Include="TutorialForRunningACloudClientOnYourComputer.aml" />
+    <None Include="SubmitJobsWithManyReferencesDev.aml" />
+    <None Include="Creating a Custom VM Role image for Venus-C.aml" />
+    <None Include="OnPremisesTutorial.aml" />
+    <None Include="RemoveTerminatedJobs.aml" />
+    <None Include="AzureDeploymentTutorial.aml" />
+    <None Include="ServiceConfigurationModifier.aml" />
+    <None Include="RegistrySettings.aml" />
+    <None Include="CertificateStore.aml" />
+    <None Include="STSInitializer.aml" />
+    <None Include="CreatingNewDeployment.aml" />
+    <None Include="UploadingCertificates.aml" />
+    <None Include="CreatingHostedService.aml" />
+    <None Include="LocalDeploymentTutorial.aml" />
+    <None Include="CreatingCertificates.aml" />
+    <None Include="SetupNotificationsForYourJobs.aml" />
+    <None Include="ListAndPollJobs.aml" />
+    <None Include="ScaleUpDownDeployment.aml" />
+    <None Include="DatadrivenNotification.aml" />
+    <None Include="userprerequistes.aml" />
+    <None Include="UserTable.aml" />
+    <None Include="security.aml" />
+    <None Include="UserTable.aml" />
+    <None Include="security.aml" />
+    <None Include="LocalJobSubmission.aml" />
+    <None Include="SampleApplication.aml" />
+    <None Include="LocalDeployment.aml" />
+    <None Include="SettingUpAzurePortal.aml" />
+    <None Include="SupportAndContactInformation.aml" />
+    <None Include="RuntimeConfiguration.aml" />
+    <None Include="HowtoAzurePortal.aml" />
+    <None Include="HowtoPowershell.aml" />
+    <None Include="HowtoVisualStudio.aml" />
+    <None Include="CertificateAcquisition.aml" />
+    <None Include="InititalConfiguration.aml" />
+    <None Include="OperationsGuide.aml" />
+    <None Include="ImplementingCustomIGWRE.aml" />
+    <None Include="ExtendingGWwithCDMC.aml" />
+    <None Include="GWExtensions.aml" />
+    <None Include="SubmitJobsDev.aml" />
+    <None Include="SampleBinaryWrapper.aml" />
+    <None Include="DescribingApplication.aml" />
+    <None Include="writingApplicationDescription.aml" />
+    <None Include="writingApplicationDescription1.aml" />
+    <None Include="writingApplicationDescription1_MappingCommandLineArguments.aml" />
+    <None Include="writingApplicationDescription2.aml" />
+    <None Include="writingApplicationDescription2_ZippingAndUploadingApplicationDescription.aml" />
+    <None Include="writingJobDescription.aml" />
+    <None Include="writingJobDescription1.aml" />
+    <None Include="writingJobDescription2.aml" />
+    <None Include="writingJobDescription_UnderstandingJobDescriptionClass.aml" />
+    <None Include="writingPowershellScriptForSilentModeInstallOfPrerequisiteMatLabSoftware.aml" />
+    <None Include="writingPowershellScriptForSilentModeInstallOfPrerequisiteSoftware.aml" />
+    <None Include="writingPowershellScriptForSilentModeInstallOfPrerequisiteSoftwareAndApplication.aml" />
+    <None Include="ZIPingApplication.aml" />
+    <None Include="UploadApps.aml" />
+    <None Include="UsingStatements.aml" />
+    <None Include="DevelopmentTools.aml" />
+    <None Include="JobDescription.aml" />
+    <None Include="SubmittingJobs.aml" />
+    <None Include="InstallingApplications.aml" />
+    <None Include="GWFunctionality.aml" />
+    <None Include="FolderStructure.aml" />
+    <None Include="CodingSamples.aml" />
+    <None Include="Reference.aml" />
+    <None Include="HowtoDeploy.aml" />
+    <None Include="Introduction.aml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="img\gwoverview\" />
+    <Folder Include="img\Quickstart\" />
+    <Folder Include="img\HowToDeploy\" />
+    <Folder Include="img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="Content Layout.content" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="img\HowToDeploy\newDeploymentImage16.png">
+      <ImageId>newDeploymentImage16</ImageId>
+      <AlternateText>new Deployment Image 16</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage18.png">
+      <ImageId>newDeploymentImage18</ImageId>
+      <AlternateText>new Deployment Image 18</AlternateText>
+      <ImageId>newDeploymentImage18</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage17.png">
+      <ImageId>newDeploymentImage17</ImageId>
+      <AlternateText>new Deployment Image 17</AlternateText>
+      <ImageId>newDeploymentImage17</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage14.png">
+      <ImageId>newDeploymentImage14</ImageId>
+      <AlternateText>new Deployment Image 14</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage15.png">
+      <ImageId>newDeploymentImage15</ImageId>
+      <AlternateText>new Deployment Image 15</AlternateText>
+      <ImageId>newDeploymentImage15</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage13.png">
+      <ImageId>newDeploymentImage13</ImageId>
+      <AlternateText>new Deployment Image 13</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage12.png">
+      <ImageId>newDeploymentImage12</ImageId>
+      <AlternateText>new Deployment Image 12</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage1.png">
+      <ImageId>newDeploymentImage1</ImageId>
+      <AlternateText>new Deployment Image 1</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage10.png">
+      <ImageId>newDeploymentImage10</ImageId>
+      <AlternateText>new Deployment Image 10</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage11.png">
+      <ImageId>newDeploymentImage11</ImageId>
+      <AlternateText>new Deployment Image 11</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage2.png">
+      <ImageId>newDeploymentImage2</ImageId>
+      <AlternateText>new Deployment Image 2</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage3.png">
+      <ImageId>newDeploymentImage3</ImageId>
+      <AlternateText>new Deployment Image 3</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage4.png">
+      <ImageId>newDeploymentImage4</ImageId>
+      <AlternateText>new Deployment Image 4</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage5.png">
+      <ImageId>newDeploymentImage5</ImageId>
+      <AlternateText>new Deployment Image 5</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage6.png">
+      <ImageId>newDeploymentImage6</ImageId>
+      <AlternateText>new Deployment Image 6</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage7.png">
+      <ImageId>newDeploymentImage7</ImageId>
+      <AlternateText>new Deployment Image 7</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage8.png">
+      <ImageId>newDeploymentImage8</ImageId>
+      <AlternateText>new Deployment Image 8</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\newDeploymentImage9.png">
+      <ImageId>newDeploymentImage9</ImageId>
+      <AlternateText>new Deployment Image 9</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\tutorial6.png">
+      <ImageId>tutorial6</ImageId>
+      <AlternateText>tutorial 6</AlternateText>
+      <AlternateText>tutorial6</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\tutorial5.png">
+      <ImageId>tutorial5</ImageId>
+      <AlternateText>tutorial 5</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\tutorial4.png">
+      <ImageId>tutorial4</ImageId>
+      <AlternateText>tutorial 4</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\tutorial3.png">
+      <ImageId>tutorial3</ImageId>
+      <AlternateText>tutorial 3</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\tutorial2.png">
+      <ImageId>tutorial2</ImageId>
+      <AlternateText>tutorial 2</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\tutorial1.png">
+      <ImageId>tutorial1</ImageId>
+      <AlternateText>tutorial 1</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents1.png">
+      <ImageId>azureaccountingcomponents1</ImageId>
+      <AlternateText>azureaccountingcomponents 1</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents2.png">
+      <ImageId>azureaccountingcomponents2</ImageId>
+      <AlternateText>azureaccountingcomponents 2</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents3.png">
+      <ImageId>azureaccountingcomponents3</ImageId>
+      <AlternateText>azureaccountingcomponents 3</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents4.png">
+      <ImageId>azureaccountingcomponents4</ImageId>
+      <AlternateText>azureaccountingcomponents 4</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents5.png">
+      <ImageId>azureaccountingcomponents5</ImageId>
+      <AlternateText>azureaccountingcomponents 5</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents6.png">
+      <ImageId>azureaccountingcomponents6</ImageId>
+      <AlternateText>azureaccountingcomponents 6</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents7.png">
+      <ImageId>azureaccountingcomponents7</ImageId>
+      <AlternateText>azureaccountingcomponents 7</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents8.png">
+      <ImageId>azureaccountingcomponents8</ImageId>
+      <AlternateText>azureaccountingcomponents 8</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\azureaccountingcomponents9.png">
+      <ImageId>azureaccountingcomponents9</ImageId>
+      <AlternateText>azureaccountingcomponents 9</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole33.png">
+      <ImageId>customvmrole33</ImageId>
+      <AlternateText>customvmrole 33</AlternateText>
+      <AlternateText>customvmrole33</AlternateText>
+      <ImageId>customvmrole33</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole32.png">
+      <ImageId>customvmrole32</ImageId>
+      <AlternateText>customvmrole 32</AlternateText>
+      <AlternateText>customvmrole32</AlternateText>
+      <ImageId>customvmrole32</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole31.png">
+      <ImageId>customvmrole31</ImageId>
+      <AlternateText>customvmrole 31</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole30.png">
+      <ImageId>customvmrole30</ImageId>
+      <AlternateText>customvmrole 30</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole29.png">
+      <ImageId>customvmrole29</ImageId>
+      <AlternateText>customvmrole 29</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole28.png">
+      <ImageId>customvmrole28</ImageId>
+      <AlternateText>customvmrole 28</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole27.png">
+      <ImageId>customvmrole27</ImageId>
+      <AlternateText>customvmrole 27</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole26.png">
+      <ImageId>customvmrole26</ImageId>
+      <AlternateText>customvmrole 26</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole25.png">
+      <ImageId>customvmrole25</ImageId>
+      <AlternateText>customvmrole 25</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole24.png">
+      <ImageId>customvmrole24</ImageId>
+      <AlternateText>customvmrole 24</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole23.png">
+      <ImageId>customvmrole23</ImageId>
+      <AlternateText>customvmrole 23</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole22.png">
+      <ImageId>customvmrole22</ImageId>
+      <AlternateText>customvmrole 22</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole21.png">
+      <ImageId>customvmrole21</ImageId>
+      <AlternateText>customvmrole 21</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole20.png">
+      <ImageId>customvmrole20</ImageId>
+      <AlternateText>customvmrole 20</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole19.png">
+      <ImageId>customvmrole19</ImageId>
+      <AlternateText>customvmrole 19</AlternateText>
+      <AlternateText>customvmrole19</AlternateText>
+      <ImageId>customvmrole19</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole18.png">
+      <ImageId>customvmrole18</ImageId>
+      <AlternateText>customvmrole 18</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole17.png">
+      <ImageId>customvmrole17</ImageId>
+      <AlternateText>customvmrole 17</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole16.png">
+      <ImageId>customvmrole16</ImageId>
+      <AlternateText>customvmrole 16</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole15.png">
+      <ImageId>customvmrole15</ImageId>
+      <AlternateText>customvmrole 15</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole14.png">
+      <ImageId>customvmrole14</ImageId>
+      <AlternateText>customvmrole 14</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole13.png">
+      <ImageId>customvmrole13</ImageId>
+      <AlternateText>customvmrole 13</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole12.png">
+      <ImageId>customvmrole12</ImageId>
+      <AlternateText>customvmrole 12</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole11.png">
+      <ImageId>customvmrole11</ImageId>
+      <AlternateText>customvmrole 11</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole10.png">
+      <ImageId>customvmrole10</ImageId>
+      <AlternateText>customvmrole 10</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole9.png">
+      <ImageId>customvmrole9</ImageId>
+      <AlternateText>customvmrole 9</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole8.png">
+      <ImageId>customvmrole8</ImageId>
+      <AlternateText>customvmrole 8</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole7.png">
+      <ImageId>customvmrole7</ImageId>
+      <AlternateText>customvmrole 7</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole6.png">
+      <ImageId>customvmrole6</ImageId>
+      <AlternateText>customvmrole 6</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole5.png">
+      <ImageId>customvmrole5</ImageId>
+      <AlternateText>customvmrole 5</AlternateText>
+      <AlternateText>customvmrole5</AlternateText>
+      <ImageId>customvmrole5</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole4.png">
+      <ImageId>customvmrole4</ImageId>
+      <AlternateText>customvmrole 4</AlternateText>
+      <AlternateText>customvmrole4</AlternateText>
+      <ImageId>customvmrole4</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole3.png">
+      <ImageId>customvmrole3</ImageId>
+      <AlternateText>customvmrole 3</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole2.png">
+      <ImageId>customvmrole2</ImageId>
+      <AlternateText>customvmrole 2</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\customvmrole1.png">
+      <ImageId>customvmrole1</ImageId>
+      <AlternateText>customvmrole 1</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image83.png">
+      <ImageId>image83</ImageId>
+      <AlternateText>image 83</AlternateText>
+      <AlternateText>image83</AlternateText>
+      <ImageId>image83</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image82.png">
+      <ImageId>image82</ImageId>
+      <AlternateText>image 82</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image81.png">
+      <ImageId>image81</ImageId>
+      <AlternateText>image 81</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image80.png">
+      <ImageId>image80</ImageId>
+      <AlternateText>image 80</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image79.png">
+      <ImageId>image79</ImageId>
+      <AlternateText>image 79</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image78.png">
+      <ImageId>image78</ImageId>
+      <AlternateText>image 78</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image77.png">
+      <ImageId>image77</ImageId>
+      <AlternateText>image 77</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image76.png">
+      <ImageId>image76</ImageId>
+      <AlternateText>image 76</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image75.png">
+      <ImageId>image75</ImageId>
+      <AlternateText>image 75</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image74.png">
+      <ImageId>image74</ImageId>
+      <AlternateText>image 74</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image73.png">
+      <ImageId>image73</ImageId>
+      <AlternateText>image 73</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image72.png">
+      <ImageId>image72</ImageId>
+      <AlternateText>image 72</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image71.png">
+      <ImageId>image71</ImageId>
+      <AlternateText>image 71</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image70.png">
+      <ImageId>image70</ImageId>
+      <AlternateText>image 70</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image69.png">
+      <ImageId>image69</ImageId>
+      <AlternateText>image 69</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image68.png">
+      <ImageId>image68</ImageId>
+      <AlternateText>image 68</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image67.png">
+      <ImageId>image67</ImageId>
+      <AlternateText>image 67</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image66.png">
+      <ImageId>image66</ImageId>
+      <AlternateText>image 66</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image65.png">
+      <ImageId>image65</ImageId>
+      <AlternateText>image 65</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image64.png">
+      <ImageId>image64</ImageId>
+      <AlternateText>image 64</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image63.png">
+      <ImageId>image63</ImageId>
+      <AlternateText>image 63</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image62.png">
+      <ImageId>image62</ImageId>
+      <AlternateText>image 62</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image61.png">
+      <ImageId>image61</ImageId>
+      <AlternateText>image 61</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image60.png">
+      <ImageId>image60</ImageId>
+      <AlternateText>image 60</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image59.png">
+      <ImageId>image59</ImageId>
+      <AlternateText>image 59</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image58.png">
+      <ImageId>image58</ImageId>
+      <AlternateText>image 58</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image57.png">
+      <ImageId>image57</ImageId>
+      <AlternateText>image 57</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image56.png">
+      <ImageId>image56</ImageId>
+      <AlternateText>image 56</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image55.png">
+      <ImageId>image55</ImageId>
+      <AlternateText>image 55</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image54.png">
+      <ImageId>image54</ImageId>
+      <AlternateText>image 54</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image53.png">
+      <ImageId>image53</ImageId>
+      <AlternateText>image 53</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image52.png">
+      <ImageId>image52</ImageId>
+      <AlternateText>image 52</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image51.png">
+      <ImageId>image51</ImageId>
+      <AlternateText>image 51</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image45.png">
+      <ImageId>image45</ImageId>
+      <AlternateText>image 45</AlternateText>
+      <ImageId>image45</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image44.png">
+      <ImageId>image44</ImageId>
+      <AlternateText>image 44</AlternateText>
+      <ImageId>image44</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image43.png">
+      <ImageId>image43</ImageId>
+      <AlternateText>image 43</AlternateText>
+      <ImageId>image43</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image42.png">
+      <ImageId>image42</ImageId>
+      <AlternateText>image 42</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image41.png">
+      <ImageId>image41</ImageId>
+      <AlternateText>image 41</AlternateText>
+      <ImageId>image41</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image40.png">
+      <ImageId>image40</ImageId>
+      <AlternateText>image 40</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image39.png">
+      <ImageId>image39</ImageId>
+      <AlternateText>image 39</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image38.png">
+      <ImageId>image38</ImageId>
+      <AlternateText>image 38</AlternateText>
+      <ImageId>image38</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image37.png">
+      <ImageId>image37</ImageId>
+      <AlternateText>image 37</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image36.png">
+      <ImageId>image36</ImageId>
+      <AlternateText>image 36</AlternateText>
+      <ImageId>image36</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image35.png">
+      <ImageId>image35</ImageId>
+      <AlternateText>image 35</AlternateText>
+      <ImageId>image35</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image34.png">
+      <ImageId>image34</ImageId>
+      <AlternateText>image 34</AlternateText>
+      <ImageId>image34</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image33.png">
+      <ImageId>image33</ImageId>
+      <AlternateText>image 33</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image32.png">
+      <ImageId>image32</ImageId>
+      <AlternateText>image 32</AlternateText>
+      <ImageId>image32</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image31.png">
+      <ImageId>image31</ImageId>
+      <AlternateText>image 31</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image30.png">
+      <ImageId>image30</ImageId>
+      <AlternateText>image 30</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image28.png">
+      <ImageId>image28</ImageId>
+      <AlternateText>image 28</AlternateText>
+      <ImageId>image28</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image29.png">
+      <ImageId>image29</ImageId>
+      <AlternateText>image 29</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image27.png">
+      <ImageId>image27</ImageId>
+      <AlternateText>image 27</AlternateText>
+      <ImageId>image27</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image26.png">
+      <ImageId>image26</ImageId>
+      <AlternateText>image 26</AlternateText>
+      <ImageId>image26</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image25.png">
+      <ImageId>image25</ImageId>
+      <AlternateText>image 25</AlternateText>
+      <ImageId>image25</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image24.png">
+      <ImageId>image24</ImageId>
+      <AlternateText>image 24</AlternateText>
+      <ImageId>image24</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image23.png">
+      <ImageId>image23</ImageId>
+      <AlternateText>image 23</AlternateText>
+      <ImageId>image23</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image22.png">
+      <ImageId>image22</ImageId>
+      <AlternateText>image 22</AlternateText>
+      <ImageId>image22</ImageId>
+    </Image>
+    <Image Include="img\HowToDeploy\image21.png">
+      <ImageId>image21</ImageId>
+      <AlternateText>image 21</AlternateText>
+      <ImageId>image21</ImageId>
+    </Image>
+    <Image Include="img\gwoverview\Accounting.png">
+      <ImageId>Accounting</ImageId>
+      <AlternateText>Accounting</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\notifier.png">
+      <ImageId>notifier</ImageId>
+      <AlternateText>notifier</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\usertable.png">
+      <ImageId>usertable</ImageId>
+      <AlternateText>usertable</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide1.PNG">
+      <ImageId>Slide1</ImageId>
+      <AlternateText>Slide 1</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide9.png">
+      <ImageId>Slide9</ImageId>
+      <AlternateText>Slide 9</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide2.png">
+      <ImageId>Slide2</ImageId>
+      <AlternateText>Slide 2</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide8.PNG">
+      <ImageId>Slide8</ImageId>
+      <AlternateText>Slide 8</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide7.PNG">
+      <ImageId>Slide7</ImageId>
+      <AlternateText>Slide 7</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide2.png">
+      <ImageId>Slide2</ImageId>
+      <AlternateText>Slide 2</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide6.PNG">
+      <ImageId>Slide6</ImageId>
+      <AlternateText>Slide 6</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide5.PNG">
+      <ImageId>Slide5</ImageId>
+      <AlternateText>Slide 5</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide4.PNG">
+      <ImageId>Slide4</ImageId>
+      <AlternateText>Slide 4</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide3.PNG">
+      <ImageId>Slide3</ImageId>
+      <AlternateText>Slide 3</AlternateText>
+    </Image>
+    <Image Include="img\gwoverview\Slide2.PNG">
+      <ImageId>Slide2</ImageId>
+      <AlternateText>Slide 2</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\userprerequistes1.png">
+      <ImageId>userprerequistes1</ImageId>
+      <AlternateText>userprerequistes 1</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\userprerequistes2.png">
+      <ImageId>userprerequistes2</ImageId>
+      <AlternateText>userprerequistes 2</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\userprerequistes3.png">
+      <ImageId>userprerequistes3</ImageId>
+      <AlternateText>userprerequistes 3</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\userprerequistes4.png">
+      <ImageId>userprerequistes4</ImageId>
+      <AlternateText>userprerequistes 4</AlternateText>
+    </Image>
+    <Image Include="img\Quickstart\configureRemoteAccessSelect.png">
+      <ImageId>configureRemoteAccessSelect</ImageId>
+      <AlternateText>configure Remote Access Select</AlternateText>
+    </Image>
+    <Image Include="img\Quickstart\configureRemoteAccess.png">
+      <ImageId>configureRemoteAccess</ImageId>
+      <AlternateText>configure Remote Access</AlternateText>
+    </Image>
+    <Image Include="img\Quickstart\configureSelect.png">
+      <ImageId>configureSelect</ImageId>
+      <AlternateText>configure Select</AlternateText>
+    </Image>
+    <Image Include="img\Quickstart\configure.png">
+      <ImageId>configure</ImageId>
+      <AlternateText>configure</AlternateText>
+    </Image>
+    <Image Include="img\Quickstart\publish.png">
+      <ImageId>publish</ImageId>
+      <AlternateText>publish</AlternateText>
+    </Image>
+    <Image Include="img\Quickstart\startup_project.png">
+      <ImageId>startup_project</ImageId>
+      <AlternateText>startup project</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image9.png">
+      <ImageId>image9</ImageId>
+      <AlternateText>image 9</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image8.png">
+      <ImageId>image8</ImageId>
+      <AlternateText>image 8</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image7.png">
+      <ImageId>image7</ImageId>
+      <AlternateText>image 7</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image6.png">
+      <ImageId>image6</ImageId>
+      <AlternateText>image 6</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image5.png">
+      <ImageId>image5</ImageId>
+      <AlternateText>image 5</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image20.png">
+      <ImageId>image20</ImageId>
+      <AlternateText>image 20</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image19.png">
+      <ImageId>image19</ImageId>
+      <AlternateText>image 19</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image18.png">
+      <ImageId>image18</ImageId>
+      <AlternateText>image 18</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image17.png">
+      <ImageId>image17</ImageId>
+      <AlternateText>image 17</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image16.png">
+      <ImageId>image16</ImageId>
+      <AlternateText>image 16</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image15.png">
+      <ImageId>image15</ImageId>
+      <AlternateText>image 15</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image14.png">
+      <ImageId>image14</ImageId>
+      <AlternateText>image 14</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image13.png">
+      <ImageId>image13</ImageId>
+      <AlternateText>image 13</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image12.png">
+      <ImageId>image12</ImageId>
+      <AlternateText>Upload a new certificate</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image11.png">
+      <ImageId>image11</ImageId>
+      <AlternateText>Creating a hosted service</AlternateText>
+    </Image>
+    <Image Include="img\HowToDeploy\image10.png">
+      <ImageId>image10</ImageId>
+      <AlternateText>Create a new hosted service</AlternateText>
+    </Image>
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

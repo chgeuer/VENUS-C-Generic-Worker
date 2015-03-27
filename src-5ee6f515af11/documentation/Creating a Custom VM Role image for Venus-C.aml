@@ -1,0 +1,735 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+  <topic id="a6a1e6c5-3362-4672-a473-ca3596bcbadf" revisionNumber="1">
+    <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!--
+		        <summary>
+			        <para>Optional summary abstract</para>
+		        </summary>
+		        -->
+      <introduction>
+        <!-- Uncomment this to generate an outline of the section and sub-section
+					         titles.  Specify a numeric value as the inner text to limit it to
+					         a specific number of sub-topics when creating the outline.  Specify
+					         zero (0) to limit it to top-level sections only.  -->
+        <!-- <autoOutline /> -->
+        <para>
+          In order to complete these steps, a PC with Windows Server 2008 R2 with Hyper-V installed is required
+        </para>
+      </introduction>
+      <!-- <prerequisites><content>Optional prerequisites info</content></prerequisites> -->
+      <!-- One or more procedure or section with procedure -->
+      <section address="Section1">
+
+
+        <content>
+          <procedure>
+            <title>Prerequisites</title>
+            <steps class="ordered">
+              <step>
+                <content>
+                  <para>
+                    Hardware: Virtualization-capable (x64, hardware virtualization support) PC
+                  </para>
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para>
+                    Software: Server 2008R2 Standard or better (Hyper-V server may work but is more difficult to configure)
+                  </para>
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para>
+
+                    Configuration: Hyper-V role enabled
+                  </para>
+                </content>
+              </step>
+            </steps>
+          </procedure>
+
+          <para>
+            To create the VM role, you need an installation medium: Windows Server 2008 R2 Standard or Enterprise.
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole1"/>
+          </mediaLink>
+
+          <para>
+            Full documentation <externalLink>
+              <linkText>click here</linkText>
+              <linkAlternateText>click here</linkAlternateText>
+              <linkUri>
+                http://msdn.microsoft.com/en-us/library/gg465398.aspx
+              </linkUri>
+              <linkTarget>_blank</linkTarget>
+            </externalLink>
+          </para>
+
+        </content>
+      </section>
+
+      <section address="Section2">
+        <title>Instructions</title>
+        <content>
+
+          <para>
+            Start server manager, go to Hyper-V manager of local machine
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole2"></image>
+          </mediaLink>
+
+
+
+
+          <para>
+            Click "New virtual Machine"
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole3"></image>
+          </mediaLink>
+
+          <para>
+            Give it a name. No spaces, No dash as last character:
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole4"></image>
+          </mediaLink>
+
+          <para>
+            Configure the Memory size (at least 2GB for Server 2008R2 Standard, more if you need more), Networking (the VM needs internet access later to install updates).
+          </para>
+
+          <para>
+            Configure the virtual hard disk. Depending on the VM size, there is a limit for the VHD:
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole5"></image>
+          </mediaLink>
+
+          <para>
+            So let's start with extra small here.
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole6"></image>
+          </mediaLink>
+
+
+          <para>
+            In Install options, select Install an Operating System from a Boot CD/DVD-ROM and select the Server 2008R2 ISO file.
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole7"></image>
+          </mediaLink>
+          <mediaLink>
+            <image xlink:href="customvmrole8"></image>
+          </mediaLink>
+
+
+          <para>
+            Your configuration now should look like this:
+          </para>
+          <para> •  Name: GenericWorkerCustomVM </para>
+          <para> •  Memory: 2048 MB </para>
+          <para> •  Network: CorpNet </para>
+          <para> •  Hard Disk: C:\Users\Public\Documents\Hyper-V\Virtual hard disks\GenericWorkerCustomVM.vhd </para>
+          <para>
+            •  Operating System: Will be installed from C:\Users\Public\Documents\Hyper-V\Virtual hard disks\en_windows_server_2008_r2_with_sp1_x64_dvd_617601.iso
+          </para>
+
+
+          <para>
+            Now right-click the VM name and click start:
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole9"></image>
+          </mediaLink>
+
+
+          <para>
+            Then double-click the VM name to see the VM booting and installing Windows.
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole10"></image>
+          </mediaLink>
+
+
+          <para>
+            Now do the usual Window server installation from here. When asked, select "Windows Server 2008 R2 Standard (full installation)". Don't use server core (no real GUI) and don't use Windows web server (not supported in Azure).
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole11"></image>
+          </mediaLink>
+
+          <para>
+            Install a new copy of windows. (This is the "Custom (advanced)" installation option.
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole12"></image>
+          </mediaLink>
+
+
+          <para>
+            Now wait…
+            Chose a password for the Administrator account and remember it.
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole13"></image>
+          </mediaLink>
+
+
+
+          <para>
+            Click on "Download and install updates"
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole14"></image>
+          </mediaLink>
+
+          <para>
+            Enable automatic updates: click on "Change settings" and then select "Install Updates automatically", the click OK.
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole15"></image>
+          </mediaLink>
+
+
+
+          <para>
+            You will need to disable automatic updates later again as Azure is not compatible with Windows Update. But as you are installing
+
+            additional OS features and these might trigger new updates, this should remain enabled for the moment.
+          </para>
+
+          <para>
+            Next, install .net framework 3.5.1
+            Click on "Add features" in the initial configuration tasks window:
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole16"></image>
+          </mediaLink>
+
+          <mediaLink>
+            <image xlink:href="customvmrole17"></image>
+          </mediaLink>
+
+
+
+          <para>
+            Then also add all the additional role services and features required:
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole18"></image>
+          </mediaLink>
+
+
+
+          <para>
+            This will also trigger the installation of IIS. Add the following features to IIS:
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole19"></image>
+          </mediaLink>
+
+          <mediaLink>
+            <image xlink:href="customvmrole20"></image>
+          </mediaLink>
+
+          <mediaLink>
+            <image xlink:href="customvmrole21"></image>
+          </mediaLink>
+
+
+          <para>
+            Check for updates and reboot the machine as needed.
+          </para>
+
+          <para>
+            Next is the installation of the Azure integration components.
+            Go to a machine where the Azure SDK is installed and browse to %ProgramFiles%\Windows Azure SDK\"VersionNumber"\iso\ and  copy the file wavmroleic.iso to your Hyper-V server. Then attach the iso file to the virtual DVD drive of your VM:
+          </para>
+
+          <mediaLink>
+            <image xlink:href="customvmrole22"></image>
+          </mediaLink>
+
+          <mediaLink>
+            <image xlink:href="customvmrole23"></image>
+          </mediaLink>
+
+
+          <para>
+            After the iso image has been attached, browse to the contents:
+          </para>
+
+          <mediaLink>
+            <image xlink:href="customvmrole24"></image>
+          </mediaLink>
+
+          <mediaLink>
+            <image xlink:href="customvmrole25"></image>
+          </mediaLink>
+
+          <para>
+            and double-click on WaIntegrationComponents-x64
+
+          </para>
+
+
+          <para>
+            Enter an Administrator password for the system image and remember it. This password will be valid when the image will be prepared with sysprep,
+            the first time Azure will instantiate this VM. The Administrator password will not replace the one you have set during setup. At least not yet.
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole26"></image>
+          </mediaLink>
+
+
+          <para>
+            Now restart the VM once more. Shut it down again.
+          </para>
+
+          <para>
+            Now disable automatic updates and run the manual update check one last time.
+          </para>
+
+          <mediaLink>
+            <image xlink:href="customvmrole27"></image>
+          </mediaLink>
+
+
+          <para>
+            (Windows update is not compatible with Azure as it may force all your running roles to reboot at once when new updates become available.
+            This almost guarantees a service disruption.)
+
+          </para>
+
+          <para>
+            Now manually install updates by clicking "Check for updates"
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole28"></image>
+          </mediaLink>
+
+
+          <para>
+            Reboot the VM if needed to finish installing the update. Then shut it down again.
+
+
+          </para>
+
+          <para>
+            Now is a good time to take a VM snapshot in Hyper-V.
+
+          </para>
+
+
+          <para>
+            Right-Click on the VM Name in the mist of virtual machines in the Hyper-V administration console:
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole29"></image>
+          </mediaLink>
+
+          <para>
+            A new snapshot appears in the VM's snapshot list:
+
+          </para>
+          <mediaLink>
+            <image xlink:href="customvmrole33"></image>
+          </mediaLink>
+
+        </content>
+
+      </section>
+
+
+      <section address="section3">
+
+        <content>
+          <procedure>
+            <title>
+              Custom Software Installation
+            </title>
+
+            <para>
+              Now install your application and its prerequisites, for example:
+            </para>
+
+            <steps class="ordered">
+              <step>
+                <content>
+                  <para>
+                    The prerequisites for Generic Worker:
+
+                  </para>
+                  <para>
+                    •  <externalLink>
+                      <linkText>.net 4.0</linkText>
+                      <linkAlternateText>.net 4.0</linkAlternateText>
+                      <linkUri>
+                        http://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe
+                      </linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+
+
+                  <para>
+                    •  <externalLink>
+                      <linkText>ASP.net MV3</linkText>
+                      <linkAlternateText>ASP.net MV3</linkAlternateText>
+                      <linkUri>
+                        http://download.microsoft.com/download/3/4/A/34A8A203-BD4B-44A2-AF8B-CA2CFCB311CC/AspNetMVC3Setup.exe
+                      </linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+
+                  <para>
+                    •  <externalLink>
+                      <linkText>WIF:</linkText>
+                      <linkAlternateText>WIF:</linkAlternateText>
+                      <linkUri>
+                        http://download.microsoft.com/download/D/7/2/D72FD747-69B6-40B7-875B-C2B40A6B2BDD/Windows6.1-KB974405-x64.msu
+                      </linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+
+                  <para>
+                    •  <externalLink>
+                      <linkText>Generic Worker</linkText>
+                      <linkAlternateText>Generic Worker</linkAlternateText>
+                      <linkUri>
+                        http://resources.venus-c.eu/gw/installers/
+                      </linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+
+
+                </content>
+
+              </step>
+
+              <step>
+                <content>
+
+                  <para>
+                    Install both installers from the Azure VM role directory <link xlink:href="d520553d-454f-4e47-adf6-7b23914cac5f">click here for the description of "How to install GW for Azure VM Role"</link>
+
+                  </para>
+
+                  <para>
+                    • Your own software prerequisites
+                  </para>
+
+                  <para>
+
+                    • Debugging support tools, for example <externalLink>
+                      <linkText>SysInternals</linkText>
+                      <linkAlternateText>SysInternals</linkAlternateText>
+                      <linkUri>
+                        http://technet.microsoft.com/en-us/sysinternals
+                      </linkUri>
+                      <linkTarget>_blank</linkTarget>
+                    </externalLink>
+                  </para>
+
+                  <para>
+                    If something breaks during the install, go back to the snapshot and start over.
+
+                  </para>
+
+                  <para>
+                    Now  run the manual update check one last time.
+
+                  </para>
+
+                  <para>
+                    Reboot the VM if needed to finish installing the update. Then shut it down again.
+
+                  </para>
+
+                  <para>
+
+                    Again, take a snapshot.
+                  </para>
+
+
+                  <para>
+                    Now, you should test your VM as far as it is possible without running it on Azure. If you break something on the way, you can always go back to the snapshot and start over.
+
+
+                  </para>
+
+                </content>
+
+              </step>
+
+
+            </steps>
+
+            <para>
+              To prepare the VM for upload, it needs to be prpeared to run through the last phases of setup once it is instanciated on Azure. This is done with the "sysprep" utility.
+
+
+            </para>
+            <steps class="ordered">
+              <step>
+
+
+                <content>
+                  <para>
+                    Open an administrator command prompt
+                  </para>
+
+
+                </content>
+              </step>
+
+              <step>
+                <content>
+                  <para>
+                    cd c:\windows\system32\sysprep
+
+                  </para>
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para>
+                    Now wait until the System Preparation Tool appears. This takes a while...
+
+
+                  </para>
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para>
+                    In the System Preparation Tool dialog box, select "Enter System Out-of-Box Experience (OOBE)" for the "System Cleanup Action"
+
+                  </para>
+                </content>
+              </step>
+
+              <step>
+                <content>
+                  <para>
+                    Ensure that "Generalize" is selected
+                  </para>
+                </content>
+              </step>
+
+
+
+              <step>
+                <content>
+                  <para>
+                    Select "Shutdown" for the "Shutdown Options"
+
+                  </para>
+                </content>
+              </step>
+
+              <step>
+                <content>
+                  <para>
+                    Click OK.
+
+                  </para>
+                </content>
+              </step>
+
+            </steps>
+
+            <para>
+              Now the VM shuts down.
+            </para>
+
+            <para>
+              As you have created a number of snapshots on the way, you now need to delete these snapshots to the disk to have a single uploadable VHD image.
+
+              This operation takes some time as the harddisk changes between snapshots are kept in differencing disks, these differences will be written to the VHD file when deleting a snapshot.
+            </para>
+
+            <mediaLink>
+              <image xlink:href="customvmrole30"></image>
+            </mediaLink>
+
+
+            <para>
+              Right-Click on a snapshot and select "Delete snapshot…" from the menu. Confirm the deletion.
+            </para>
+
+            <para>
+              Afterwards, the snapshot view of the VM should be empty:
+            </para>
+
+            <mediaLink>
+              <image xlink:href="customvmrole31"></image>
+            </mediaLink>
+
+            <para>
+              Now browse to the VHD folder of Hyper-V. Its default location is
+              C:\Users\Public\Documents\Hyper-V\Virtual hard disks
+
+            </para>
+
+            <para>
+              Find the vhd file of your VM:
+            </para>
+
+            <mediaLink>
+              <image xlink:href="customvmrole32"></image>
+            </mediaLink>
+
+
+            <para>
+              To upload the .vhd, open an elevated Windows Azure SDK command prompt (right-click, run as administrator)
+
+            </para>
+
+            <steps class="ordered">
+              <step>
+                <content>
+                  <para>
+                    csupload Set-Connection "SubscriptionID="your-subscription-id"
+                    ;CertificateThumbprint="a-management-certificate"
+
+                  </para>
+
+                  <para>
+
+                    •  The management certificate has to be available in the local certificate store and has to be registered as management certificate in the azure portal.
+
+
+                  </para>
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para>
+                    cd to the directory you keep your VM files.
+
+                  </para>
+
+                </content>
+              </step>
+
+
+              <step>
+                <content>
+                  <para>
+                    csupload Add-VMImage -LiteralPath GenericWorkerCustomVM.vhd -Location "West Europe"
+
+
+                  </para>
+
+                </content>
+              </step>
+
+            </steps>
+
+
+            <para>
+
+              The csupload tool will now verify your vhd file and start uploading to the cloud. This will take some time, with 2 Mbit upload bandwidth, the transfer will take about 8 hours for a 10 Gbyte VM file.
+
+            </para>
+
+            <para>
+              Now create and deploy a VM role service model:<externalLink>
+                <linkText>click here for the Link</linkText>
+                <linkAlternateText>click here for the Link</linkAlternateText>
+                <linkUri>
+                  http://msdn.microsoft.com/en-us/library/gg465379.aspx
+                </linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+            </para>
+
+
+            <para>
+              In order to avoid repeated uploads of a vhd, you should keep the original vhd as a base <externalLink>
+                <linkText>Link</linkText>
+                <linkAlternateText>Link</linkAlternateText>
+                <linkUri>
+                  http://msdn.microsoft.com/en-us/library/gg465379.aspx
+                </linkUri>
+                <linkTarget>_blank</linkTarget>
+              </externalLink>
+              describes how to upload a differencing vhd that only contains your changes to the vhd which will be much faster.
+            </para>
+
+
+          </procedure>
+        </content>
+      </section>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+
+      <!-- Optional additional procedure or section with procedure -->
+
+      <!-- Optional next steps info
+		        <nextSteps>
+			        <content><para>Next steps info goes here</para></content>
+		        </nextSteps>
+		        -->
+      <relatedTopics>
+        <!-- One or more of the following:
+					         - A local link
+					         - An external link
+					         - A code entity reference
+
+			        <link xlink:href="Other Topic's ID">Link text</link>
+			        <externalLink>
+					        <linkText>Link text</linkText>
+					        <linkAlternateText>Optional alternate link text</linkAlternateText>
+					        <linkUri>URI</linkUri>
+			        </externalLink>
+			        <codeEntityReference>API member ID</codeEntityReference>
+
+			        Examples:
+
+			        <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+			        <externalLink>
+					        <linkText>SHFB on CodePlex</linkText>
+					        <linkAlternateText>Go to CodePlex</linkAlternateText>
+					        <linkUri>http://shfb.codeplex.com</linkUri>
+			        </externalLink>
+
+			        <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+			        <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+			        <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+			        <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+			        <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+			        <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+			        <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+			        -->
+      </relatedTopics>
+    </developerWalkthroughDocument>
+  </topic>

@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="45a1763c-9966-4c3b-9982-94d249874381" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <para>
+        3 main components have been designed and implemented in order to keep track of the Azure consumption both GW user and institute basis. The components are:
+      </para>
+    </introduction>
+
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <procedure>
+      <title></title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              <legacyBold>	Accounting and Billing Service: </legacyBold>
+              This is the main service that saves all the information collected from various cloud resources and displays this information to the users via Web- UI. This component should be deployed on-premises. More information about this component can be found in the section named Accounting in Venus-c release web site.
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              <legacyBold>	Azure Billing Component:  </legacyBold>
+              This component parses the CSV files which can be downloaded from Microsoft Online Customer Portal and pushes the data to the accounting and billing service. This CSV file shows the consumption in detail together with the billing charges. <legacyUnderline>  Please be aware that the data pushed does not have any information related to the GW users</legacyUnderline>, since MOCP does not know about the users defined in the GW service. MOCP only knows one customer which is mainly institute or organization. In other words, this component shows the overall Azure consumption or per institute base consumption.
+            </para>
+
+
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>
+              <legacyBold>	GW Azure Accounting Data Fetcher Service:   </legacyBold>
+              This is a windows service that can be run on any machine include end-user’s laptop, on premises service or in the cloud. This service reads <legacyUnderline>per job based accounting data</legacyUnderline> from the Azure Accounting Table and pushes this data to the Accounting and Billing Service. Job based accounting data keeps information about the owner of the job, execution of the job, start, finish time, data transfer, bandwidth consumption and many other related fields about the job. Since it keeps track of the owner of the jobs as well, according to this data, it is possible to create a report showing the consumption of the<legacyUnderline> GW service users</legacyUnderline>. Please be aware that this data does not include any information about the billing and costs. If you want to see the costs per user base, this data should be correlated with the data which is pushed by Azure Billing component.
+            </para>
+
+
+            <para>The figure below briefly illustrates how the accounting system works for the Azure GW Services:</para>
+            <mediaLink>
+              <image xlink:href="azureaccountingcomponents1"/>
+            </mediaLink>
+
+          </content>
+        </step>
+      </steps>
+
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+
+
+    <procedure>
+      <title>
+        GW Azure Accounting Data Fetcher
+      </title>
+      <steps class="ordered"></steps>
+        
+    
+    </procedure>
+
+    <section>
+      <title> How to Install</title>
+      <content>
+        <procedure>
+          <title>
+         
+        </title>
+     
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  Go to folder where the GWAzureAccountingDataFetcherSetup.msi exists and double click
+                </para>
+                <mediaLink>
+                  <image xlink:href="azureaccountingcomponents2"/>
+                </mediaLink>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  Just click “Next” and “Finish” button until the installation completes.
+                </para>
+
+              </content>
+            </step>
+
+          </steps>
+
+        </procedure>
+      </content>
+     
+      
+    </section>
+
+    <section>
+      <title>How to configure:</title>
+      <content>
+                  <para>
+            GW Azure Accounting Data Fetcher is installed as a service. The binary and configuration file of the service can be found under the folder:
+          </para>
+          <mediaLink>
+            <image xlink:href="azureaccountingcomponents3"/>
+          </mediaLink>
+          <para>
+            <legacyBold>“Program Files (x86)\Microsoft ATL Europe\GWAzureAccountingDataFetcher”</legacyBold>
+          </para>
+          
+
+
+        <para>
+          In order to use the service as expected, the settings in the service configuration file should be modified according to your settings. The service configuration file is GWAzureAccountingDataFetcher.exe.config. This file is an xml file which can be modified by your favorite xml editor:
+         
+        </para>
+
+        <mediaLink>
+          <image xlink:href="azureaccountingcomponents4"/>
+        </mediaLink>
+
+        <para>
+          The settings which are needed to be modified are listed under the Tag named GWAzureAccountingDataFetcher.Properties.Settings. Some of the settings are REQUIRED to be modified and some are OPTIONAL and some of them are DO NOT TOUCH. Here are the details of the settings:
+        </para>
+
+        <procedure>
+          <title></title>
+
+
+          <steps class="ordered">
+            <step>
+              <content>
+                <para>
+                  <legacyBold>
+                    UpdateFrequency (OPTIONAL) :
+                  </legacyBold>This value shows the time interval between the data transfer tasks. The default value is 1 min which means that the service will check for the new accounting data on the Azure table and push them to the Accounting table every 1 min.
+
+                </para>
+              </content>
+              </step>
+
+
+
+            <step>
+              <content>
+                <para>
+                  <legacyBold>
+                    GenericWorkerAccountingTableName(DO NOT TOUCH):
+                  </legacyBold> The table name used by the genericworker is always “gwaccountingtable”. The value of the table name should be always “gwaccountingtable”:
+
+                </para>
+                <mediaLink>
+                  <image xlink:href="azureaccountingcomponents5"/>
+                </mediaLink>
+              </content>
+            </step>
+
+
+
+            <step>
+              <content>
+                <para>
+                  <legacyBold>
+                    CreatorID(OPTIONAL):
+                  </legacyBold> This field is required by the accounting service. You can set it to any name; the default value is “Azure GW Accounting Connector”.
+
+                </para>
+              </content>
+            </step>
+
+
+
+            <step>
+            <content>
+              <para>
+                <legacyBold>
+                  ResourceOwner(OPTIONAL):
+                </legacyBold> This field is required by the accounting service. You can set it to any name; the default value is “Microsoft Windows Azure”.
+
+              </para>
+            </content>
+            </step>
+
+
+
+
+            <step>
+              <content>
+                
+        <para>
+          <legacyBold>
+            VmPostUrl(REQUIRED):
+          </legacyBold>This the Url where to post the VM usage data. If the accounting service is running locally, the Url should be: <legacyBold>http://localhost/usagetracker/rest/usagerecords/vm/</legacyBold>
+
+        </para>
+              </content>
+            </step>
+
+
+
+
+
+            <step>
+              <content>
+
+                <para>
+                  <legacyBold>
+                    StoragePostUrl (REQUIRED):
+                  </legacyBold>This the Url where to post the storage consumption data. If the accounting service is running locally, the Url should be: <legacyBold>http://localhost/usagetracker/rest/usagerecords/storage/</legacyBold>
+
+                </para>
+              </content>
+            </step>
+
+
+            <step>
+              <content>
+
+                <para>
+                  <legacyBold>
+                    NetworkPostUrl (REQUIRED):
+                  </legacyBold>This the Url where to post the network consumption data. If the accounting service is running locally, the Url should be:<legacyBold>http://localhost/usagetracker/rest/usagerecords/network/</legacyBold>
+
+                </para>
+              </content>
+            </step>
+
+
+            <step>
+              <content>
+
+                <para>
+                  <legacyBold>
+                    JobPostUrl (REQUIRED):
+                  </legacyBold>This the Url where to post the details of the jobs. If the accounting service is running locally, the Url should be: <legacyBold>http://localhost/usagetracker/rest/usagerecords/job/</legacyBold>
+
+                </para>
+              </content>
+            </step>
+
+
+
+            <step>
+              <content>
+
+                <para>
+                  <legacyBold>
+                    UserName(REQUIRED):
+                  </legacyBold>Accounting service is secured by username/password combination. In order to use the service, the username should be saved in the configuration
+                </para>
+              </content>
+            </step>
+            
+             <step>
+              <content>
+
+                <para>
+                  <legacyBold>
+                    GenericWorkerAccountingPushedTableName(OPTIONAL):
+                  </legacyBold>The data pushed to the Accounting and Billing Service has been moved from GenericWorkerAccountingTable to GenericWorkerAccountingPushedTable due to performance optimization
+                </para>
+              </content>
+            </step>
+            
+             <step>
+              <content>
+
+                <para>
+                  <legacyBold>
+                    GenericWorkerAccountingErrorTableName(OPTIONAL):
+                  </legacyBold>Some of the accounting data may contain errors and cannot be accepted by the Accounting and Billing Service. Such kind of data which cannot be posted to the service is moved from GenericWorkerAccountingTable to GenericWorkerAccountingErrorTable due to performance optimization
+                </para>
+              </content>
+            </step>
+            
+          </steps>
+          </procedure>
+          </content>
+      </section>
+
+
+
+
+        <section>
+          <title>Logging:</title>
+          <content>
+            <procedure>
+              <title></title>
+              <steps class="bullet">
+                <step>
+                  <content>
+                    <para>
+                    In the configuration document, you can see the section which is starts with the tag named <legacyBold>“System.diagnostics”</legacyBold>. This part is used to define the path of the text file which is used to save the log data produced during the execution of the service. The default log file is the file named <legacyBold>“GWAccountingDataFetcher.logFile.txt”</legacyBold> which can be found under the working directory whose default value is <legacyBold>“Program Files (x86)\Microsoft ATL Europe\GWAzureAccountingDataFetcher”                </legacyBold>.
+                    </para>
+                  </content>
+                </step>
+              </steps>
+            </procedure>
+                    
+                 
+              
+           
+           </content>
+        </section>
+
+
+    <section>
+      <title> Where to find the service:</title>
+      <content>
+        <procedure>
+          <title></title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>
+                  Since GW Azure Accounting Data Fetcher is installed as a service, the service can be found under the Windows Services. The Windows Services can be found under:
+                </para>
+
+                <para>
+                  <legacyBold>“Control Panel\All Control Panel Items\Administrative Tools”</legacyBold>
+                </para>
+                <mediaLink>
+                  <image xlink:href="azureaccountingcomponents6"/>
+                </mediaLink>
+              </content>
+            </step>
+
+
+            <step>
+              <content>
+                <para>
+                  When the services are double-clicked, the services which are installed for the Windows OS are shown. The GW Azure Accounting Data Fetcher is also listed in the table. Please also note that, the service is not started automatically, it should be started<legacyBold> AFTER THE CONFIGURATION IS SET</legacyBold>. See the section, <legacyBold>“How to configure the service”</legacyBold>
+                </para>
+                <mediaLink>
+                  <image xlink:href="azureaccountingcomponents7"/>
+                </mediaLink>
+              </content>
+            </step>
+
+            <step>
+              <content>
+                <para>
+                  If the service is configured properly, the service can be started by clicking the start label which is on upper left hand side of the services screen as shown in the figure below.
+                </para>
+              </content>
+            </step>
+            
+          </steps>
+   
+
+       
+
+       
+        </procedure>
+      </content>
+      </section>
+    
+    
+    
+    <section>
+      <title>
+        Check the service is running properly:
+      </title>
+      <content>
+        <procedure>
+          <title></title>
+          <steps class="bullet">
+            <step>
+              <content>
+                <para>
+
+
+                  You can check whether the service is running properly by checking the accounting UI and Azure table. In the first method, you can go to the UI of the accounting service and login to the web side. You can check whether the data is there.
+
+                </para>
+                <mediaLink>
+                  <image xlink:href="azureaccountingcomponents8"/>
+                </mediaLink>
+              </content>
+            </step>
+
+
+
+            <step>
+              <content>
+                <para>
+                  The data which is submitted to the Accounting service should be the same with the data shown in the Azure Table (The table name is the one that you entered in the configuration file – the default value which is not recommended to change is gwaccountingtable), but be aware of the fact that only the data of the jobs which are “Finished” and “IsAlreadyPushed” are transferred to the Accounting service. The state of the job whether it is successful, failed or cancelled is not important of the GW Accounting Data Fetcher service if the execution of the job finishes.
+                </para>
+                <mediaLink>
+                  <image xlink:href="azureaccountingcomponents9"/>
+                </mediaLink>
+              </content>
+            </step>
+            
+            
+          </steps>
+        </procedure>
+      
+
+
+      
+      </content>
+    </section>
+
+
+    
+    
+    <relatedTopics></relatedTopics>
+    
+  </developerHowToDocument>
+</topic>

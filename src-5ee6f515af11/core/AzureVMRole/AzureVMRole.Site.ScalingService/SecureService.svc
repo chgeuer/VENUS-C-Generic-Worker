@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" 
+    Factory="Site.ScalingService.SecureScalingServiceFactory" 
+    Service="Microsoft.EMIC.Cloud.GenericWorker.ScalingServiceImpl, Microsoft.EMIC.Cloud.GenericWorker"  
+    %>

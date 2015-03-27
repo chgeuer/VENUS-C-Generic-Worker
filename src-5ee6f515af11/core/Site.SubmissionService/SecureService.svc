@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" 
+    Factory="Site.SubmissionService.SecureSubmissionServiceFactory" 
+    Service="Microsoft.EMIC.Cloud.GenericWorker.BESFactoryPortTypeImplService, Microsoft.EMIC.Cloud.GenericWorker"  
+    %>

@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="11b96ab0-cd8d-41e2-a12c-d8e80d116d97" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>
+        This hand-out provides first information about the VENUS-C Generic
+        Worker, how to configure and deploy the cloud software package.
+      </para>
+    </introduction>
+    
+    <procedure>
+      <title>Logging in to Windows Azure and setting up the environment</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>You can log-on to Windows Azure by pointing the browser to https://windows.azure.com/</para>
+            <para>
+              To sign-in, you will be redirected to live.com, where you can
+              log-on using the LiveID/Password associated with your Azure account.
+            </para>
+            <para>
+              <mediaLink><image placement="center" xlink:href="image5"/></mediaLink>
+            </para>
+            <para>After signing in, the Windows Azure management web site show up:</para>
+            <mediaLink><image placement="center" xlink:href="image6"/></mediaLink>
+            <para>Now, you need to set up a "new storage account", and a "new hosted service". </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Setting up a Windows Azure Storage Account</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              Clicking on <codeInline>New Storage Account</codeInline> brings up a dialog in which you
+              choose a DNS prefix for the Azure storage account which will be used
+              by the GW-internal job management system. In this walkthrough,
+              we’ll be using the prefix "gwinternalstorage" for the storage URL.
+              (The complete storage is available through RESTful web services).
+              Then you choose a region in which the storage account is created.
+              This region is basically the Microsoft data center in which the data
+              is stored. "West Europe" corresponds to the Amsterdam data center,
+              "North Europe" to Dublin:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image7"/>
+            </mediaLink>
+            <para>
+              After clicking OK, Windows Azure provisions the DNS entries
+              and the network endpoints for the storage.
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image8"/>
+            </mediaLink>
+            <para>
+              Note down the chosen <codeInline>Name</codeInline> property (URL prefix) 
+              in some text editor, and also copy the primary or
+              secondary access key (which you can see after clicking on the "View" button:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image9"/>
+            </mediaLink>
+            <para>
+              Storage name is now "gwinternalstorage", and the primary access key is
+              <codeInline>"GDxyjrgL/kOMyqV6ZA9h/zhGBq4Er9pbac3S2KmrUgt149KDk29Jar+iEYgGDeewVUK/4M6zHyTTiAtz0/F0CA=="</codeInline>.
+              This is a symmetric (secret) key which is confidential, and should not be shared with
+              the researchers. It is intended for the internal operation of the generic worker
+              infrastructure. We need these values in order to configure the deployment of
+              the generic worker later.
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Setting up a 'hosted service' (a virtual machine deployment slot)</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              After clicking on "Hosted Services" in the left-hand navigation pane,
+              you click the "New Hosted Service" button:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image10"/>
+            </mediaLink>
+            <para>
+              <newTerm>URL Prefix</newTerm> The name for the hosted service is just a human-readable
+              handle for you, but the URL prefix will be important to reach the
+              generic worker through the Internet. In this walkthrough we choose
+              the URL prefix "cloudyscience". Concatenated with the domain name
+              cloudapp.net, this results in an address of
+              <fictitiousUri>http://cloudyscience.cloudapp.net/</fictitiousUri>
+              under which the deployed GW infrastructure can be reached. There is only a
+              single host name, because all of the virtual machines are reached
+              through a load balancer. So cloudyscience.cloudapp.net is only the
+              externally visible endpoint at the load balancer.
+            </para>
+            <para>
+              <newTerm>CNAME Setup</newTerm> In your own DNS system (like your institute’s, company’s or
+              university’s one), you should set up a CNAME entry for that address.
+              For example, you could add a CNAME entry for "genericworker.contoso.com"
+              to point to <fictitiousUri>cloudyscience.cloudapp.net</fictitiousUri>, 
+              which allows you to use that 'nicer' domain name in the subsequent configuration.
+            </para>
+            <para>
+              <newTerm>Region</newTerm>: The next step is to choose a region (read: data center).
+              It is highly recommended to choose the same data center which you
+              selected for the previous storage account setup. Otherwise, the
+              latency, bandwidth, and costs would be sub-optimal.
+            </para>
+            <para>
+              <newTerm>Do not deploy (for now)</newTerm>: Choosing the deployment option "Do not deploy"
+              just reserves the domain name and creates an empty deployment slot,
+              to which you deploy after configuring the local software package.
+              Clicking OK generates the hosted service deployment slot.
+            </para>
+
+            <mediaLink>
+              <image placement="center" xlink:href="image11"/>
+            </mediaLink>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>X.509 certificate setup</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              In a production deployment of the generic worker, all web service interactions with the infrastructure 
+              happen in a secure way, i.e. the job submission (which uses OGF BES/JSDL messages, exchanged over SOAP)
+              is protected using WS-Security. To appropriately secure communications, the web services in the cloud 
+              need to possess an X.509 certificate to enable the client to encrypt messages for the service. 
+              A production certificate need to be issued for the domain name of the web services endpoint. 
+              That could be something like <codeInline>CN=genericworker.contoso.com</codeInline>, 
+              assuming you own the <fictitiousUri>contoso.com</fictitiousUri> domain.
+              Please note that you will not be able to acquire a certificate for the host name 
+              cloudyscience.cloudapp.net, because cloudapp.net is registered to Microsoft, not to you. 
+              The certificate must be in PKCS#12 format (a pfx or .p12 file), i.e. also containing the private key. 
+            </para>
+            <para>
+              For easy ramp-up of the scenarios, security is currently turned off, i.e. the web service interfaces 
+              use a simple SOAP binding without security and federated identity. This means that you still need to 
+              supply a PFX file, but it doesn’t have to be a production SSL certificate, but can be a self-issued 
+              test certificate. 
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>X.509 certificate upload</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              Clicking on "Add Certificate" allows us to upload a certificate to Windows Azure. 
+              I created a test certificate in a password-protected PFX container:
+            </para>
+            <mediaLink><image placement="center" xlink:href="image12"/></mediaLink>
+            
+            <para>After upload of the certificate, you can see it under the hosted service:</para>
+            <mediaLink><image placement="center" xlink:href="image13"/></mediaLink>
+            <para>
+              Please copy the value of the Thumbprint (on the right-hand side), because we also need that value 
+              for the configuration of our deployment:
+            </para>
+            <code>Thumbprint: 57CD0F54CC82E97B7F4B960F7C6B8DA9467A819C</code>
+            <para>
+              Besides protection of the web service messages, this certificate can be used for enabling 
+              remote access (RDP) to the Azure virtual machines. Please refer to 
+              <externalLink>
+                <linkText>MSDN</linkText>
+                <linkUri>http://msdn.microsoft.com/en-us/library/gg443832.aspx</linkUri>
+              </externalLink> for details.
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Configuring the generic worker</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              A Windows Azure deployment consists of two parts. The actual software cloud service package
+              (an encrypted ZIP file with the file extension .cspkg), and the cloud service configuration
+              (an XML file with the extension .cscfg). 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image14"/>
+            </mediaLink>
+            <para>
+              Before uploading both files through the Windows Azure Management portal, 
+              we need to modify the XML file to configure the deployment:
+            </para>
+
+            <code lang="xml" language="xml" 
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg" 
+                  title="ServiceConfiguration.cscfg - Generic Worker Settings" 
+                  region="Generic Worker Settings" />
+
+            <para>And the certificate configuration: </para>
+
+            <code lang="xml" language="xml"
+                  source="..\core\Cloud\ServiceConfiguration.Documentation.cscfg"
+                  title="ServiceConfiguration.cscfg - Generic Worker Certificates"
+                  region="Certificate Settings" />
+
+            <para>In the above XML fragements, you see the addresses and keys of the services:</para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.ApplicationStore.URL</codeInline> setting contains the endpoint through which 
+                  scientific applications can be uploaded to the infrastructure.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.STS.URL</codeInline> setting contains the endpoint of the 
+                  security token service (where researchers authenticate to get access to the generic worker).
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.GenericWorker.ConnectionString</codeInline> setting contains the 
+                  storage account name and key of the Windows Azure storage account, in which the 
+                  generic worker infrastructure stores the internal job management data and state.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The <codeInline>Microsoft.EMIC.Cloud.ApplicationStore.Azure.ConnectionString</codeInline> setting contains the storage 
+                  account name and key of the Windows Azure storage account, in which the application repository 
+                  persists the scientific application packages.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  The 
+                  <codeInline>Microsoft.EMIC.Cloud.ApplicationStore.Certificate.Thumbprint</codeInline> 
+                  and 
+                  <codeInline>Microsoft.EMIC.Cloud.SSLCert</codeInline> 
+                  contain the actual base64-encoded SHA1 thumbprint of the certificates used to protect the 
+                  web service endpoints of the application repository and the job submission service.
+                </para>
+              </listItem>
+            </list>
+            <para>
+              One last setting which deserves extra attention is the count attribute of the 
+              <codeInline>&lt;Instances&gt;</codeInline> element. 
+              This integer value specifies on how many virtual machines the generic worker is installed/deployed. 
+              Selecting a single machine means than only one job can be processed at a time. 
+              Selecting a higher number corresponds to more parallel nodes processing jobs. 
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Deploying the generic worker</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              After customizing the configuration file with our own settings, we can finally deploy the 
+              infrastructure to Windows Azure. Selecting the "Hosted Service" node enables the 
+              "New Production Deployment" button:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image15"/>
+            </mediaLink>
+            <para>
+              The difference between a ‘production’ and a ‘staging’ deployment in Azure is simply the
+              external address of the endpoints (see also the  <externalLink> 
+                <linkText>Application Life Cycle Management for Windows Azure Applications</linkText>
+                <linkUri>http://msdn.microsoft.com/en-us/library/ff803362.aspx#sec6</linkUri>
+              </externalLink>). 
+              The production deployment is reachable through the DNS entries we’ve configured previously.
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image16"/>
+            </mediaLink>
+            <para>
+              After browsing locally for your package file and the updated configuration file and clicking "OK", 
+              you see the status changing to uploading. 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image17"/>
+            </mediaLink>
+            <para>
+              After Windows Azure started all the virtual machines, you should be seeing the status of the different VMs being "Ready". 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image18"/>
+            </mediaLink>
+            <para>
+              Navigating to the public web site should show a simple index page:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image19"/>
+            </mediaLink>
+            <para>
+              Clicking on the links should you the actual web service endpoint façades. 
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image20"/>
+            </mediaLink>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+  </developerHowToDocument>
+</topic>

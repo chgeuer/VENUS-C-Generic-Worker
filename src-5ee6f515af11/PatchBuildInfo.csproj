@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask AssemblyFile="libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FileUpdate" />
+  <UsingTask AssemblyFile="libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Zip" />
+  <UsingTask AssemblyFile="libs\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.User" />
+  <UsingTask AssemblyFile="libs\MSBuild.Mercurial\MSBuild.Mercurial.dll" TaskName="MSBuild.Mercurial.HgVersion" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Any CPU</Platform>
+    <ProductName>Microsoft contribution to VENUS-C - Generic Worker</ProductName>
+    <ProjectGuid>{E7B47428-1711-4523-9447-9C752E35CCAF}</ProjectGuid>
+  </PropertyGroup>
+  <Target Name="SetVariables">
+    <HgVersion LocalPath="$(MSBuildProjectDirectory)" Timeout="5000">
+      <Output TaskParameter="Revision" PropertyName="HgRevision" />
+      <Output TaskParameter="Changeset" PropertyName="HgChangeset" />
+    </HgVersion>
+    <User>
+      <Output TaskParameter="UserNameWithDomain" PropertyName="BuildUserID" />
+      <!--
+      <Output TaskParameter="FullName" PropertyName="BuildUserName" />
+      <Output TaskParameter="Email" PropertyName="BuildUserEmail" />
+      -->
+    </User>
+  </Target>
+  <Target Name="PatchBuildInfo_cs_File" DependsOnTargets="SetVariables">
+    <Copy SourceFiles="commons\BuildInfo.cs.template" DestinationFiles="commons\generated\BuildInfo.cs" />
+    <FileUpdate Files="commons\generated\BuildInfo.cs" Regex="XXXTheAssemblyProductNameStringValueXXX" ReplacementText="$(ProductName) (Changeset $(HgChangeset), Revision $(HgRevision))" />
+    <FileUpdate Files="commons\generated\BuildInfo.cs" Regex="XXXHgRevisionXXX" ReplacementText="$(HgRevision)" />
+    <FileUpdate Files="commons\generated\BuildInfo.cs" Regex="XXXHgChangesetXXX" ReplacementText="$(HgChangeset)" />
+    <FileUpdate Files="commons\generated\BuildInfo.cs" Regex="XXXBuildUserIDXXX" ReplacementText="$(BuildUserID)" />
+  </Target>
+  <Target Name="Build" DependsOnTargets="PatchBuildInfo_cs_File;DeleteMSSHRTMIdll" />
+  <Target Name="Rebuild" />
+  <Target Name="Clean" />
+  <ItemGroup>
+    <msshrtmiFile Include="core\Site.AppStore\bin\msshrtmi.dll" />
+    <msshrtmiFile Include="core\Site.STS\bin\msshrtmi.dll" />
+    <msshrtmiFile Include="core\Site.SubmissionService\bin\msshrtmi.dll" />
+  </ItemGroup>
+  <Target Name="DeleteMSSHRTMIdll">
+    <Delete Files="@(msshrtmiFile)" />
+  </Target>
+  <Target Name="GetNativeManifest" />
+  <Target Name="GetCopyToOutputDirectoryItems" />
+</Project>

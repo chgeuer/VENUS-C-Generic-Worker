@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{647616C1-AAF1-424C-BC05-4C761DE85A17}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.EMIC.Cloud</RootNamespace>
+    <AssemblyName>Microsoft.EMIC.Cloud.GenericWorker</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\Microsoft.EMIC.Cloud.GenericWorker.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Microsoft.EMIC.Cloud.GenericWorker.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\libs\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\ParallelExtensionsExtras.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\commons\generated\BuildInfo.cs">
+      <Link>Properties\BuildInfo.cs</Link>
+    </Compile>
+    <Compile Include="CompositionIdentifiers.cs" />
+    <Compile Include="ExceptionMessages.cs" />
+    <Compile Include="GenericWorker\GenericWorkerEventDispatcher.cs" />
+    <Compile Include="GenericWorker\BESFactoryPortType.cs" />
+    <Compile Include="GenericWorker\INotificationService.cs" />
+    <Compile Include="GenericWorker\IScalingPlugin.cs" />
+    <Compile Include="GenericWorker\JobPriority.cs" />
+    <Compile Include="GenericWorker\IScalingService.cs" />
+    <Compile Include="GenericWorker\NotificationClient.cs" />
+    <Compile Include="Notification\JobStatusListener.cs" />
+    <Compile Include="GenericWorker\NotificationService.cs" />
+    <Compile Include="GenericWorker\ScalingServiceClient.cs" />
+    <Compile Include="GenericWorker\ScalingServiceImpl.cs" />
+    <Compile Include="Notification\ProgressEvent.cs" />
+    <Compile Include="Notification\SerializableKeyValuePair.cs" />
+    <Compile Include="GenericWorker\TestScalingPlugin.cs" />
+    <Compile Include="Notification\FinishEvent.cs" />
+    <Compile Include="Notification\HttpPostNotifyPlugin.cs" />
+    <Compile Include="Notification\INotificationPlugin.cs" />
+    <Compile Include="Notification\IUsageEvent.cs" />
+    <Compile Include="Notification\IUsageEventListener.cs" />
+    <Compile Include="Notification\NetworkEvent.cs" />
+    <Compile Include="Notification\StatusEvent.cs" />
+    <Compile Include="Notification\StorageEvent.cs" />
+    <Compile Include="OGF.BES\Addressing\AttributedQNameType.cs" />
+    <Compile Include="OGF.BES\Addressing\AttributedUnsignedLongType.cs" />
+    <Compile Include="OGF.BES\Addressing\AttributedURIType.cs" />
+    <Compile Include="OGF.BES\Addressing\RelatesToType.cs" />
+    <Compile Include="OGF.BES\Addressing\ProblemActionType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\CreateActivityRequest.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\CreateActivityResponse.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityDocumentsRequest.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityDocumentsResponse.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityStatusesRequest.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityStatusesResponse.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetFactoryAttributesDocumentRequest.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetFactoryAttributesDocumentResponse.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\TerminateActivitiesRequest.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\TerminateActivitiesResponse.cs" />
+    <Compile Include="OGF.BES\BESManagement\BESManagementPortTypeClient.cs" />
+    <Compile Include="OGF.BES\BESManagement\StartAcceptingNewActivitiesResponse.cs" />
+    <Compile Include="OGF.BES\BESManagement\StopAcceptingNewActivitiesResponse.cs" />
+    <Compile Include="OGF.BES\COMPSsExtensions\UpdateInstanceResponseType.cs" />
+    <Compile Include="OGF.BES\COMPSsExtensions\UpdateInstancesRequest.cs" />
+    <Compile Include="OGF.BES\COMPSsExtensions\UpdateInstancesResponse.cs" />
+    <Compile Include="OGF.BES\COMPSsExtensions\UpdateInstancesResponseType.cs" />
+    <Compile Include="OGF.BES\COMPSsExtensions\UpdateInstancesType.cs" />
+    <Compile Include="OGF.BES\CustomWsdlExtension.cs" />
+    <Compile Include="OGF.BES\Faults\CantApplyOperationToCurrentStateFault.cs" />
+    <Compile Include="OGF.BES\Faults\CantApplyOperationToCurrentStateFaultType.cs" />
+    <Compile Include="OGF.BES\Faults\OperationWillBeAppliedEventuallyFaultType.cs" />
+    <Compile Include="OGF.BES\Faults\UnknownActivityIdentifierFaultType.cs" />
+    <Compile Include="OGF.BES\JSDL\CandidateHosts_Type.cs" />
+    <Compile Include="OGF.BES\Soap\Body.cs" />
+    <Compile Include="OGF.BES\Soap\Detail.cs" />
+    <Compile Include="OGF.BES\Addressing\EndpointReferenceType.cs" />
+    <Compile Include="OGF.BES\Addressing\MetadataType.cs" />
+    <Compile Include="OGF.BES\Addressing\ReferenceParametersType.cs" />
+    <Compile Include="OGF.BES\BESFactory\ActivityDocumentType.cs" />
+    <Compile Include="OGF.BES\BESFactory\ActivityStateEnumeration.cs" />
+    <Compile Include="OGF.BES\BESFactory\ActivityStatusType.cs" />
+    <Compile Include="OGF.BES\BESFactory\BasicResourceAttributesDocumentType.cs" />
+    <Compile Include="OGF.BES\BESFactory\FactoryResourceAttributesDocumentType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\CreateActivityType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\CreateActivityResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityDocumentResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityDocumentsType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityDocumentsResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityStatusesType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityStatusesResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetActivityStatusResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetFactoryAttributesDocumentType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\GetFactoryAttributesDocumentResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\TerminateActivitiesType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\TerminateActivitiesResponseType.cs" />
+    <Compile Include="OGF.BES\BESFactory\Messages\TerminateActivityResponseType.cs" />
+    <Compile Include="OGF.BES\BESManagement\BESManagementService.cs" />
+    <Compile Include="OGF.BES\BESManagement\IBESManagementPortType.cs" />
+    <Compile Include="OGF.BES\BESManagement\StartAcceptingNewActivitiesRequest.cs" />
+    <Compile Include="OGF.BES\BESManagement\StartAcceptingNewActivitiesResponseType.cs" />
+    <Compile Include="OGF.BES\BESManagement\StartAcceptingNewActivitiesType.cs" />
+    <Compile Include="OGF.BES\BESManagement\StopAcceptingNewActivitiesRequest.cs" />
+    <Compile Include="OGF.BES\BESManagement\StopAcceptingNewActivitiesResponseType.cs" />
+    <Compile Include="OGF.BES\BESManagement\StopAcceptingNewActivitiesType.cs" />
+    <Compile Include="OGF.BES\Faults\Fault.cs" />
+    <Compile Include="OGF.BES\Faults\InvalidRequestMessageFaultType.cs" />
+    <Compile Include="OGF.BES\Faults\NotAcceptingNewActivitiesFaultType.cs" />
+    <Compile Include="OGF.BES\Faults\NotAuthorizedFaultType.cs" />
+    <Compile Include="OGF.BES\Faults\UnsupportedFeatureFaultType.cs" />
+    <Compile Include="OGF.BES\JSDL-HPCPA\Environment_Type.cs" />
+    <Compile Include="OGF.BES\JSDL-HPCPA\HPCProfileApplication_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\Application_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\Boundary_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\CPUArchitecture_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\CreationFlagEnumeration.cs" />
+    <Compile Include="OGF.BES\JSDL\DataStaging_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\Exact_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\FileSystemTypeEnumeration.cs" />
+    <Compile Include="OGF.BES\JSDL\FileSystem_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\JobDefinition_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\JobDescription_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\JobIdentification_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\OperatingSystemTypeEnumeration.cs" />
+    <Compile Include="OGF.BES\JSDL\OperatingSystemType_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\OperatingSystem_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\ProcessorArchitectureEnumeration.cs" />
+    <Compile Include="OGF.BES\JSDL\RangeValue_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\Range_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\Resources_Type.cs" />
+    <Compile Include="OGF.BES\JSDL\SourceTarget_Type.cs" />
+    <Compile Include="OGF.BES\Soap\Envelope.cs" />
+    <Compile Include="OGF.BES\Soap\Header.cs" />
+    <Compile Include="OGF.BES\XMLSerializerHelper.cs" />
+    <Compile Include="Security\AuthorizationPolicy\AndClaimRequirement.cs" />
+    <Compile Include="Security\AuthorizationPolicy\ClaimRequirementPolicy.cs" />
+    <Compile Include="Security\AuthorizationPolicy\ClaimsPolicyClaimExtensions.cs" />
+    <Compile Include="Security\AuthorizationPolicy\IClaimRequirement.cs" />
+    <Compile Include="Security\AuthorizationPolicy\OrClaimRequirement.cs" />
+    <Compile Include="Security\AuthorizationPolicy\WrappedClaim.cs" />
+    <Compile Include="Security\ProtectedCookieSessionSecurityTokenHandler.cs" />
+    <Compile Include="Security\RsaSessionSecurityTokenHandler.cs" />
+    <Compile Include="Security\RsaSessionServiceBehavior.cs" />
+    <Compile Include="Security\RsaSessionServiceBehaviorExtension .cs" />
+    <Compile Include="Security\Saml\SamlClientCredential.cs" />
+    <Compile Include="Security\Saml\SamlSecurityTokenManager.cs" />
+    <Compile Include="Security\Saml\SamlSecurityTokenProvider.cs" />
+    <Compile Include="Security\Saml\SamlUtilities.cs" />
+    <Compile Include="Security\SymmetricKeyCookieTransform.cs" />
+    <Compile Include="Security\SymmetricKeySessionSecurityTokenHandler.cs" />
+    <Compile Include="Security\SymmetricKeySessionServiceBehavior.cs" />
+    <Compile Include="Security\VenusClaimsAuthorizationManager.cs" />
+    <Compile Include="UserAdministration\CreateProfileClient.cs" />
+    <Compile Include="UserAdministration\HostState.cs" />
+    <Compile Include="UserAdministration\ICreateProfile.cs" />
+    <Compile Include="UserAdministration\ProfileData.cs" />
+    <Compile Include="UserAdministration\Settings.cs" />
+    <Compile Include="Applications\CloudApplicationDependencies.cs" />
+    <Compile Include="Applications\CommandLineArgType.cs" />
+    <Compile Include="Applications\CommandLineArgument.cs" />
+    <Compile Include="Applications\Required.cs" />
+    <Compile Include="Applications\VENUSApplicationAuthor.cs" />
+    <Compile Include="Applications\VENUSApplicationDescription.cs" />
+    <Compile Include="Applications\VENUSCommandTemplate.cs" />
+    <Compile Include="GenericWorker\ArgumentCollection.cs" />
+    <Compile Include="GenericWorker\CommandLineBuilder.cs" />
+    <Compile Include="GenericWorker\CommandLineBuilderResult.cs" />
+    <Compile Include="DataManagement\ArgumentExportAttribute.cs" />
+    <Compile Include="DataManagement\ArgumentRepository.cs" />
+    <Compile Include="DataManagement\FtpReference.cs" />
+    <Compile Include="DataManagement\HttpGetReference.cs" />
+    <Compile Include="DataManagement\IArgument.cs" />
+    <Compile Include="DataManagement\IArgumentExtensions.cs" />
+    <Compile Include="DataManagement\IProviderSpecificReference.cs" />
+    <Compile Include="DataManagement\IProviderSpecificReferenceMetadata.cs" />
+    <Compile Include="DataManagement\LiteralArgument.cs" />
+    <Compile Include="DataManagement\Reference.cs" />
+    <Compile Include="DataManagement\ReferenceArray.cs" />
+    <Compile Include="DataManagement\SingleReference.cs" />
+    <Compile Include="DataManagement\SwitchArgument.cs" />
+    <Compile Include="DataManagement\IArgumentMetadata.cs" />
+    <Compile Include="DataManagement\ICatalogueHandler.cs" />
+    <Compile Include="DataManagement\IReferenceArgument.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="GenericWorker\BESFactoryPortTypeImplService.cs" />
+    <Compile Include="GenericWorker\FilesystemMapper.cs" />
+    <Compile Include="GenericWorker\GenericWorkerDriver.cs" />
+    <Compile Include="GenericWorker\GenericWorkerJobManagementClient.cs" />
+    <Compile Include="GenericWorker\GenericWorkerTimer.cs" />
+    <Compile Include="GenericWorker\Hygiene.cs" />
+    <Compile Include="GenericWorker\IGWRuntimeEnvironment.cs" />
+    <Compile Include="GenericWorker\IJob.cs" />
+    <Compile Include="GenericWorker\JobID.cs" />
+    <Compile Include="GenericWorker\JobIdAsEPR.cs" />
+    <Compile Include="GenericWorker\JobStatus.cs" />
+    <Compile Include="GenericWorker\LocalJobSubmissionService.cs" />
+    <Compile Include="GenericWorker\LocalJobSubmissionHost.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\Impersonator.cs" />
+    <Compile Include="Utilities\AddressUtils.cs" />
+    <Compile Include="Utilities\ConvUtil.cs" />
+    <Compile Include="Utilities\IPHelperAPI.cs" />
+    <Compile Include="Utilities\IPHlpAPIDataStructures.cs" />
+    <Compile Include="Utilities\MatlabHelper.cs" />
+    <Compile Include="Utilities\MyInstanceProvider.cs" />
+    <Compile Include="Utilities\MyServiceBehavior.cs" />
+    <Compile Include="Security\X509Helper.cs" />
+    <Compile Include="GenericWorker\VENUSJobDescription.cs" />
+    <Compile Include="GenericWorker\VENUSJobDescriptionExtensions.cs" />
+    <Compile Include="Security\ConfigurationBasedCertStoreIssuerNameRegistry.cs" />
+    <Compile Include="GenericWorker\VersionInfo.cs" />
+    <Compile Include="Utilities\TcpPortInfo.cs" />
+    <Compile Include="Utilities\UdpPortInfo.cs" />
+    <Compile Include="Utilities\VenusServiceFactoryBase.cs" />
+    <Compile Include="Utilities\WCFUtils.cs" />
+    <Compile Include="OGF.BES\BESFactoryPortTypeImpl.cs" />
+    <Compile Include="OGF.BES\BESFactoryPortTypeClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Microsoft.EMIC.Cloud.GenericWorker.OutputWrapper\bin\$(Configuration)\OutputWrapper.exe">
+      <Link>OutputWrapper.exe</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="OGF.BES\Schema\addressing.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OGF.BES\Schema\bes-factory.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OGF.BES\Schema\bes-management.wsdl" />
+    <None Include="OGF.BES\Schema\bes-management.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OGF.BES\Schema\bscwsdl.wsdl" />
+    <None Include="OGF.BES\Schema\envelope.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OGF.BES\Schema\jsdl-hpcpa.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OGF.BES\Schema\jsdl.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OGF.BES\Schema\ur.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

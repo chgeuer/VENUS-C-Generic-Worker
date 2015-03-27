@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5baec933-e74a-440a-abda-0fb106ff2ec4" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Tools you need, or which could be handy to develop with the Generic Worker</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section address="DevelopmentTools">
+      	<title>Development tools</title>
+         <content>
+			<list class="bullet">
+			<listItem><para><externalLink>
+				<linkText>Azure SDK, Visual Studio Express + SQL Server Express</linkText>				
+				<linkAlternateText>Azure SDK, Visual Studio Express + SQL Server Express</linkAlternateText>
+				<linkUri>http://www.microsoft.com/windowsazure/getstarted/</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+				<alert class="note">
+				  <para>SQL Server is needed for the Azure Storage Emulator</para>
+				</alert>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Windows Identity Foundation Runtime</linkText>
+				<linkAlternateText>WIF Runtime</linkAlternateText>
+				<linkUri>http://www.microsoft.com/download/en/details.aspx?displaylang=en&amp;id=17331</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Windows Identity Foundation SDK</linkText>
+				<linkAlternateText>WIF SDK</linkAlternateText>
+				<linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=c148b2df-c7af-46bb-9162-2c9422208504</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+				<alert class="note">
+				  <para>You only need to install <application>WindowsIdentityFoundation-SDK-4.0.msi</application></para>
+				</alert>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>ASP.Net MVC3</linkText>
+				<linkAlternateText>ASP.Net MVC3</linkAlternateText>
+				<linkUri>http://download.microsoft.com/download/3/4/A/34A8A203-BD4B-44A2-AF8B-CA2CFCB311CC/AspNetMVC3Setup.exe</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink></para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>HG (Mercurial) extension for Visual Studio</linkText>
+				<linkAlternateText>Mercurial extension for VS</linkAlternateText>
+				<linkUri>http://visualstudiogallery.msdn.microsoft.com/9bc074fa-9e1f-4ce2-a75d-b90e65f7475a?SRC=VSIDE</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink> (optional)</para>
+			</listItem>
+			<listItem><para><externalLink>
+				<linkText>Azure Storage Explorer</linkText>
+				<linkAlternateText>Azure Storage Explorer</linkAlternateText>
+				<linkUri>http://azurestorageexplorer.codeplex.com/</linkUri>
+				<linkTarget>_blank</linkTarget>
+				</externalLink> (optional)</para>
+			</listItem>
+		</list>
+      	</content>
+      </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

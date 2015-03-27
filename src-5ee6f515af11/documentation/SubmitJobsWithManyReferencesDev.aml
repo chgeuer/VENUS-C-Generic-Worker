@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a60d66fd-f4f6-4156-bdfd-c4ce95d18183" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>This section presents alternative ways to declare upload/download references.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section>
+    <title>Declare arbitrary number of upload/download references by using special properties in the VENUSJobDescription</title>
+    <content>
+    	<para>
+    	Besides the way to describe a job shown in <link xlink:href="c99210d6-6f06-4272-86f9-6f6590989591">Simple Job submission</link>
+    	we want to present you alternative ways to describe uploads/downloads which help if you have input/output files that are not present in the commandline, or if you have huge numbers of input/output files which can bloat the jobdescription that much that it exceeds the maximum size that is accepted by the job submission service (or PMES).            	
+    	</para>
+    	<para>
+    	Input/Output files that are not included in the commandline can be described using ther Downloads/Uploads property in the VENUSJobDescription.
+    	In this case you also do not need a corresponding ReferenceArgument in the ApplicationDescription. The advantage is that the number of references is not fixed because of the ApplicationDescription.  
+    	</para>
+        <para>The following code sample shows the use of the Uploads/Downloads properties:
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+        region="JobDescriptionWithDownloadsUploads" />
+        <para>
+        In this example the uploads are initialized using a loop.
+        </para>
+        <para>
+        If in a scenario, the are huge or unpredictable number of input or output files, the VENUSJobDescription gets too big and cannot be sent to the submission service.
+        The result is a System.ServiceModel.CommunicationException or a Bad Request reponse by the service due to the large message size.
+        </para>
+        <para>
+        The solution to this problem is to outsource your reference list to a blob, and just provide a reference to this blob in the VENUSJopbDescription.
+        Outsourcing a reference list to a blob can be easily accomplished using the following function:
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+        region="SerializeANDUploadReferenceList" />
+        <para>
+        The function takes as input parameters a ReferenceCollection, and a boolean which indicates if the specified reference collection is for uploads or downloads.
+        
+        With the help of this function there is no big difference in using a list of Uploads or a UploadsReference, as you can see in the following example:
+       </para>
+       <para>
+        </para>
+        <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+        region="JobDescriptionWithDownloadsUploadsRefs" />
+        <para>
+        Instead of populating the Uploads property of the VENUSJobDescription, you need to create your own ReferenceCollection, which is then populated by the loop.
+        Using the above defined function, this reference collection is uploaded to a blob.
+        Now you only need to create a Reference pointing to this blob and assign this Reference to the UploadsReference property of the VENUSJobDescription.
+        </para>
+        <para>
+        This is very similar to what you need to do with the application description.
+        </para>
+        <para>
+        This procedure can also used for Downloads. In this case you would use the DownloadsReference property of VENUSJobDescription.
+        </para>
+    </content>
+</section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

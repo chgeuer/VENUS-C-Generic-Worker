@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7d1df782-e3b2-4746-a7f2-bc7dec3975d0" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Sample code to setup notifications for your jobs</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <section>
+            <title>Use a notification client to subscribe for notifications for your jobs </title>
+            <content>
+            	<para>
+            	First of all you have to create a jobmanagement client. You can do this as it is shown here.
+            	</para>
+            	<code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="JobSubmissionSecurity" title="JobSubmission secure client" />
+                <para>
+                Once you have a jobmanagement client you can get a list of your jobs
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="ListJobs" title="List your jobs" />
+
+                <para>
+                To setup notifications for your jobs statuses, first you have to create a notifications client.
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="JobNotificationSecurity" title="Create a notification client" />
+                
+                <para>
+                If you want to use the Queue Plugin to get a notification via a queue message, you first need to specify the plugin configuration. 
+                The pluginConfiguration for the queue plugin provides the connectionstring of your cloudstorage account and the name of the queue.
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SetupQueueNotificationPlugin" title="create a queue plugin configuration" />                
+                
+                <para>
+                To use <legacyItalic>PluginAttr</legacyItalic>, and to have the constants for queue plugin you need to add the following using statements to your source file.
+                </para>
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="UsingStatementForNotificationPluginConfiguration" title="using statement for plugin configurations" />                
+                
+                <para>Let us say you want to be notified via a queue message for each job that reaches the finished state</para>				
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SetupNotificationsForAllFinished" title="Setup notifications for all your finished jobs" />
+                
+                <para>If now one of your jobs reaches the finished state, the notification plugin send you a message, to the cloud storage and the queue you specified in your plugin configuration</para>				
+                <para>If you want to be notified for multiple states of a job, you can do the following:</para>				
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SetupNotificationsForMultipleStatuses" title="Setup notifications for multiple statuses of a job" />
+                
+                <para>If you want to be notified for all states of a job, you can do the following:</para>				
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SetupNotificationsForAllStatuses" title="Setup notifications for all statuses of a job" />
+
+                <alert class="note">
+				  <para>
+				  Please take into account that jobs can switch a lot of times between <legacyItalic>JobStatus.Submitted</legacyItalic> and <legacyItalic>JobStatus.CheckingInputData</legacyItalic>, while waiting for some input data getting available.
+				  Hence, we recommend you to not subscribe on those two statuses unless you do not care on transaction costs.
+				  </para>
+				</alert>
+				
+                <para>To unsubscribe all notification subscriptions for a job: </para>	
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="UnsubscribeNotifications" title="Unsubscribe all notification subscriptions" />
+                
+                <alert class="note">
+				  <para>With the current security policy, you are only allowed to subscribe for notifications on your own jobs, otherwise you get a SecurityAccessDeniedException.				  
+				  </para>
+				</alert>
+				<alert class="note">
+          <para>Other exceptions:</para>
+					<list class="ordered">
+					  <listItem><para>If a mandatory key value pair is not specified in the plugin config an ArgumentException is thrown</para></listItem>
+					  <listItem><para>If a provided value is not in a correct format a FormatException is thrown</para></listItem>
+					</list>
+				  
+				</alert>
+								  
+                <alert class="note">
+				  <para>Also note that it is not guaranteed that you get a notification for all the statuses for which you subscribed. It is possible that a worker picks up a job and starts to process it before the notification subscription is stored in the system.
+				  </para>
+				</alert>
+
+                <para>You can also subscribe notifications on jobgroups.</para>				
+                <para>So if you have submitted jobs specified as belonging to the group blastJobs, then you can subscribe on this jobgroup</para>				
+
+                <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"                  
+                region="SetupNotificationForJobGroup" title="Setup notifications for a jobgroup" />
+
+                <alert class="note">
+				  <para>
+				  A jobgroup is considered as finished if all member jobs are finished. A jobgroup is considered as failed if any member job is failed. 
+				  Note that for jobgroups you can only subscribe on the statuses finished and failed, other jobstatuses are not supported.				  
+				  </para>
+				</alert>
+            </content>
+        </section>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

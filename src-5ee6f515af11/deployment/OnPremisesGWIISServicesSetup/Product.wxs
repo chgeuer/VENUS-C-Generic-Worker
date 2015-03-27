@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Product Id="97478827-b06e-4718-9e12-654597a7b32b" Name="OnPremisesGWIISServices" Language="1033" Version="!(bind.FileVersion.NotificationService.bin.GenericWorker)" Manufacturer="GWIISServices" UpgradeCode="7364afcb-ded6-4b99-8841-8a1079f2aca7">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
+
+		<Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+					<Directory Id="INSTALLLOCATION" Name="GWISSServices">
+						<Directory Id="Site.Index" Name="Site.Index">
+							<Directory Id="Site.Index.bin" Name="bin">
+								
+							</Directory>
+						</Directory>
+						<Directory Id="Site.OnPremises.NotificationService" Name="Site.OnPremises.NotificationService">
+							<Directory Id="Site.OnPremises.NotificationService.bin" Name="bin">
+								
+							</Directory>
+						</Directory>
+						<Directory Id="Site.OnPremises.ScalingService" Name="Site.OnPremises.ScalingService">
+							<Directory Id="Site.OnPremises.ScalingService.bin" Name="bin">
+
+							</Directory>
+						</Directory>
+						<Directory Id="Site.OnPremises.STS" Name="Site.OnPremises.STS">
+							<Directory Id="Site.OnPremises.STS.bin" Name="bin">
+
+							</Directory>
+						</Directory>
+						<Directory Id="Site.OnPremises.SubmissionService" Name="Site.OnPremises.SubmissionService">
+							<Directory Id="Site.OnPremises.SubmissionService.bin" Name="bin">
+
+							</Directory>
+						</Directory>
+
+						<Directory Id="Site.OnPremises.JobManagement" Name="Site.OnPremises.JobManagement">
+							<Directory Id="Site.OnPremises.JobManagement.bin" Name="bin"/>
+							<Directory Id="Site.OnPremises.JobManagement.Content" Name="Content">
+								<Directory Id="Site.OnPremises.JobManagement.Content.themes" Name="themes"/>
+								<Directory Id="Site.OnPremises.JobManagement.Content.themes.base" Name="base">
+									<Directory Id="Site.OnPremises.JobManagement.Content.themes.base.images" Name="images"/>
+								</Directory>
+							</Directory>
+							<Directory Id="Site.OnPremises.JobManagement.Scripts" Name="Scripts">
+								<Directory Id="Site.OnPremises.JobManagement.Scripts.PagedList" Name="PagedList"/>
+							</Directory>
+							<Directory Id="Site.OnPremises.JobManagement.Views" Name="Views">
+								<Directory Id="Site.OnPremises.JobManagement.Views.Account" Name="Account"/>
+								<Directory Id="Site.OnPremises.JobManagement.Views.Home" Name="Home"/>
+								<Directory Id="Site.OnPremises.JobManagement.Views.Shared" Name="Shared"/>
+							</Directory>
+						</Directory>
+						
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<DirectoryRef Id="INSTALLLOCATION">
+			<Component Id="GWIISConfigure" Guid="E96F01CE-B90F-4886-8DD0-E29DDF7720BE" KeyPath="yes">
+				<!--<util:User Id="GW_IIS_User" Name="Europe\hakans" Password="Unutma!Hepsini@" CreateUser="no"/>-->
+				<!--<util:User Id="GW_IIS_User" Name="Hakan-laptop\Administrator" Password="d#YurMa+" CreateUser="no"/>-->
+				<!--<util:User Id="GW_IIS_User" Name="Europe\hakans" CreateUser="no"/>-->
+				<!--define application pool-->
+				<!--<iis:WebAppPool Id="GWISSApplicationPool" Name="GWISSApplicationPool" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="other" User="GW_IIS_User"
+												RecycleMinutes="120" />-->
+				<iis:WebAppPool Id="GWISSApplicationPoolIndex" Name="GWISSApplicationPoolIndex" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+        <iis:WebAppPool Id="GWISSApplicationPoolJobManagement" Name="GWISSApplicationPoolJobManagement" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <iis:WebAppPool Id="GWISSApplicationPoolNotification" Name="GWISSApplicationPoolNotification" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <iis:WebAppPool Id="GWISSApplicationPoolSubmission" Name="GWISSApplicationPoolSubmission" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <iis:WebAppPool Id="GWISSApplicationPoolSTS" Name="GWISSApplicationPoolSTS" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+        <iis:WebAppPool Id="GWISSApplicationPoolScaling" Name="GWISSApplicationPoolScaling" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <!--define web site-->
+				<iis:WebSite Id="OnPremisesSite" Description="GW OnPremises Services"
+										 AutoStart="yes" StartOnInstall="yes" ConfigureIfExists="yes"
+										 Directory="Site.Index" ConnectionTimeout="360" >
+
+					<iis:WebAddress Id="IndexSiteAddress" Port="80"/>
+					<iis:WebApplication Id="IndexSiteWebApplication" Name="VENUS-C Services" WebAppPool="GWISSApplicationPoolIndex"
+															ScriptTimeout="360" />
+					<iis:WebVirtualDir Id="NotificationServiceVirtualDir" Alias="NotificationService" Directory="Site.OnPremises.NotificationService">
+						<iis:WebApplication Id="NotificationServiceApplication" Name="NotificationService" WebAppPool="GWISSApplicationPoolNotification"/>
+					</iis:WebVirtualDir>
+					<iis:WebVirtualDir Id="ScalingServiceVirtualDir" Alias="ScalingService" Directory="Site.OnPremises.ScalingService">
+						<iis:WebApplication Id="ScalingServiceApplication" Name="ScalingService" WebAppPool="GWISSApplicationPoolScaling"/>
+					</iis:WebVirtualDir>
+					<iis:WebVirtualDir Id="STSVirtualDir" Alias="STS" Directory="Site.OnPremises.STS">
+						<iis:WebApplication Id="STSApplication" Name="STS" WebAppPool="GWISSApplicationPoolSTS"/>
+					</iis:WebVirtualDir>
+					<iis:WebVirtualDir Id="SubmissionServiceVirtualDir" Alias="JobSubmission" Directory="Site.OnPremises.SubmissionService">
+						<iis:WebApplication Id="SubmissionServiceApplication" Name="JobSubmission" WebAppPool="GWISSApplicationPoolSubmission"/>
+					</iis:WebVirtualDir>
+					<iis:WebVirtualDir Id="JobManagementVirtualDir" Alias="JobManagement" Directory="Site.OnPremises.JobManagement">
+						<iis:WebApplication Id="JobManagementApplication" Name="JobManagement" WebAppPool="GWISSApplicationPoolJobManagement"/>
+					</iis:WebVirtualDir>
+					<!--<iis:WebDirProperties Id="MyWebSite_Properties" AnonymousAccess="yes" WindowsAuthentication="no"
+								 DefaultDocuments="Default.aspx" />-->
+				</iis:WebSite>
+				</Component>
+		</DirectoryRef>
+		
+		<!-- Site.Index-->
+		<DirectoryRef Id="Site.Index">
+			<Component Id="Site.IndexFolder" Guid="717240E8-8569-4FD3-ABA0-F96C4D58A956">
+				<File Id="SiteIndex.index" Source="$(var.SolutionDir)PrecompiledWeb\Site.Index\index.html" KeyPath="yes"/>
+				<File Id="SiteIndex.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.Index\PrecompiledApp.config"/>
+				<File Id="SiteIndex.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.Index\Web.config"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.Index.bin">
+			<Component Id="Site.Index.binFolder" Guid="88B0120A-C659-486C-B15C-DA2F42429882">
+				<File Id="SiteIndex.bin.App_global.asax.dll" Source="$(var.SolutionDir)PrecompiledWeb\Site.Index\bin\App_global.asax.dll" KeyPath="yes"/>
+				<File Id="SiteIndex.bin.App_global.asax.compiled" Source="$(var.SolutionDir)PrecompiledWeb\Site.Index\bin\App_global.asax.compiled"/>
+			</Component>
+		</DirectoryRef>
+		<!-- Site.Index End-->
+
+		<!-- Site.OnPremises.NotificationService-->
+		<DirectoryRef Id="Site.OnPremises.NotificationService">
+			<Component Id="NotificationServiceFolder" Guid="75688B5B-1B31-4392-974F-9EE385298ACA">
+				<File Id="NotificationService.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\PrecompiledApp.config"/>
+				<File Id="NotificationService.SecureService.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\SecureService.svc"/>
+				<File Id="NotificationService.Service.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\Service.svc" KeyPath="yes"/>
+				<File Id="NotificationService.UsernamePasswordSample.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\UsernamePasswordSample.svc"/>
+				<File Id="NotificationService.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\Web.config"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.NotificationService.bin">
+			<Component Id="NotificationService.binFolder" Guid="624EE356-4D09-4F75-9721-FCA00F8D68CC">
+				<File Id="NotificationService.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\App_Code.compiled"/>
+				<File Id="NotificationService.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\App_Code.dll" KeyPath="yes"/>
+				<File Id="NotificationService.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\Ionic.Zip.dll"/>
+				<File Id="NotificationService.bin.AzureAccounting" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+				<File Id="NotificationService.bin.AzureProvider" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+				<File Id="NotificationService.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="NotificationService.bin.Management" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+				<File Id="NotificationService.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+				<File Id="NotificationService.bin.OnPremisesSettings" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\OnPremisesSettings.dll"/>
+				<File Id="NotificationService.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.NotificationService\bin\ParallelExtensionsExtras.dll"/>
+			</Component>
+		</DirectoryRef>
+		<!-- Site.OnPremises.NotificationService End-->
+
+		<!-- Site.OnPremises.ScalingService-->
+		<DirectoryRef Id="Site.OnPremises.ScalingService">
+			<Component Id="ScalingServiceFolder" Guid="12A8ABEA-4A80-424A-B8C2-BBA426D4E446">
+				<File Id="ScalingService.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\PrecompiledApp.config"/>
+				<File Id="ScalingService.SecureService.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\SecureService.svc"/>
+				<File Id="ScalingService.Service.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\Service.svc" KeyPath="yes"/>
+				<File Id="ScalingService.ScalingService.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\UsernamePasswordSample.svc"/>
+				<File Id="ScalingService.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\Web.config"/>
+				<File Id="ScalingService.index" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\index.html"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.ScalingService.bin">
+			<Component Id="ScalingService.binFolder" Guid="B2672348-EDE1-4D9D-8823-7A1D7EF38D93">
+				<File Id="ScalingService.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\App_Code.compiled"/>
+				<File Id="ScalingService.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\App_Code.dll" KeyPath="yes"/>
+				<File Id="ScalingService.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\Ionic.Zip.dll"/>
+				<File Id="ScalingService.bin.AzureAccounting" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+				<File Id="ScalingService.bin.AzureProvider" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+				<File Id="ScalingService.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="ScalingService.bin.Management" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+				<File Id="ScalingService.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+				<File Id="ScalingService.bin.OnPremisesSettings" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\OnPremisesSettings.dll"/>
+				<File Id="ScalingService.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.ScalingService\bin\ParallelExtensionsExtras.dll"/>
+			</Component>
+		</DirectoryRef>
+		<!-- Site.OnPremises.ScalingService End-->
+
+		<!-- Site.OnPremises.STS-->
+		<DirectoryRef Id="Site.OnPremises.STS">
+			<Component Id="STSFolder" Guid="71DFF4B4-ADF6-4719-9882-D0E3C2E42707">
+				<File Id="STS.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\PrecompiledApp.config"/>
+				<File Id="STS.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\Web.config" KeyPath="yes"/>
+				<File Id="STS.index" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\index.html"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.STS.bin">
+			<Component Id="STS.binFolder" Guid="0F03B56A-2047-443A-9E20-DE6E7AE0DE09">
+				<File Id="STS.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\App_Code.compiled"/>
+				<File Id="STS.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\App_Code.dll" KeyPath="yes"/>
+				<File Id="STS.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\Ionic.Zip.dll"/>
+				<File Id="STS.bin.AzureSecurity" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll"/>
+				<File Id="STS.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="STS.bin.Storage" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+				<!--<File Id="Site.OnPremises.STS.bin.ServiceRuntime" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\Microsoft.WindowsAzure.ServiceRuntime.dll"/>-->
+				<File Id="STS.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+				<File Id="STS.bin.OnPremisesSettings" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\OnPremisesSettings.dll"/>
+				<File Id="STS.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.STS\bin\ParallelExtensionsExtras.dll"/>
+			</Component>
+		</DirectoryRef>
+		<!-- Site.OnPremises.STS End-->
+
+		<!-- Site.OnPremises.SubmissionService-->
+		<DirectoryRef Id="Site.OnPremises.SubmissionService">
+			<Component Id="SubmissionServiceFolder" Guid="B7E37F8E-9B7C-47A2-83AC-9FB659C5377A">
+				<File Id="SubmissionService.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\PrecompiledApp.config"/>
+				<File Id="SubmissionService.SecureService.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\SecureService.svc"/>
+				<File Id="SubmissionService.Service.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\Service.svc" KeyPath="yes"/>
+				<File Id="SubmissionService.ScalingService.svc" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\UsernamePasswordSample.svc"/>
+				<File Id="SubmissionService.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\Web.config"/>
+				<File Id="SubmissionService.index" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\index.html"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.SubmissionService.bin">
+			<Component Id="SubmissionService.binFolder" Guid="99BF9D32-E364-44F5-839F-BCE94FAE01CE">
+				<File Id="SubmissionService.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\App_Code.compiled"/>
+				<File Id="SubmissionService.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\App_Code.dll" KeyPath="yes"/>
+				<File Id="SubmissionService.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Ionic.Zip.dll"/>
+				<File Id="SubmissionService.bin.KTH" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\KTH.GenericWorker.CDMI.dll"/>
+				<File Id="SubmissionService.bin.AzureAccounting" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+				<File Id="SubmissionService.bin.AzureProvider" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+				<File Id="SubmissionService.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="SubmissionService.bin.Storage" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+				<File Id="SubmissionService.bin.Management" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+				<!--<File Id="Site.OnPremises.SubmissionService.bin.ServiceRuntime" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.WindowsAzure.ServiceRuntime.dll"/>-->
+				<File Id="SubmissionService.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+				<File Id="SubmissionService.bin.OnPremisesSettings" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\OnPremisesSettings.dll"/>
+				<File Id="SubmissionService.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\Site.OnPremises.SubmissionService\bin\ParallelExtensionsExtras.dll"/>
+			</Component>
+		</DirectoryRef>
+		<!-- Site.OnPremises.ScalingService End-->
+
+		<!-- Site.OnPremises.JobManagement-->
+		<DirectoryRef Id="Site.OnPremises.JobManagement">
+			<Component Id="JobManagementFolder" Guid="51EB7A56-418A-4FAE-944D-65A5ABB41BA0">
+				<File Id="JobManagement.Global.asax" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Global.asax"/>
+				<File Id="JobManagement.packages.config" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\packages.config"/>
+				<File Id="JobManagement.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Web.config" KeyPath="yes"/>
+			</Component> 
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.bin">
+			<Component Id="JobManagement.binFolder" Guid="7589B148-56FB-4FA3-A0C7-147C7141930E">
+				<File Id="JobManagement.bin.IonicZip.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Ionic.Zip.dll"/>
+				<!--<File Id="JobManagement.bin.IonicZip.xml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Ionic.Zip.xml"/>-->
+				<File Id="JobManagement.bin.MefContrib.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\MefContrib.dll"/>
+				<File Id="JobManagement.bin.MefContrib.Web.Mvc.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\MefContrib.Web.Mvc.dll"/>
+				<File Id="JobManagement.bin.AzureAccounting.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+				<File Id="JobManagement.bin.AzureProvider.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+				<File Id="JobManagement.bin.AzureSecurity.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll"/>
+				<File Id="JobManagement.bin.GenericWorker.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+				<File Id="JobManagement.bin.Storage.Azure.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+				<File Id="JobManagement.bin.WindowsAzure.Diagnostics.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.WindowsAzure.Diagnostics.dll"/>
+				<File Id="JobManagement.bin.Management.Service.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+				<File Id="JobManagement.bin.ServiceRuntime.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.WindowsAzure.ServiceRuntime.dll"/>
+				<File Id="JobManagement.bin.StorageClient.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+				<File Id="JobManagement.bin.OnPremisesMVCWIFHelpers.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\OnPremisesMVCWIFHelpers.dll"/>
+				<File Id="JobManagement.bin.OnPremisesSecureJobManagement.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\OnPremisesSecureJobManagement.dll" KeyPath="yes"/>
+				<File Id="JobManagement.bin.OnPremisesSettings.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\OnPremisesSettings.dll"/>
+				<File Id="JobManagement.bin.PagedList.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\PagedList.dll"/>
+				<File Id="JobManagement.bin.PagedList.Mvc.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\PagedList.Mvc.dll"/>
+				<File Id="JobManagement.bin.ParallelExtensionsExtras.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\ParallelExtensionsExtras.dll"/>
+				<File Id="JobManagement.bin.WebActivator.dll" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\bin\WebActivator.dll"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Content">
+			<Component Id="JobManagement.ContentFolder" Guid="FD649960-2B24-4E8E-A20B-979723736035">
+				<File Id="JobManagement.Content.JobStatus.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\JobStatus.css"/>
+				<File Id="JobManagement.Content.PagedList.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\PagedList.css"/>
+				<File Id="JobManagement.Content.Site.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\Site.css"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Content.themes.base">
+			<Component Id="JobManagement.Content.themes.baseFolder" Guid="D856B4D0-1BEF-4DCF-99AC-DAB4A85FF4F5">
+				<File Id="JobManagement.Content.jquery.ui.accordion.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.accordion.css"/>
+				<File Id="JobManagement.Content.jquery.ui.all.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.all.css"/>
+				<File Id="JobManagement.Content.jquery.ui.autocomplete.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.autocomplete.css"/>
+				<File Id="JobManagement.Content.jquery.ui.base.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.base.css"/>
+				<File Id="JobManagement.Content.jquery.ui.button.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.button.css"/>
+				<File Id="JobManagement.Content.jquery.ui.core.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.core.css"/>
+				<File Id="JobManagement.Content.jquery.ui.datepicker.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.datepicker.css"/>
+				<File Id="JobManagement.Content.jquery.ui.dialog.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.dialog.css"/>
+				<File Id="JobManagement.Content.jquery.ui.progressbar.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.progressbar.css"/>
+				<File Id="JobManagement.Content.jquery.ui.resizable.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.resizable.css"/>
+				<File Id="JobManagement.Content.jquery.ui.selectable.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.selectable.css"/>
+				<File Id="JobManagement.Content.jquery.ui.slider.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.slider.css"/>
+				<File Id="JobManagement.Content.jquery.ui.tabs.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.tabs.css"/>
+				<File Id="JobManagement.Content.jquery.ui.theme.css" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\jquery.ui.theme.css"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Content.themes.base.images">
+			<Component Id="JobManagement.Content.themes.base.imagesFolder" Guid="865A7D3F-9BF9-4D7D-93E2-2DEEBF10FCCA">
+				<File Id="JobManagement.Content.images.ui_bg_flat_0_aaaaaa_40x100.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_flat_75_ffffff_40x100.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_glass_55_fbf9ee_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_glass_65_ffffff_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_glass_75_dadada_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_glass_75_e6e6e6_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_glass_95_fef1ec_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png"/>
+				<File Id="JobManagement.Content.images.ui_bg_highlight_soft_75_cccccc_1x100.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png"/>
+				<File Id="JobManagement.Content.images.ui_icons_2e83ff_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-icons_2e83ff_256x240.png"/>
+				<File Id="JobManagement.Content.images.ui_icons_222222_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-icons_222222_256x240.png"/>
+				<File Id="JobManagement.Content.images.ui_icons_454545_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-icons_454545_256x240.png"/>
+				<File Id="JobManagement.Content.images.ui_icons_888888_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-icons_888888_256x240.png"/>
+				<File Id="JobManagement.Content.images.ui_icons_cd0a0a_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Content\themes\base\images\ui-icons_cd0a0a_256x240.png"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Scripts">
+			<Component Id="JobManagement.ScriptsFolder" Guid="5BF2036A-F3FE-4DC5-9EAF-9658DF5308D0">
+				<File Id="JobManagement.Scripts.jquery.unobtrusive_ajax.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.unobtrusive-ajax.js"/>
+				<File Id="JobManagement.Scripts.jquery.unobtrusive_ajax.min.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.unobtrusive-ajax.min.js"/>
+				<File Id="JobManagement.Scripts.jquery.validate.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.validate.js"/>
+				<File Id="JobManagement.Scripts.jquery.validate.min.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.validate.min.js"/>
+				<File Id="JobManagement.Scripts.jquery.validate.unobtrusive.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.validate.unobtrusive.js"/>
+				<File Id="JobManagement.Scripts.jquery.validate.unobtrusive.min.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.validate.unobtrusive.min.js"/>
+				<File Id="JobManagement.Scripts.jquery.validate_vsdoc.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery.validate-vsdoc.js"/>
+				<File Id="JobManagement.Scripts.jquery_1.5.1.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery-1.5.1.js"/>
+				<File Id="JobManagement.Scripts.jquery_1.5.1.min.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery-1.5.1.min.js"/>
+				<File Id="JobManagement.Scripts.jquery_1.5.1_vsdoc.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery-1.5.1-vsdoc.js"/>
+				<File Id="JobManagement.Scripts.jquery_ui_1.8.11.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery-ui-1.8.11.js"/>
+				<File Id="JobManagement.Scripts.jquery_ui_1.8.11.min.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\jquery-ui-1.8.11.min.js"/>
+				<File Id="JobManagement.Scripts.MicrosoftAjax.debug.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\MicrosoftAjax.debug.js"/>
+				<File Id="JobManagement.Scripts.MicrosoftAjax.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\MicrosoftAjax.js"/>
+				<File Id="JobManagement.Scripts.MicrosoftMvcAjax.debug.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\MicrosoftMvcAjax.debug.js"/>
+				<File Id="JobManagement.Scripts.MicrosoftMvcAjax.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\MicrosoftMvcAjax.js"/>
+				<File Id="JobManagement.Scripts.MicrosoftMvcValidation.debug.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\MicrosoftMvcValidation.debug.js"/>
+				<File Id="JobManagement.Scripts.MicrosoftMvcValidation.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\MicrosoftMvcValidation.js"/>
+				<File Id="JobManagement.Scripts.modernizr_1.7.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\modernizr-1.7.js"/>
+				<File Id="JobManagement.Scripts.modernizr_1.7.min.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\modernizr-1.7.min.js"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Scripts.PagedList">
+			<Component Id="JobManagement.Scripts.PagedListFolder" Guid="82BBFDA2-EB85-4370-A8B2-28DA0CF04C4F">
+				<File Id="JobManagement.Scripts.Mvc.js" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\PagedList\PagedList.Mvc.js"/>
+				<File Id="JobManagement.Scripts.Template.html" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Scripts\PagedList\PagedList.Mvc.Template.html"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Views">
+			<Component Id="JobManagement.ViewsFolder" Guid="E971C72A-549B-49B7-8921-A52B2370D8A2">
+				<File Id="JobManagement.Views._ViewStart.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\_ViewStart.cshtml"/>
+				<File Id="JobManagement.Views.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Web.config"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Views.Account">
+			<Component Id="JobManagement.Views.AccountFolder" Guid="0A69A85B-D1E9-46B6-A121-5BD201930B88">
+				<File Id="JobManagement.Views.Account.LogOn.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Account\LogOn.cshtml"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Views.Home">
+			<Component Id="JobManagement.Views.HomeFolder" Guid="D5E87B12-42D3-4AC5-B4E8-03C011607C7D">
+				<File Id="JobManagement.Views.Home._ListNavigationPartialView.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Home\_ListNavigationPartialView.cshtml"/>
+        <File Id="JobManagement.Views.Home._JobDetailsPartialView.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Home\_JobDetailsPartialView.cshtml"/>
+				<File Id="JobManagement.Views.Home.About.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Home\About.cshtml"/>
+        <File Id="JobManagement.Views.Home.Details.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Home\Details.cshtml"/>
+				<File Id="JobManagement.Views.Home.Index.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Home\Index.cshtml"/>
+        <File Id="JobManagement.Views.Home.Stop.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Home\Stop.cshtml"/>
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="Site.OnPremises.JobManagement.Views.Shared">
+			<Component Id="JobManagement.Views.SharedFolder" Guid="DFEF943A-78C1-47FC-9E5C-84FEA4B4BF7E">
+				<File Id="JobManagement.Views.Shared._Layout.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Shared\_Layout.cshtml"/>
+				<File Id="JobManagement.Views.Shared._LogOnPartial.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Shared\_LogOnPartial.cshtml"/>
+				<File Id="JobManagement.Views.Shared.Error.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\OnPremisesSecureJobManagement\Views\Shared\Error.cshtml"/>
+			</Component>
+		</DirectoryRef>
+		<!-- Site.OnPremises.JobManagement End-->
+		
+		<Feature Id="ProductFeature" Title="GWIISServices" Level="1">
+			<ComponentRef Id="GWIISConfigure"/>
+			<ComponentRef Id="Site.IndexFolder"/>
+			<ComponentRef Id="Site.Index.binFolder"/>
+			<ComponentRef Id="NotificationServiceFolder"/>
+			<ComponentRef Id="NotificationService.binFolder"/>
+			<ComponentRef Id="ScalingServiceFolder"/>
+			<ComponentRef Id="ScalingService.binFolder"/>
+			<ComponentRef Id="STSFolder"/>
+			<ComponentRef Id="STS.binFolder"/>
+			<ComponentRef Id="SubmissionServiceFolder"/>
+			<ComponentRef Id="SubmissionService.binFolder"/>
+			<ComponentRef Id="JobManagementFolder"/>
+			<ComponentRef Id="JobManagement.binFolder"/>
+			<ComponentRef Id="JobManagement.ContentFolder"/>
+			<ComponentRef Id="JobManagement.Content.themes.baseFolder"/>
+			<ComponentRef Id="JobManagement.Content.themes.base.imagesFolder"/>
+			<ComponentRef Id="JobManagement.ScriptsFolder"/>
+			<ComponentRef Id="JobManagement.Scripts.PagedListFolder"/>
+			<ComponentRef Id="JobManagement.ViewsFolder"/>
+			<ComponentRef Id="JobManagement.Views.AccountFolder"/>
+			<ComponentRef Id="JobManagement.Views.HomeFolder"/>
+			<ComponentRef Id="JobManagement.Views.SharedFolder"/>
+			
+			
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+
+		<UIRef Id="WixUI_Minimal" />
+		
+	</Product>
+</Wix>

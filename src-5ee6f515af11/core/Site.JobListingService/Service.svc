@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" 
+    Factory="Site.JobListingService.UnprotectedJobListingServiceFactory" 
+    Service="Microsoft.EMIC.Cloud.GenericWorker.JobListingService, Microsoft.EMIC.Cloud.GenericWorker"  
+    %>

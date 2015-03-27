@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b6305c2f-e953-46eb-acd6-b22a55a30624" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Explanation of how accounting module in GW works</para>
+    </introduction>
+     <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+        <procedure>
+      <title>How Accounting Works?</title>
+      <steps class="bullet">
+        <step>
+          <content>
+            <para>By default, accounting is on GW and it can be switched on/off in service configuration:</para>
+            <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/docuDemoJobAppDescription.xml" lang="XML"  
+                region="Accounting" title="Switching Accounting on/off" />
+          </content>
+        </step>
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <section address="DevelopmentTools">
+    <title>
+    Generic Worker Accounting Internal Implementation
+    </title>
+    <content>
+    <mediaLink>
+              <image placement="center" xlink:href="Accounting"/>
+            </mediaLink>
+    
+    <para>
+    Accounting module in GW is tightly connected with the notification module. One of the core class of the accounting is "AccountingListener" that subscribes
+    for all kind of events published by the notification service. All these events are filtered and saved into the accounting table:
+    </para>
+   
+    <para>
+    <definitionTable>
+  		<definedTerm>PartitionKey</definedTerm>
+  		<definition><para>The owner of the job </para></definition>
+  		<definedTerm>RowKey</definedTerm>
+  		<definition><para>The internal id of the job</para></definition>
+  		<definedTerm>CustomerJobID</definedTerm>
+  		<definition><para>Job Name defined by the end user</para></definition>
+  		<definedTerm>EndTime</definedTerm>
+  		<definition><para>Time in UTC when job execution is finished</para></definition>
+  		<definedTerm>Instance_ID</definedTerm>
+  		<definition><para>The id of the VM where job is executed</para></definition>
+  		<definedTerm>IsFinished</definedTerm>
+  		<definition><para>Whether the execution is finished</para></definition>
+  		<definedTerm>NumberofInputFiles</definedTerm>
+  		<definition><para>How many input files processed by the executable</para></definition>
+  		<definedTerm>NumberofCores</definedTerm>
+  		<definition><para>How many cores are there in VM</para></definition>
+  		<definedTerm>NumberofOutputFiles</definedTerm>
+  		<definition><para>How many output files created by the executable</para></definition>
+  		<definedTerm>ReceivedBytesEnd</definedTerm>
+  		<definition><para>The snapshot of the network adapter when job execution is finished</para></definition>
+  		<definedTerm>ReceivedBytesStart</definedTerm>
+  		<definition><para>The snapshot of the network adapter when job execution is started</para></definition>
+  		<definedTerm>ReceivedBytesStart</definedTerm>
+  		<definition><para>The snapshot of the network adapter when job execution is started</para></definition>
+  		<definedTerm>SentBytesStart</definedTerm>
+  		<definition><para>The snapshot of the network adapter when job execution is started</para></definition>
+  		<definedTerm>SentBytesStart</definedTerm>
+  		<definition><para>The snapshot of the network adapter when job execution is started</para></definition>
+  		<definedTerm>SizeofInputFiles</definedTerm>
+  		<definition><para>Size of the input files in bytes</para></definition>
+  		<definedTerm>SizeofOutputFiles</definedTerm>
+  		<definition><para>Size of the output files in bytes</para></definition>
+  		<definedTerm>StartTime</definedTerm>
+  		<definition><para>Time in UTC when job execution is started</para></definition>
+  		<definedTerm>Status</definedTerm>
+  		<definition><para>Status of the job</para></definition>
+  	</definitionTable>
+    </para>
+    </content>
+    </section>
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d1ee0639-809e-48f4-9612-bea4af22e275" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+
+    </introduction>
+
+    <section>
+
+      <title>
+        Submitting and retrieving a group of jobs
+      </title>
+
+
+      <content>
+        <para>
+          As seen in the earlier section : <link xlink:href="351ce921-8b9e-4837-83de-247e2c588430">List Jobs and poll for the Job statuses</link>, we did not attach any group data to the job. In this section we will illustrate how to make use of group name as another field while submitting the job and inturn see how can this extra field be utilized for handling a number of jobs in one go.
+        </para>
+        <alert>
+          <para>
+            Grouping of jobs alone is possible, there is no option of subgroups or grouping of group of jobs. So beware jobs bunched up together is supported but different groups bunched up together(creating a larger group consisting of smaller different/similar job groups) is not supported at this point of time.
+          </para>
+        </alert>
+        <para>
+          First things first, let us see how can this group name be incorporated into the job submission function call.
+        </para>
+
+        <code title="Making use of group name as another field">
+          var user = "Researcher";
+
+          GenericWorkerJobManagementClient jobSubmissionPortal = GenericWorkerJobManagementClient.CreateSecureClient(
+          new EndpointAddress(new Uri(secureGenericWorkerURL), new DnsEndpointIdentity("myexperiment.cloudapp.net")),
+          new EndpointAddress(new Uri(securityTokenServiceURL), new DnsEndpointIdentity("myexperiment.cloudapp.net")),
+          user, "secret",
+          X509Helper.GetX509Certificate2(
+          StoreLocation.LocalMachine, StoreName.My,
+          "123456789ABCDEF123456789ABCDEF123456789A",
+          X509FindType.FindByThumbprint));
+          var groupName = "someGroupName";   // here we introduced the groupname as a local variable, this local variable groupname will be used in the subsequent steps
+
+          jobSubmissionPortal.SubmitVENUSJob(CreateGroupJSDL(groupName,"job1"));  // adding groupname to the SubmitVENUSJob function call using a CreateGroupJSDL function call.
+          jobSubmissionPortal.SubmitVENUSJob(CreateGroupJSDL(groupName, "job2"));
+          jobSubmissionPortal.SubmitVENUSJob(CreateGroupJSDL(groupName, "job3"));
+          jobSubmissionPortal.SubmitVENUSJob(CreateGroupJSDL(groupName, "job4"));
+
+        </code>
+        <code title="CreateGroupJSDL function definition">
+          public static VENUSJobDescription CreateGroupJSDL(string groupName, string jobName)
+          {
+          return new VENUSJobDescription()
+          {
+          ApplicationIdentificationURI = "http://www.microsoft.com/someapp",
+          CustomerJobID = string.Format("GroupID://{0}/{1}", groupName, jobName),
+          JobName = "Demo job for demonstrating group definitions"
+          };
+          }
+
+        </code>
+        <alert class="note">
+          <para>
+            Here in the above example groupname is attached to the job name job1, job2 and so on. The jobs inside them would have their own job id as specified by you in the CreateGroupJSDL function definition.
+            We could have used the return data of the SubmitVENUSJob function to get the internalJobId created by GW for latter status checking, but sense we are using groupname that wont be necessary - as you will see in the next part of this documentation.
+          </para>
+        </alert>
+
+        <list class="ordered">
+          <listItem>
+            <para>
+              Retrieve the jobs belonging to a group
+            </para>
+            <code title="group data used to retrieve jobs">
+              var jobGroup = jobSubmissionPortal.GetJobsByGroup(user, groupName);  // Similar to "var researcherJobs = jobSubmissionPortal.GetJobs("Researcher");" with username alone
+
+
+            </code>
+
+            <alert>
+              <para>
+                Suppose a situation wherein you are making use of a UserId which is used by your colleagues as well, in such case this option of GroupName is very helpful. Since the above function call used provides all the jobs submitted by you with the same UserId used by your colleagues and a specific groupname which you alone make use off.
+              </para>
+            </alert>
+          </listItem>
+
+
+          <listItem>
+            <para>
+              Cancel all jobs belonging to a group
+
+            </para>
+            <para>
+              You can cancel a job group, by retrieving it as shown above and then calling TerminateActitvies, or you just specify jobgroup and owner and use the following comfort method to cancel the jobs:
+
+
+            </para>
+            <code title="cancel job using group name">
+              jobSubmissionPortal.CancelGroup(user, groupName);
+
+            </code>
+          </listItem>
+        </list>
+
+        <alert class="note">
+          <para>
+            If security is enabled a user can only retrieve the jobs of an own group, otherwise you get a security exception. The Administrator can retrieve everyones groups.
+          </para>
+        </alert>
+
+        <para>
+          <legacyBold>Next Topic : </legacyBold>
+
+          
+          <link xlink:href="53d4a5b7-ad09-4864-959d-43fd25f85f18">Handling Jobs using EndPointReferenceType Class</link>
+        </para>
+
+
+
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

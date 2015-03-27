@@ -1,0 +1,41 @@
+﻿.jobstatus-Submitted 
+{
+    background-color: white;
+    color: black;
+}
+
+.jobstatus-Running 
+{
+    background-color: green;
+    color: white;
+}
+
+.jobstatus-CheckingInputData 
+{
+    background-color: yellow;
+    color: black;
+}
+
+.jobstatus-Cancelled 
+{
+    background-color: orange;
+    color: black;
+}
+
+.jobstatus-CancelRequested 
+{
+    background-color: orangered;
+    color: white;
+}
+
+.jobstatus-Failed 
+{
+    background-color: red;
+    color: white;
+}
+
+.jobstatus-Finished 
+{
+    background-color: grey;
+    color: black;
+}

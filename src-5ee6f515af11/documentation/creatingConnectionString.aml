@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="efbf0f40-cb4c-4ca5-b42f-833ecae954b8" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      
+    </introduction>
+    
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section>    
+     
+      <content>
+        <list class="ordered">
+          <listItem>
+
+            <para>Click on “Storage” in the upper left area.</para>
+            <mediaLink>
+              <image xlink:href="newDeploymentImage15"/>
+            </mediaLink>
+
+          </listItem>
+          <listItem>
+
+            <para>Click on “New" Located in the lower panel of links</para>
+
+          </listItem>
+          <listItem>
+
+            <para>Click on "Quick create" link</para>
+
+          </listItem>
+          <listItem>
+
+            <para>Select a region, enter a name for this storage account and click “Ok”.</para>
+
+
+
+
+            <para>A connectionstring for Azure has the following format: “DefaultEndpointsProtocol=https;AccountName=&lt;YOUR_ACCOUNT_NAME&gt;;AccountKey=&lt;YOUR_ACCOUNT_KEY&gt;”</para>
+            <para>The AccountName value has to be name entered when creating the storage account. The AccountKey can be retrieved by selecting the storage account and clicking on “Manage Access Keys” link in the lower panel. It does not matter if the primary or secondary key is used as there is no difference between them.</para>
+            <mediaLink>
+              <image xlink:href="newDeploymentImage16"/>
+            </mediaLink>
+      
+
+
+
+          </listItem>
+          
+          <listItem>
+            <para>
+              The AccountKey can be retrieved by selecting the storage account and clicking on “Manage Access Keys” link in the lower panel. It does not matter if the primary or secondary key is used as there is no difference between them.
+            </para>
+            <mediaLink>
+              <image xlink:href="newDeploymentImage17"/>
+            </mediaLink>
+            
+          </listItem>
+
+          <listItem>
+            <para>
+              Once you click the "Manage Access Keys" link from the previous step, you will see the result as shown in the picture below.
+            </para>
+
+            <mediaLink>
+              <image xlink:href="newDeploymentImage18"/>
+            </mediaLink>
+          </listItem>
+        </list>
+      </content>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </section>
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

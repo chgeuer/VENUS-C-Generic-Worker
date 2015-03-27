@@ -1,0 +1,24 @@
+﻿@using Microsoft.EMIC.Cloud.GenericWorker
+@model IJob
+@{
+    ViewBag.Title = "Stop";
+}
+
+<h2>Stop job</h2>
+<h3>Are you sure you want to stop this job?</h3>
+
+@using (Html.BeginForm()) 
+{
+    if(Model.Status == Microsoft.EMIC.Cloud.GenericWorker.JobStatus.CancelRequested)
+    {
+        <input type="submit" value="Stop" disabled="disabled" />
+    }
+    else
+    {   
+        <input type="submit" value="Stop"/>
+    }
+    
+    Html.ActionLink("Back ...", "Index");
+}
+
+@Html.Partial("_JobDetailsPartialView", Model)

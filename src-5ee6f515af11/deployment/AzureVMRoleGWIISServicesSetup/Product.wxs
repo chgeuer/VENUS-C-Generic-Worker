@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="FB992313-E2FA-4A26-9BC4-1BF972ECBA82" Name="AzureVMRoleGWIISServices" Language="1033" Version="!(bind.FileVersion.NotificationService.bin.GenericWorker)" Manufacturer="Microsoft ATL Europe" UpgradeCode="4136461F-DBC2-4198-952A-529BC1C19B2F">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine"/>
+
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\..\eulas\VenusC_GWComponent.rtf"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="MicrosoftATL" Name="Microsoft ATL Europe">
+          <Directory Id="INSTALLLOCATION" Name="Azure GWISSServices">
+            <Directory Id="Site.Index" Name="Site.Index">
+              <Directory Id="Site.Index.bin" Name="bin">
+
+              </Directory>
+            </Directory>
+            <Directory Id="Site.AzureVMRole.NotificationService" Name="Site.AzureVMRole.NotificationService">
+              <Directory Id="Site.AzureVMRole.NotificationService.bin" Name="bin">
+
+              </Directory>
+            </Directory>
+            <Directory Id="Site.AzureVMRole.ScalingService" Name="Site.AzureVMRole.ScalingService">
+              <Directory Id="Site.AzureVMRole.ScalingService.bin" Name="bin">
+
+              </Directory>
+            </Directory>
+            <Directory Id="Site.AzureVMRole.STS" Name="Site.AzureVMRole.STS">
+              <Directory Id="Site.AzureVMRole.STS.bin" Name="bin">
+
+              </Directory>
+            </Directory>
+            <Directory Id="Site.AzureVMRole.SubmissionService" Name="Site.AzureVMRole.SubmissionService">
+              <Directory Id="Site.AzureVMRole.SubmissionService.bin" Name="bin">
+
+              </Directory>
+            </Directory>
+
+            <Directory Id="Site.AzureVMRole.JobManagement" Name="Site.AzureVMRole.JobManagement">
+              <Directory Id="Site.AzureVMRole.JobManagement.bin" Name="bin"/>
+              <Directory Id="Site.AzureVMRole.JobManagement.Content" Name="Content">
+                <Directory Id="Site.AzureVMRole.JobManagement.Content.themes" Name="themes"/>
+                <Directory Id="Site.AzureVMRole.JobManagement.Content.themes.base" Name="base">
+                  <Directory Id="Site.AzureVMRole.JobManagement.Content.themes.base.images" Name="images"/>
+                </Directory>
+              </Directory>
+              <Directory Id="Site.AzureVMRole.JobManagement.Scripts" Name="Scripts">
+                <Directory Id="Site.AzureVMRole.JobManagement.Scripts.PagedList" Name="PagedList"/>
+              </Directory>
+              <Directory Id="Site.AzureVMRole.JobManagement.Views" Name="Views">
+                <Directory Id="Site.AzureVMRole.JobManagement.Views.Account" Name="Account"/>
+                <Directory Id="Site.AzureVMRole.JobManagement.Views.Home" Name="Home"/>
+                <Directory Id="Site.AzureVMRole.JobManagement.Views.Shared" Name="Shared"/>
+              </Directory>
+            </Directory>
+
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="GWIISConfigure" Guid="F0E855EA-3BC7-4D7C-8E74-D08986495AF3" KeyPath="yes">
+        <iis:WebAppPool Id="GWISSApplicationPoolIndex" Name="GWISSApplicationPoolIndex" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+        <iis:WebAppPool Id="GWISSApplicationPoolJobManagement" Name="GWISSApplicationPoolJobManagement" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <iis:WebAppPool Id="GWISSApplicationPoolNotification" Name="GWISSApplicationPoolNotification" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <iis:WebAppPool Id="GWISSApplicationPoolSubmission" Name="GWISSApplicationPoolSubmission" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <iis:WebAppPool Id="GWISSApplicationPoolSTS" Name="GWISSApplicationPoolSTS" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+        <iis:WebAppPool Id="GWISSApplicationPoolScaling" Name="GWISSApplicationPoolScaling" ManagedPipelineMode="integrated" ManagedRuntimeVersion="v4.0"
+												Identity="networkService"
+												RecycleMinutes="120" />
+
+
+        <!--define web site-->
+        <iis:WebSite Id="AzureVMRole" Description="GW Azure VMRole Services"
+										 AutoStart="yes" StartOnInstall="yes" ConfigureIfExists="yes"
+										 Directory="Site.Index" ConnectionTimeout="360" >
+
+          <iis:WebAddress Id="IndexSiteAddress" Port="80"/>
+          <iis:WebApplication Id="IndexSiteWebApplication" Name="VENUS-C Services" WebAppPool="GWISSApplicationPoolIndex"
+															ScriptTimeout="360" />
+          <iis:WebVirtualDir Id="NotificationServiceVirtualDir" Alias="NotificationService" Directory="Site.AzureVMRole.NotificationService">
+            <iis:WebApplication Id="NotificationServiceApplication" Name="NotificationService" WebAppPool="GWISSApplicationPoolNotification"/>
+          </iis:WebVirtualDir>
+          <iis:WebVirtualDir Id="ScalingServiceVirtualDir" Alias="ScalingService" Directory="Site.AzureVMRole.ScalingService">
+            <iis:WebApplication Id="ScalingServiceApplication" Name="ScalingService" WebAppPool="GWISSApplicationPoolScaling"/>
+          </iis:WebVirtualDir>
+          <iis:WebVirtualDir Id="STSVirtualDir" Alias="STS" Directory="Site.AzureVMRole.STS">
+            <iis:WebApplication Id="STSApplication" Name="STS" WebAppPool="GWISSApplicationPoolSTS"/>
+          </iis:WebVirtualDir>
+          <iis:WebVirtualDir Id="SubmissionServiceVirtualDir" Alias="JobSubmission" Directory="Site.AzureVMRole.SubmissionService">
+            <iis:WebApplication Id="SubmissionServiceApplication" Name="JobSubmission" WebAppPool="GWISSApplicationPoolSubmission"/>
+          </iis:WebVirtualDir>
+          <iis:WebVirtualDir Id="JobManagementVirtualDir" Alias="JobManagement" Directory="Site.AzureVMRole.JobManagement">
+            <iis:WebApplication Id="JobManagementApplication" Name="JobManagement" WebAppPool="GWISSApplicationPoolJobManagement"/>
+          </iis:WebVirtualDir>
+        </iis:WebSite>
+      </Component>
+    </DirectoryRef>
+
+    <!-- Site.Index-->
+    <DirectoryRef Id="Site.Index">
+      <Component Id="Site.IndexFolder" Guid="AB674258-44C6-4D99-AAFF-B5688A0779EB">
+        <File Id="SiteIndex.index" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.Index\index.html" KeyPath="yes"/>
+        <File Id="SiteIndex.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.Index\PrecompiledApp.config"/>
+        <File Id="SiteIndex.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.Index\Web.config"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.Index.bin">
+      <Component Id="Site.Index.binFolder" Guid="6C51B142-1735-4843-A25F-BAB5CEDC85D0">
+        <File Id="SiteIndex.bin.App_global.asax.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.Index\bin\App_global.asax.dll" KeyPath="yes"/>
+        <File Id="SiteIndex.bin.App_global.asax.compiled" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.Index\bin\App_global.asax.compiled"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Site.Index End-->
+
+    <!-- Site.AzureVMRole.NotificationService-->
+    <DirectoryRef Id="Site.AzureVMRole.NotificationService">
+      <Component Id="Site.AzureVMRole.NotificationServiceFolder" Guid="147D8E68-EA8C-4F1D-9630-01065F9F832C">
+        <File Id="NotificationService.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\PrecompiledApp.config"/>
+        <File Id="NotificationService.SecureService.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\SecureService.svc"/>
+        <File Id="NotificationService.Service.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\Service.svc" KeyPath="yes"/>
+        <File Id="NotificationService.UsernamePasswordSample.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\UsernamePasswordSample.svc"/>
+        <File Id="NotificationService.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\Web.config"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.NotificationService.bin">
+      <Component Id="Site.AzureVMRole.NotificationService.binFolder" Guid="980D3CBD-75D2-4F56-B3E1-2E867381DEDD">
+        <File Id="NotificationService.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\App_Code.compiled"/>
+        <File Id="NotificationService.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\App_Code.dll" KeyPath="yes"/>
+        <File Id="NotificationService.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Ionic.Zip.dll"/>
+        <File Id="NotificationService.bin.AzureSettings" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.EMIC.Cloud.AzureSettings.dll"/>
+        <File Id="NotificationService.bin.AzureAccounting" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+        <File Id="NotificationService.bin.AzureProvider" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+        <File Id="NotificationService.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="NotificationService.bin.AzureStorage" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+        <File Id="NotificationService.bin.Management" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+        <File Id="NotificationService.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="NotificationService.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.NotificationService\bin\ParallelExtensionsExtras.dll"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Site.AzureVMRole.NotificationService End-->
+
+    <!-- Site.AzureVMRole.ScalingService-->
+    <DirectoryRef Id="Site.AzureVMRole.ScalingService">
+      <Component Id="Site.AzureVMRole.ScalingServiceFolder" Guid="4BB74FBE-D182-4C51-BCB6-1121ECD2BEB2">
+        <File Id="ScalingService.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\PrecompiledApp.config"/>
+        <File Id="ScalingService.SecureService.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\SecureService.svc"/>
+        <File Id="ScalingService.Service.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\Service.svc" KeyPath="yes"/>
+        <File Id="ScalingService.ScalingService.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\UsernamePasswordSample.svc"/>
+        <File Id="ScalingService.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\Web.config"/>
+        <File Id="ScalingService.index" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\index.html"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.ScalingService.bin">
+      <Component Id="Site.AzureVMRole.ScalingService.binFolder" Guid="6FA21275-7A99-450F-B008-64B91E6E7E92">
+        <File Id="ScalingService.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\App_Code.compiled"/>
+        <File Id="ScalingService.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\App_Code.dll" KeyPath="yes"/>
+        <File Id="ScalingService.bin.AzureSettings" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.EMIC.Cloud.AzureSettings.dll"/>
+        <File Id="ScalingService.bin.AzureAccounting" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+        <File Id="ScalingService.bin.AzureProvider" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+        <File Id="ScalingService.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="ScalingService.bin.StorageAzure" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+        <File Id="ScalingService.bin.Diagnostics" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.WindowsAzure.Diagnostics.dll"/>
+        <File Id="ScalingService.bin.Management" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+        <File Id="ScalingService.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="ScalingService.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.ScalingService\bin\ParallelExtensionsExtras.dll"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Site.AzureVMRole.ScalingService End-->
+
+    <!-- Site.AzureVMRole.STS-->
+    <DirectoryRef Id="Site.AzureVMRole.STS">
+      <Component Id="Site.AzureVMRole.STSFolder" Guid="61AFE90F-D583-4CFD-A757-7168B57208B6">
+        <File Id="STS.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\PrecompiledApp.config"/>
+        <File Id="STS.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\Web.config" KeyPath="yes"/>
+        <File Id="STS.index" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\index.html"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.STS.bin">
+      <Component Id="Site.AzureVMRole.STS.binFolder" Guid="8F8A289B-3B89-451B-9F6E-E8907D15265C">
+        <File Id="STS.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\App_Code.compiled"/>
+        <File Id="STS.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\App_Code.dll" KeyPath="yes"/>
+        <File Id="STS.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Ionic.Zip.dll"/>
+        <File Id="STS.bin.AzureSettings" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Microsoft.EMIC.Cloud.AzureSettings.dll"/>
+        <File Id="STS.bin.AzureSecurity" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll"/>
+        <File Id="STS.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="STS.bin.Storage" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+        <File Id="STS.bin.Diagnostics" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Microsoft.WindowsAzure.Diagnostics.dll"/>
+        <File Id="STS.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="STS.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.STS\bin\ParallelExtensionsExtras.dll"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Site.AzureVMRole.STS End-->
+
+    <!-- Site.AzureVMRole.SubmissionService-->
+    <DirectoryRef Id="Site.AzureVMRole.SubmissionService">
+      <Component Id="Site.AzureVMRole.SubmissionServiceFolder" Guid="4754D90C-4ECA-4EB7-8508-0D443EB2838D">
+        <File Id="SubmissionService.PrecompiledApp.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\PrecompiledApp.config"/>
+        <File Id="SubmissionService.SecureService.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\SecureService.svc"/>
+        <File Id="SubmissionService.Service.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\Service.svc" KeyPath="yes"/>
+        <File Id="SubmissionService.ScalingService.svc" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\UsernamePasswordSample.svc"/>
+        <File Id="SubmissionService.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\Web.config"/>
+        <File Id="SubmissionService.index" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\index.html"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.SubmissionService.bin">
+      <Component Id="Site.AzureVMRole.SubmissionService.binFolder" Guid="5294A06B-4143-40E5-B327-601A82303515">
+        <File Id="SubmissionService.bin.App_Code.compiled" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\App_Code.compiled"/>
+        <File Id="SubmissionService.bin.App_Code.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\App_Code.dll" KeyPath="yes"/>
+        <File Id="SubmissionService.bin.IonicZip" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Ionic.Zip.dll"/>
+        <File Id="SubmissionService.bin.KTH" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\KTH.GenericWorker.CDMI.dll"/>
+        <File Id="SubmissionService.bin.AzureSettings" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.EMIC.Cloud.AzureSettings.dll"/>
+        <File Id="SubmissionService.bin.AzureAccounting" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+        <File Id="SubmissionService.bin.AzureProvider" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+        <File Id="SubmissionService.bin.GenericWorker" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="SubmissionService.bin.Storage" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+        <File Id="SubmissionService.bin.Diagnostics" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.WindowsAzure.Diagnostics.dll"/>
+        <File Id="SubmissionService.bin.ManagementServices" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+        <File Id="SubmissionService.bin.StorageClient" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="SubmissionService.bin.ParallelExtensionsExtras" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRole.Site.SubmissionService\bin\ParallelExtensionsExtras.dll"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Site.AzureVMRole.ScalingService End-->
+
+    <!-- Site.AzureVMRole.JobManagement-->
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement">
+      <Component Id="Site.AzureVMRole.JobManagementFolder" Guid="4DA9496C-7052-444B-9B00-044051953EC0">
+        <File Id="JobManagement.Global.asax" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Global.asax"/>
+        <File Id="JobManagement.packages.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\packages.config"/>
+        <File Id="JobManagement.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Web.config" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.bin">
+      <Component Id="Site.AzureVMRole.JobManagement.binFolder" Guid="65B4BC50-0862-4A30-8822-E1809FCA7B51">
+        <File Id="JobManagement.bin.IonicZip.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Ionic.Zip.dll"/>
+        <!--<File Id="JobManagement.bin.IonicZip.xml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Ionic.Zip.xml"/>-->
+        <File Id="JobManagement.bin.MefContrib.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\MefContrib.dll"/>
+        <File Id="JobManagement.bin.MefContrib.Web.Mvc.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\MefContrib.Web.Mvc.dll"/>
+        <File Id="JobManagement.bin.Microsoft.EMIC.Cloud.AzureSettings.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.EMIC.Cloud.AzureSettings.dll"/>
+        <File Id="JobManagement.bin.Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureAccounting.dll"/>
+        <File Id="JobManagement.bin.Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll"/>
+        <File Id="JobManagement.bin.Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.AzureSecurity.dll"/>
+        <File Id="JobManagement.bin.Microsoft.EMIC.Cloud.GenericWorker.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.EMIC.Cloud.GenericWorker.dll"/>
+        <File Id="JobManagement.bin.Microsoft.EMIC.Cloud.Storage.Azure.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.EMIC.Cloud.Storage.Azure.dll"/>
+        <File Id="JobManagement.bin.Microsoft.WindowsAzure.Diagnostics.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.WindowsAzure.Diagnostics.dll"/>
+        <File Id="JobManagement.bin.Microsoft.WindowsAzure.Samples.Management.Service.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.WindowsAzure.Samples.Management.Service.dll"/>
+        <File Id="JobManagement.bin.Microsoft.WindowsAzure.ServiceRuntime.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.WindowsAzure.ServiceRuntime.dll"/>
+        <File Id="JobManagement.bin.Microsoft.WindowsAzure.StorageClient.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\Microsoft.WindowsAzure.StorageClient.dll"/>
+        <File Id="JobManagement.bin.AzureVMRoleMVCWIFHelpers.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\MVCWIFHelpers.dll"/>
+        <File Id="JobManagement.bin.AzureVMRoleSecureJobManagement.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\AzureVMRoleSecureJobManagement.dll" KeyPath="yes"/>
+        <File Id="JobManagement.bin.PagedList.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\PagedList.dll"/>
+        <File Id="JobManagement.bin.PagedList.Mvc.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\PagedList.Mvc.dll"/>
+        <File Id="JobManagement.bin.ParallelExtensionsExtras.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\ParallelExtensionsExtras.dll"/>
+        <File Id="JobManagement.bin.WebActivator.dll" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\bin\WebActivator.dll"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Content">
+      <Component Id="Site.AzureVMRole.JobManagement.ContentFolder" Guid="63A02B29-7F16-4853-8BBD-8D5C09D32537">
+        <File Id="JobManagement.Content.JobStatus.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\JobStatus.css"/>
+        <File Id="JobManagement.Content.PagedList.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\PagedList.css"/>
+        <File Id="JobManagement.Content.Site.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\Site.css"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Content.themes.base">
+      <Component Id="Site.AzureVMRole.JobManagement.Content.themes.baseFolder" Guid="2F087022-0B36-4B89-9563-C9464D6EF9FD">
+        <File Id="JobManagement.Content.themes.base.jquery.ui.accordion.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.accordion.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.all.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.all.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.autocomplete.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.autocomplete.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.base.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.base.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.button.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.button.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.core.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.core.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.datepicker.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.datepicker.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.dialog.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.dialog.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.progressbar.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.progressbar.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.resizable.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.resizable.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.selectable.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.selectable.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.slider.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.slider.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.tabs.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.tabs.css"/>
+        <File Id="JobManagement.Content.themes.base.jquery.ui.theme.css" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\jquery.ui.theme.css"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Content.themes.base.images">
+      <Component Id="Site.AzureVMRole.JobManagement.Content.themes.base.imagesFolder" Guid="5208D3DF-F63F-489D-B7CE-5828C833A4F6">
+        <File Id="JobManagement.Content.images.ui_bg_flat_0_aaaaaa_40x100.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_flat_75_ffffff_40x100.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_glass_55_fbf9ee_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_glass_65_ffffff_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_glass_75_dadada_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_glass_75_e6e6e6_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_glass_95_fef1ec_1x400.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png"/>
+        <File Id="JobManagement.Content.images.ui_bg_highlight_soft_75_cccccc_1x100.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png"/>
+        <File Id="JobManagement.Content.images.ui_icons_2e83ff_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-icons_2e83ff_256x240.png"/>
+        <File Id="JobManagement.Content.images.ui_icons_222222_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-icons_222222_256x240.png"/>
+        <File Id="JobManagement.Content.images.ui_icons_454545_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-icons_454545_256x240.png"/>
+        <File Id="JobManagement.Content.images.ui_icons_888888_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-icons_888888_256x240.png"/>
+        <File Id="JobManagement.Content.images.ui_icons_cd0a0a_256x240.png" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Content\themes\base\images\ui-icons_cd0a0a_256x240.png"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Scripts">
+      <Component Id="Site.AzureVMRole.JobManagement.ScriptsFolder" Guid="A57843C5-AD6D-4F0A-8250-0102C2DD6D47">
+        <File Id="JobManagement.Scripts.jquery.unobtrusive_ajax.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.unobtrusive-ajax.js"/>
+        <File Id="JobManagement.Scripts.jquery.unobtrusive_ajax.min.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.unobtrusive-ajax.min.js"/>
+        <File Id="JobManagement.Scripts.jquery.validate.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.validate.js"/>
+        <File Id="JobManagement.Scripts.jquery.validate.min.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.validate.min.js"/>
+        <File Id="JobManagement.Scripts.jquery.validate.unobtrusive.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.validate.unobtrusive.js"/>
+        <File Id="JobManagement.Scripts.jquery.validate.unobtrusive.min.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.validate.unobtrusive.min.js"/>
+        <File Id="JobManagement.Scripts.jquery.validate_vsdoc.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery.validate-vsdoc.js"/>
+        <File Id="JobManagement.Scripts.jquery_1.5.1.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery-1.5.1.js"/>
+        <File Id="JobManagement.Scripts.jquery_1.5.1.min.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery-1.5.1.min.js"/>
+        <File Id="JobManagement.Scripts.jquery_1.5.1_vsdoc.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery-1.5.1-vsdoc.js"/>
+        <File Id="JobManagement.Scripts.jquery_ui_1.8.11.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery-ui-1.8.11.js"/>
+        <File Id="JobManagement.Scripts.jquery_ui_1.8.11.min.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\jquery-ui-1.8.11.min.js"/>
+        <File Id="JobManagement.Scripts.MicrosoftAjax.debug.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\MicrosoftAjax.debug.js"/>
+        <File Id="JobManagement.Scripts.MicrosoftAjax.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\MicrosoftAjax.js"/>
+        <File Id="JobManagement.Scripts.MicrosoftMvcAjax.debug.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\MicrosoftMvcAjax.debug.js"/>
+        <File Id="JobManagement.Scripts.MicrosoftMvcAjax.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\MicrosoftMvcAjax.js"/>
+        <File Id="JobManagement.Scripts.MicrosoftMvcValidation.debug.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\MicrosoftMvcValidation.debug.js"/>
+        <File Id="JobManagement.Scripts.MicrosoftMvcValidation.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\MicrosoftMvcValidation.js"/>
+        <File Id="JobManagement.Scripts.modernizr_1.7.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\modernizr-1.7.js"/>
+        <File Id="JobManagement.Scripts.modernizr_1.7.min.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\modernizr-1.7.min.js"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Scripts.PagedList">
+      <Component Id="Site.AzureVMRole.JobManagement.Scripts.PagedListFolder" Guid="45C23E2E-3BA5-475A-AC54-DFAD5CE44B8D">
+        <File Id="JobManagement.Scripts.PagedList.PagedList.Mvc.js" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\PagedList\PagedList.Mvc.js"/>
+        <File Id="JobManagement.Scripts.PagedList.PagedList.Mvc.Template.html" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Scripts\PagedList\PagedList.Mvc.Template.html"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Views">
+      <Component Id="Site.AzureVMRole.JobManagement.ViewsFolder" Guid="086BF62C-016E-48C6-A276-84127A7F733E">
+        <File Id="JobManagement.Views._ViewStart.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\_ViewStart.cshtml"/>
+        <File Id="JobManagement.Views.Web.config" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Web.config"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Views.Account">
+      <Component Id="Site.AzureVMRole.JobManagement.Views.AccountFolder" Guid="5B2A6277-5090-48F0-8DCF-AFC88088B0B4">
+        <File Id="JobManagement.Views.Account.LogOn.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Account\LogOn.cshtml"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Views.Home">
+      <Component Id="Site.AzureVMRole.JobManagement.Views.HomeFolder" Guid="20E68045-ED7D-4AF9-836A-E89F9B3BA2F0">
+        <File Id="JobManagement.Views.Home._ListNavigationPartialView.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Home\_ListNavigationPartialView.cshtml"/>
+        <File Id="JobManagement.Views.Home.About.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Home\About.cshtml"/>
+        <File Id="JobManagement.Views.Home.Index.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Home\Index.cshtml"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="Site.AzureVMRole.JobManagement.Views.Shared">
+      <Component Id="Site.AzureVMRole.JobManagement.Views.SharedFolder" Guid="4549E065-1684-493C-8B7B-EDFC19439237">
+        <File Id="JobManagement.Views.Shared._Layout.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Shared\_Layout.cshtml"/>
+        <File Id="JobManagement.Views.Shared._LogOnPartial.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Shared\_LogOnPartial.cshtml"/>
+        <File Id="JobManagement.Views.Shared.Error.cshtml" Source="$(var.SolutionDir)PrecompiledWeb\AzureVMRoleSecureJobManagement\Views\Shared\Error.cshtml"/>
+      </Component>
+    </DirectoryRef>
+    <!-- Site.AzureVMRole.JobManagement End-->
+
+    <Feature Id="ProductFeature" Title="GWIISServices" Level="1">
+      <ComponentRef Id="GWIISConfigure"/>
+      <ComponentRef Id="Site.IndexFolder"/>
+      <ComponentRef Id="Site.Index.binFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.NotificationServiceFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.NotificationService.binFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.ScalingServiceFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.ScalingService.binFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.STSFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.STS.binFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.SubmissionServiceFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.SubmissionService.binFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagementFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.binFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.ContentFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.Content.themes.baseFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.Content.themes.base.imagesFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.ScriptsFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.Scripts.PagedListFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.ViewsFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.Views.AccountFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.Views.HomeFolder"/>
+      <ComponentRef Id="Site.AzureVMRole.JobManagement.Views.SharedFolder"/>
+
+
+      <!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+      <ComponentGroupRef Id="Product.Generated" />
+    </Feature>
+
+    <UIRef Id="WixUI_Minimal" />
+
+  </Product>
+</Wix>

@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="99858a26-467b-4c49-8841-18420e9d22ce" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>Explanation on how you setup your environment in Azure for use with the Generic Worker.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <procedure>
+      <title>Logging in to Windows Azure and setting up the environment</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>You can log-on to Windows Azure by pointing the browser to <externalLink>
+<linkText>https://windows.azure.com/</linkText>
+<linkUri>https://windows.azure.com/</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+</para>
+            <para>
+              To sign-in, you will be redirected to live.com, where you can
+              log-on using the LiveID/Password associated with your Azure account.
+            </para>
+            <para>
+              <mediaLink><image placement="center" xlink:href="image5"/></mediaLink>
+            </para>
+            <para>After signing in, the Windows Azure management web site show up:</para>
+            <mediaLink><image placement="center" xlink:href="image6"/></mediaLink>
+            <para>Now, you need to set up a "new storage account", and a "new hosted service". </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Setting up a Windows Azure Storage Account</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              Clicking on <codeInline>New Storage Account</codeInline> brings up a dialog in which you
+              choose a DNS prefix for the Azure storage account which will be used
+              by the GW-internal job management system. In this walkthrough,
+              we’ll be using the prefix "gwinternalstorage" for the storage URL.
+              (The complete storage is available through RESTful web services).
+              Then you choose a region in which the storage account is created.
+              This region is basically the Microsoft data center in which the data
+              is stored. "West Europe" corresponds to the Amsterdam data center,
+              "North Europe" to Dublin:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image7"/>
+            </mediaLink>
+            <para>
+              After clicking OK, Windows Azure provisions the DNS entries
+              and the network endpoints for the storage.
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image8"/>
+            </mediaLink>
+            <para>
+              Note down the chosen <codeInline>Name</codeInline> property (URL prefix) 
+              in some text editor, and also copy the primary or
+              secondary access key (which you can see after clicking on the "View" button:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image9"/>
+            </mediaLink>
+            <para>
+              Storage name is now "gwinternalstorage", and the primary access key is
+              <codeInline>"GDxyjrgL/kOMyqV6ZA9h/zhGBq4Er9pbac3S2KmrUgt149KDk29Jar+iEYgGDeewVUK/4M6zHyTTiAtz0/F0CA=="</codeInline>.
+              This is a symmetric (secret) key which is confidential, and should not be shared with
+              the researchers. It is intended for the internal operation of the generic worker
+              infrastructure. We need these values in order to configure the deployment of
+              the generic worker later.
+            </para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <procedure>
+      <title>Setting up a 'hosted service' (a virtual machine deployment slot)</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>
+              After clicking on "Hosted Services" in the left-hand navigation pane,
+              you click the "New Hosted Service" button:
+            </para>
+            <mediaLink>
+              <image placement="center" xlink:href="image10"/>
+            </mediaLink>
+            <para>
+              <newTerm>URL Prefix</newTerm> The name for the hosted service is just a human-readable
+              handle for you, but the URL prefix will be important to reach the
+              generic worker through the Internet. In this walkthrough we choose
+              the URL prefix "cloudyscience". Concatenated with the domain name
+              cloudapp.net, this results in an address of
+              <fictitiousUri>http://cloudyscience.cloudapp.net/</fictitiousUri>
+              under which the deployed GW infrastructure can be reached. There is only a
+              single host name, because all of the virtual machines are reached
+              through a load balancer. So cloudyscience.cloudapp.net is only the
+              externally visible endpoint at the load balancer.
+            </para>
+            <para>
+              <newTerm>CNAME Setup</newTerm> In your own DNS system (like your institute’s, company’s or
+              university’s one), you should set up a CNAME entry for that address.
+              For example, you could add a CNAME entry for "genericworker.contoso.com"
+              to point to <fictitiousUri>cloudyscience.cloudapp.net</fictitiousUri>, 
+              which allows you to use that 'nicer' domain name in the subsequent configuration.
+            </para>
+            <para>
+              <newTerm>Region</newTerm>: The next step is to choose a region (read: data center).
+              It is highly recommended to choose the same data center which you
+              selected for the previous storage account setup. Otherwise, the
+              latency, bandwidth, and costs would be sub-optimal.
+            </para>
+            <para>
+              <newTerm>Do not deploy (for now)</newTerm>: Choosing the deployment option "Do not deploy"
+              just reserves the domain name and creates an empty deployment slot,
+              to which you deploy after configuring the local software package.
+              Clicking OK generates the hosted service deployment slot.
+            </para>
+
+            <mediaLink>
+              <image placement="center" xlink:href="image11"/>
+            </mediaLink>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+    <procedure>
+      <title>Generate a management certificate and add it to all your subscriptions</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Navigate to: 
+	            <externalLink>
+					<linkText>https://windows.azure.com/download/publishprofile.aspx</linkText>
+					<linkAlternateText>Optional alternate text</linkAlternateText>
+					<linkUri>https://windows.azure.com/download/publishprofile.aspx</linkUri>
+					<linkTarget>_blank</linkTarget>
+				</externalLink>
+            </para>
+            <para>
+            Now the site offers you to download a .publishsettings file, which contains that certificate and the list of subscription IDs.
+            </para>
+            <externalLink>
+				<linkText>You can find more information here</linkText>
+				<linkAlternateText>You can find more information here</linkAlternateText>
+				<linkUri>http://blog.smarx.com/posts/calling-the-windows-azure-service-management-api-with-the-new-publishsettings-file</linkUri>
+				<linkTarget>_blank</linkTarget>
+			</externalLink>
+			<para>
+				Since the November 2011 release of the Windows Azure tools for Visual Studio, you can simply import this file and then start publishing to Windows Azure.
+			</para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+    <link xlink:href="8d93a155-3481-4520-9f44-a9a248cda185">Initial configuration</link>
+    <link xlink:href="8da06954-83a6-4f38-bc28-c97357b7c2bf">Certificate acquisition</link>
+    <link xlink:href="094569b4-5d12-4a17-a187-1c2c2d81821d">How to deploy with Visual Studio</link>
+    <link xlink:href="76059fae-8011-485d-b377-05410e9471a1">How to deploy with Powershell</link>
+    <link xlink:href="8b18474b-5b1e-4318-8dce-585a1a247911">How to deploy with Azure Portal</link>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

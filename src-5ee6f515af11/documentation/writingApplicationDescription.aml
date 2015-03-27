@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8e9fde66-8469-4594-94e6-01731adbbd35" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+      <para>
+        Before starting with examples on how to write an Application Description, let us first understand what is ApplicationDescription. 
+      </para>
+      <para>
+        We will illustrate the following steps of course with examples:
+      </para>
+      <list class="ordered">
+        <listItem>
+          <para> Understanding Application Description class and its Mandatory fields </para>
+
+          	
+         
+        </listItem>
+
+
+        <listItem>
+          <para>
+            Mapping Commandline Arguments for the application execution to the CommandLineArguments Class of the Application Description <link xlink:href="5bcbb1cf-8765-4823-9f3e-a51377cf4788">here</link>
+          </para>
+
+
+          <para>
+            And with the above topics coverd with their respective examples, we can go ahead and write our first Application Description.
+          </para>
+        </listItem>
+
+        <listItem>
+          <para>
+            Zipping and Uploading ApplicationDescription and Application executable files to the Cloud <link xlink:href="d8424506-ccfe-427e-bd32-d751a9a42e83">here</link>
+          </para>
+        </listItem>
+      </list>
+
+     
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+
+    <section address="ox3">
+      <title>Understanding Application Description class and its Mandatory fields</title>
+      <content>
+
+        <para>
+          Looking at the above simpleApplication example, we now know the different input and output fields required and the different kinds of fields accepted by the application execution command to run the application successfully.
+        </para>
+
+        <para>
+          Now we need to understand how is this embedded into Generic Worker to accommodate different input(s) and output(s) for applications executed in the cloud.
+        </para>
+        <para>
+          Application Description provides a way to define the required and optional input and output parameter(s) for an application to run successfully in the cloud.
+        </para>
+
+        <mediaLink>
+          <image xlink:href="tutorial4"/>
+        </mediaLink>
+
+        <para>
+          First we will have a look into the class Diagram (as depicted in the picture above) of the <legacyBold>VenusApplicationDescription</legacyBold> class used to store all the necessary information about your application, information like :
+
+        </para>
+        <procedure>
+          <title>
+
+          </title>
+          <steps class ="bullet">
+            <step>
+              <content>
+                <para>
+                  <legacyBold>VenusCommandTemplate class</legacyBold> Object and its attributes
+                </para>
+
+                <list class="ordered">
+                  <listItem>
+                    <para>
+                      Executable (string): Mandatory field - Name of the executable file.
+                    </para>
+                  </listItem>
+
+
+                  <listItem>
+                    <para>
+                      Path (string): Optional - Environment variable Path - used in the case where the executable requires certain other files which are available in different folders.
+                    </para>
+                  </listItem>
+
+
+                  <listItem>
+                    <para>
+                      <legacyBold>CommandLineArgument class</legacyBold> object and its attributes
+                    </para>
+
+                    <list class="ordered">
+                      <listItem>
+                        <para>
+                          FormatString (string): corresponds to names of the different fields like "-input" or "-outfiles" as shown in the figure 1.
+                        </para>
+                      </listItem>
+
+                      <listItem>
+                        <para>
+                          Name (string): This is the name of the field in the command line which is used to refer and assign values to the commandline arguments in the job description part.
+                        </para>
+
+                        <para>
+                          For example:
+                          if the application description has arguments defined in the following way:
+                        </para>
+                        <code title="Example for Name field in the Application Description to show how is this linked to in the Job Description">
+                          new CommandLineArgument()
+                          {
+                          Name = "InputFile",
+                          FormatString = "-input {0}",
+                          Required = Required.Mandatory,
+                          CommandLineArgType = CommandLineArgType.SingleReferenceInputArgument
+                          },
+                        </code>
+
+                        <para>
+                          Corresponding reference to this CommandLineArgument in the JobDescription section will be done the following way :
+                        </para>
+                        <code title="Example for Name field in the Application Description to show how is this linked to in the Job Description">
+                          // create a blobreference in the cloud for the input file named as "input.txt"
+                          var nameIn = "input.txt";   // this can be any name not h=just input.txt but should follow after "-input" in the commandline
+                          var blobIn = blobContainer.GetBlobReference(nameIn);
+                          blobIn.UploadFile(nameIn);  //upload the input.txt file
+
+                          // Now it is possible to create the SingleReference
+                          AzureArgumentSingleReference inputFile = new AzureArgumentSingleReference();
+                          inputFile.Name = "InputFile";               // This has to be the same name as in the application description
+                          inputFile.DataAddress = blobIn.Uri.AbsoluteUri;   //this is how the input.txt is linked to input field "-input"
+                          inputFile.ConnectionString = UserDataStoreConnectionString;
+                        </code>
+                        
+                      </listItem>
+                   
+                  
+                  <listItem>
+                    <para>
+                      CommandLineArgType (ENUM): represents different kinds of allowed arguments. For this refer the next Topic.
+
+                    </para>
+                  </listItem>
+
+
+                  <listItem>
+                    <para>
+                      Required (ENUM): Defines whether the field is required or not.
+                    </para>
+                  </listItem>
+                      
+                </list>
+
+                  </listItem>
+
+                </list>
+
+                <para>
+                  <legacyBold>
+                    Next Topic: </legacyBold><link xlink:href="0bb6bb94-8409-4fe6-b7ca-07039245a234">Mapping Commandline Arguments for the application execution to the CommandLineArguments Class of the Application Description</link>
+                  
+                </para>    
+              </content>
+            </step>
+
+
+
+          </steps>
+
+          <conclusion>
+            <content>
+            </content>
+          </conclusion>
+        </procedure>
+      </content>
+    </section>
+
+   
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

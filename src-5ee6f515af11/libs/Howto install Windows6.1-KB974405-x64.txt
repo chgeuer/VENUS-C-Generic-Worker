@@ -1,0 +1,9 @@
+src: http://blogs.msdn.com/b/dmitrim/archive/2011/02/23/sharepoint-foundation-2010-on-windows-azure.aspx
+http://support.microsoft.com/kb/934307
+
+
+Install Identity Foundation manually
+
+Download Windows6.1-KB974405-x64.msu>
+expand -f:* Windows6.1-KB974405-x64.msu <folder2>
+pkgmgr /ip /m:Windows6.1-KB974405-x64.cab /s:%temp% /norestart

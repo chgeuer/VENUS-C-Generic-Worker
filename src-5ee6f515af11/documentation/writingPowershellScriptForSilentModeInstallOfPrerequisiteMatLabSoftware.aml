@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="88ba9fcc-f644-4b82-a9df-5d2186b04be0" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+
+
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="oX3">
+
+      <content>
+
+        <para>
+          Now that we have looked at how to install JRE in silent mode and how to install an application in the previous section, lets see how to install MatLab in silent mode in this section, let’s go ahead with the script writing part which ensures the successful installation of the prerequisite software.
+        </para>
+
+        <para>
+          For this tutorial we will take an example of installation of MatLab 7.13 version on one of the cloud machines.
+        </para>
+
+        <para>
+          For this task we would require the installation file of MatLab 7.13 and the Visual C++ runtimes (for this ), and the Visual C++ runtimes installation has to go first for successful installation of MatLab. So keeping that in mind, this section will illustrate how to install Visual C++ runtimes and MatLab in silent mode.
+        </para>
+        <alert class="note">
+          <para>
+            Installation of the MatLab 7.13 will have to be a <legacyBold>Silent Install</legacyBold> because this installation is via a script, there is no means of accomplishing an interactive mode of installation.
+          </para>
+        </alert>
+
+        <list class="bullet">
+
+          <listItem>
+            <para>
+              Get location of the installable on the cloud machine.
+            </para>
+            <code title="PowerShell Script to get the MatLab installables location on the Cloud machine">
+
+
+              [string]$currentDirUser = get-location     // this going to be the temp folder where the userprerequisites zip is placed 
+              [string]$installerMatlabFull = [System.IO.Path]::Combine($currentDirUser, "MATLAB(R)_Compiler_Runtime_7.13.msi") // the MatLab installable name and location
+              [string]$installerVCRedistFull = [System.IO.Path]::Combine($currentDirUser, "vcredist_x64.exe")  // Visual C++ runtimes installable location 
+                
+
+
+            </code>
+            <alert class="note">
+              <para>
+                The Powershell script, the Visual C++ runtimes installable and the MatLab installable are required to be zipped as userprerequisites.zip file and placed in a folder named "userprerequisites" in the cloud storage using the Azure storage explorer, this folder will correspond to the "temp" folder of the cloud machine. This mapping of userprerequisites folder mapped to temp folder of the cloud machine is taken care by GW. More on this in latter steps.
+              </para>
+
+
+            </alert>
+
+            <alert class="note">
+              <para>
+                GW also takes care of unzipping the zip file and stores the content of the userprerequisites.zip file into the temp folder.
+              </para>
+
+
+            </alert>
+
+          </listItem>
+
+          <listItem>
+            <para>
+              Specify the location of the Visual C++ runtimes install log
+            </para>
+
+            <code title="PowerShell Script to store a location for Visual C++ install log">
+
+              [string]$logVCRedistFull = [System.IO.Path]::Combine($currentDirUser, "vcredist_x64.log")        // Installation logs for latter troubleshooting
+            </code>
+
+          </listItem>
+
+          <listItem>
+            <para>
+              Installing the Visual C++ Runtimes (Remember this has to go first and then installation of the MAtLab)
+            </para>
+
+            <code title="PowerShell Script for Visual C++ runtimes installation on the Cloud machine">
+
+              Start-Process -FilePath $installerVCRedistFull -ArgumentList @("/q:a", "/c:""msiexec /i vcredist.msi /qn /l*v $logVCRedistFull""") -WorkingDirectory $currentDirUser -wait
+
+            </code>
+
+            <alert class="note">
+              <para>
+                More info on Silent Visual C++ runtimes installation options refer this link
+                <externalLink>
+                  <linkText>Visual C++ runtimes installation Options</linkText>
+                  <linkAlternateText>Visual C++ runtimes installation Options</linkAlternateText>
+                  <linkUri>http://blogs.msdn.com/b/astebner/archive/2009/03/26/9513328.aspx</linkUri>
+                  <linkTarget>_blank</linkTarget>
+                </externalLink>
+
+
+              </para>
+            </alert>
+
+
+          </listItem>
+
+
+          <listItem>
+            <para>
+              Installing MatLab installation 
+            </para>
+
+            <code title="PowerShell Script for Matlab installation on the Cloud machine">
+
+              Start-Process -FilePath "msiexec.exe" -ArgumentList @("/passive", "/I",  "$installerMatlabFull",  "/l", "MatlabInstallLog.log", "ALLUSERS=1") -WorkingDirectory $currentDirUser -wait
+
+            </code>
+
+            <alert class="note">
+              <para>
+                More info on Silent Matlab installation options refer this link
+                <externalLink>
+                  <linkText>Matlab installation Options</linkText>
+                  <linkAlternateText>Matlab installation Options</linkAlternateText>
+                  <linkUri>http://www.mathworks.co.uk/support/solutions/en/data/1-2QT8P2/index.html?solution=1-2QT8P2</linkUri>
+                  <linkTarget>_blank</linkTarget>
+                </externalLink>
+
+
+              </para>
+            </alert>
+            
+          </listItem>
+          <listItem>
+           
+            <code title="The Complete PowerShell Script to install MatLab looks like this">
+              #####################################################
+              # This script is executed automatically by the GenericWorker during startup   #
+              #####################################################
+
+              Write-Host "UserPrerequisites.ps1 is now running"
+
+              Write-Host "Installing Matlab Runtime"
+
+              # Please refer to the following links on how to get / call the needed installers or how to install Matlab Compiler Runtime:
+              # http://www.mathworks.co.uk/support/solutions/en/data/1-2QT8P2/index.html?solution=1-2QT8P2
+            
+              [string]$currentDirUser = get-location
+              [string]$installerMatlabFull = [System.IO.Path]::Combine($currentDirUser, "MATLAB(R)_Compiler_Runtime_7.13.msi")
+              [string]$installerVCRedistFull = [System.IO.Path]::Combine($currentDirUser, "vcredist_x64.exe")
+              [string]$logVCRedistFull = [System.IO.Path]::Combine($currentDirUser, "vcredist_x64.log")
+
+              Write-Host "currentdir: $currentDirUser"
+
+              # First it is required to install Visual C++ runtimes
+              Start-Process -FilePath $installerVCRedistFull -ArgumentList @("/q:a", "/c:""msiexec /i vcredist.msi /qn /l*v $logVCRedistFull""") -WorkingDirectory $currentDirUser -wait
+
+              # Now the Matlab compiler can be installed
+              Start-Process -FilePath "msiexec.exe" -ArgumentList @("/passive", "/I",  "$installerMatlabFull",  "/l", "MatlabInstallLog.log", "ALLUSERS=1") -WorkingDirectory $currentDirUser -wait
+
+              Write-Host "Installing Matlab finished"
+              Write-Host "Reaching end of UserPrerequisites.ps1, all done!"
+            </code>
+
+          </listItem>
+
+          <listItem>
+            <para address="uploadingTheZippedFilesToUserprerequisitesFolder">
+              The Powershell Script will run on the cloud machine, thus needs the completed powershell script and Matlab installable zipped together in a zip file named UserPrerequisites.zip and uploaded into the cloud storage using Azure Storage Explorer into a folder named "userprerequisites".
+            </para>
+
+            
+          </listItem>
+
+          <listItem>
+            <para>
+              After uploading the UserPrerequisites.zip file, the GW takes care of unzipping this file and store the contents of this zip file into the 'temp' folder of the cloud machine. Apart from that the GW also initiates the powershell script and thus doesn’t need any initiation or instigation to start the MatLab install.
+            </para>
+            <alert class="note">
+              <para>
+                Continue to write your client as mentioned in <link xlink:href="5bcbb1cf-8765-4823-9f3e-a51377cf4788">Implementing your own cloud client</link> because this user prerequisites option just removes MatLab installation every time alone but you still need a client to utilize the MatLab installed on the cloud machine.
+              </para>
+            </alert>
+          </listItem>
+        </list>
+        
+      </content>
+      <!-- If a section contains a sections element, its content creates
+           sub-sections.  These are not collapsible.
+      <sections>
+          <section address="SubSection1">
+              <title>Sub-section 1</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+          <section address="SubSection2">
+              <title>Sub-section 2</title>
+              <content>
+                  <para>Sub-section content.</para>
+              </content>
+          </section>
+      </sections> -->
+    </section>
+
+
+
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID"/>
+      <link xlink:href="Other Topic's ID">Link inner text</link>
+
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8270" />
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

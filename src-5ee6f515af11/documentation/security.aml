@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1c62f335-6a59-40ec-b42f-afe3ebe456e2" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <para>To ensure that only authorized users are allowed to register applications and
+      submit job, it is HIGHLY suggested to use the Security Token Service (STS) and
+      the appropriate secure clients. This document explains the needed parameters.</para>
+    </introduction>
+    <!-- Optional procedures followed by optional code example but must have
+         at least one procedure or code example -->
+    <procedure>
+      <title>Security with STS</title>
+      <steps class="bullet">
+      	<step>
+      		<content>
+      		<para>
+      		You can use as STS the EMIC STS or every other STS like ADFS, OpenSTS, etc. This documentation
+      		explains the use of the EMIC STS only.      		
+      		</para>
+      		</content>
+      	</step>
+        <step>
+          <content>
+                 <para>The thumbprint must be a SHA1 2048bit certificate
+       with key exchange enabled which is registered in the Azure Portal.
+       The <quoteInline>DnsEndpointIdentity</quoteInline> is the Issuer address of the certificate (e.g. myexperiment.cloudapp.net)</para>
+       <para>
+       The name and password identifies users which are declaired in the usertable. This check is needed to ensure,
+       if the specified user is allowed to submit new jobs.</para>
+       <para>You can read more about
+       setting up permissions at <link xlink:href="cc85ed0a-9bea-4741-966c-1f9d0c765a7b">Usertable and permissions</link>.
+       </para>
+       </content>
+        </step>
+        <step>
+          <content>
+            <code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="JobSubmissionSecurity" title="JobSubmission secure client" />
+          </content>
+        </step>
+        <step>
+          <content>
+          <para>
+          	To disable insecure access to your deployment, you have to set the following value
+          	in your <quoteInline>ServiceConfiguration.cscfg</quoteInline> file. (Default: false)
+          </para>
+          	<code source="../core/Cloud/ServiceConfiguration.Documentation.cscfg" lang="XML"  
+                region="InsecureAccess" title="ServiceConfiguration.cscfg" />
+          </content>
+        </step>
+        
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <procedure>
+      <title>Security without STS</title>
+      <steps class="bullet">
+      	<step>
+      		<content>
+      			<alert class="caution">
+					<para>This is preliminary documentation and is subject to change.</para>
+				</alert>
+      		</content>
+      	</step>
+      	<step>
+      		<content>
+      		<para>
+      		If you don't want to use an STS to controle the access to submit new jobs, you can use the
+      		the job submission client without federation. To use it, you have to set the <codeInline>WCFUtils.CreateUsernamePasswordSecurityTokenServiceBinding()</codeInline> Binding
+      		to the <codeInline>GenericWorkerJobSubmissionClient</codeInline>.
+      		You can setup it with the following code.
+      		</para>
+      		
+      		<code source="../core/Microsoft.EMIC.Cloud.DocumentationDemo/DemoSourceProgram.cs" lang="C#"  
+                region="SubmitJobWithoutSTS" title="JobSubmission secure client without STS" />
+      		</content>
+      	</step>
+      </steps>
+    </procedure>
+    <!-- <codeExample>Optional code example</codeExample> -->
+    <!-- <buildInstructions>Optional instructions for building a
+         code example.</buildInstructions> -->
+    <!-- <robustProgramming>Optional discussion of error handling and other
+         issues related to writing solid code.</robustProgramming> -->
+    <!-- <security>Optional discussion of security issues.</security> -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerHowToDocument>
+</topic>

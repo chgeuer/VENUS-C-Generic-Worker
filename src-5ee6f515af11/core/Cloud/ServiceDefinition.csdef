@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="GenericWorkerRole" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-05.1.7">
+  <WebRole name="Cloud.WebRole" vmsize="Small" enableNativeCodeExecution="true">
+    <Runtime executionContext="elevated" />
+    <Sites>
+      <Site name="Web">
+        <VirtualApplication name="ScalingService" physicalDirectory="..\Site.ScalingService" />
+        <VirtualApplication name="STS" physicalDirectory="..\Site.STS" />
+        <VirtualApplication name="JobSubmission" physicalDirectory="..\Site.SubmissionService" />
+        <VirtualApplication name="JobManagement" physicalDirectory="..\SecureJobManagement" />
+        <VirtualApplication name="NotificationService" physicalDirectory="..\Site.NotificationService" />
+        <Bindings>
+          <Binding name="HttpPort80" endpointName="HttpPort80" />
+          <Binding name="HttpsPort443" endpointName="HttpsPort443" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="HttpPort80" protocol="http" port="80" />
+      <InputEndpoint name="HttpsPort443" protocol="https" port="443" certificate="Microsoft.EMIC.Cloud.SSLCert" />
+    </Endpoints>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
+    <LocalResources>
+      <LocalStorage name="GWApps" cleanOnRoleRecycle="true" sizeInMB="3072" />
+      <LocalStorage name="GWUsers" cleanOnRoleRecycle="true" sizeInMB="9216" />
+      <LocalStorage name="GWData" cleanOnRoleRecycle="true" sizeInMB="820" />
+    </LocalResources>
+    <ConfigurationSettings>
+      <Setting name="Microsoft.EMIC.Cloud.GenericWorker.ConnectionString" />
+      <Setting name="Microsoft.EMIC.Cloud.STS.Certificate.Thumbprint" />
+      <Setting name="Microsoft.EMIC.Cloud.STS.URL" />
+      <Setting name="Microsoft.EMIC.Cloud.STS.Azure.ConnectionString" />
+      <Setting name="Microsoft.EMIC.Cloud.WCF.SharedMachineSymmetricKey" />
+      <Setting name="Microsoft.EMIC.Cloud.SerializedGlobalSecurityPolicy" />
+      <Setting name="Microsoft.EMIC.Cloud.Security.AllowInsecureAccess" />
+      <Setting name="Microsoft.EMIC.Cloud.GenericWorker.IsAccountingOn" />
+      <Setting name="Microsoft.EMIC.Cloud.GenericWorker.IsWebRole" />
+      <Setting name="Microsoft.EMIC.Cloud.GenericWorker.URL" />
+      <Setting name="Microsoft.EMIC.Cloud.ScalingService.URL" />
+      <Setting name="Microsoft.EMIC.Cloud.Azure.ServiceName" />
+      <Setting name="Microsoft.EMIC.Cloud.Azure.SubscriptionId" />
+      <Setting name="Microsoft.EMIC.Cloud.Azure.MgmtCertThumbprint" />
+      <Setting name="Microsoft.EMIC.Cloud.NotificationService.URL" />
+      <Setting name="Microsoft.EMIC.Cloud.SecuredJobManagementSiteURL" />
+      <Setting name="Microsoft.EMIC.Cloud.GenericWorker.JobEntriesPerPage" />
+      <Setting name="Microsoft.EMIC.Cloud.GenericWorker.ParallelTasks" />
+    </ConfigurationSettings>
+    <Startup>
+      <Task commandLine="AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe" executionContext="elevated" taskType="background" />
+      <!-- http://blog.smarx.com/posts/windows-azure-startup-tasks-tips-tricks-and-gotchas 
+
+          http://msdn.microsoft.com/en-us/library/gg557553.aspx#Task
+           
+           Make task background during development -->
+      <Task commandLine="SetupScripts\install.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="GW_STARTUP_CONNECTION_STRING">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='Microsoft.EMIC.Cloud.GenericWorker.ConnectionString']/@value" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
+    <Certificates>
+      <Certificate name="Microsoft.EMIC.Cloud.SSLCert" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="Microsoft.EMIC.Cloud.MgmtCert" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="Microsoft.EMIC.Cloud.STSCert" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+  </WebRole>
+</ServiceDefinition>

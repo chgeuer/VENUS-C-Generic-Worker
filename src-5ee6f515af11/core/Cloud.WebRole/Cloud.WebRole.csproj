@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8885455E-674B-487B-97E9-18543B257A09}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cloud.WebRole</RootNamespace>
+    <AssemblyName>Cloud.WebRole</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Cloud.GenericWorkerAgent.exe">
+      <Link>GW\Cloud.GenericWorkerAgent.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Ionic.Zip.dll">
+      <Link>GW\Ionic.Zip.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.EMIC.Cloud.AzureSettings.dll">
+      <Link>GW\Microsoft.EMIC.Cloud.AzureSettings.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll">
+      <Link>GW\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.dll">
+      <Link>GW\Microsoft.EMIC.Cloud.GenericWorker.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.EMIC.Cloud.Storage.Azure.dll">
+      <Link>GW\Microsoft.EMIC.Cloud.Storage.Azure.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.EMIC.DevelopmentFabric.Utils.dll">
+      <Link>GW\Microsoft.EMIC.DevelopmentFabric.Utils.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.WindowsAzure.Diagnostics.dll">
+      <Link>GW\Microsoft.WindowsAzure.Diagnostics.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Microsoft.WindowsAzure.StorageClient.dll">
+      <Link>GW\Microsoft.WindowsAzure.StorageClient.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Global.asax" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\commons\generated\BuildInfo.cs">
+      <Link>Properties\BuildInfo.cs</Link>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebRole.cs" />
+    <Compile Include="WebRoleSettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SetupScripts\old-code-snippets.txt" />
+    <Content Include="WaIISHost.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cloud.GenericWorkerAgent\Cloud.GenericWorkerAgent.csproj">
+      <Project>{0F0E6515-42EE-4D63-AF61-0DD172079B3A}</Project>
+      <Name>Cloud.GenericWorkerAgent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KTH.GenericWorker.CDMI\KTH.GenericWorker.CDMI.csproj">
+      <Project>{5197099A-6194-4C89-BA17-8A5F5E95A947}</Project>
+      <Name>KTH.GenericWorker.CDMI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.Cloud.Administrator.Host\Microsoft.EMIC.Cloud.Administrator.Host.csproj">
+      <Project>{CC6C064A-B3DE-41CA-A095-3561AACDAAFD}</Project>
+      <Name>Microsoft.EMIC.Cloud.Administrator.Host</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.Cloud.AzureSettings\Microsoft.EMIC.Cloud.AzureSettings.csproj">
+      <Project>{DF0ED034-E5DE-457E-AC2A-D89FCE07893A}</Project>
+      <Name>Microsoft.EMIC.Cloud.AzureSettings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications\Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications.csproj">
+      <Project>{125600B6-BBF6-4169-AA25-AEA76392A330}</Project>
+      <Name>Microsoft.EMIC.Cloud.GenericWorker.SampleNotifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.DevelopmentFabric.Utils\Microsoft.EMIC.DevelopmentFabric.Utils.csproj">
+      <Project>{2991C4E5-E41C-4642-B7F8-DF58FC88794F}</Project>
+      <Name>Microsoft.EMIC.DevelopmentFabric.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider\Microsoft.EMIC.Cloud.GenericWorker.AzureProvider.csproj">
+      <Project>{BB6C30FC-143B-4EEA-AD94-0AD94E45CF7B}</Project>
+      <Name>Microsoft.EMIC.Cloud.GenericWorker.AzureProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.Cloud.GenericWorker\Microsoft.EMIC.Cloud.GenericWorker.csproj">
+      <Project>{647616C1-AAF1-424C-BC05-4C761DE85A17}</Project>
+      <Name>Microsoft.EMIC.Cloud.GenericWorker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.EMIC.Cloud.Storage.Azure\Microsoft.EMIC.Cloud.Storage.Azure.csproj">
+      <Project>{59111108-B66B-4375-8445-F3F5505C9979}</Project>
+      <Name>Microsoft.EMIC.Cloud.Storage.Azure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Microsoft.EMIC.Cloud.Administrator.Host\bin\$(Configuration)\Microsoft.EMIC.Cloud.Administrator.Host.exe">
+      <Link>AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Microsoft.EMIC.Cloud.Administrator.Host\bin\$(Configuration)\Microsoft.EMIC.Cloud.Administrator.Host.exe.config">
+      <Link>AdministratorHost\Microsoft.EMIC.Cloud.Administrator.Host.exe.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Microsoft.EMIC.Cloud.GenericWorker\bin\$(Configuration)\Microsoft.EMIC.Cloud.GenericWorker.dll">
+      <Link>AdministratorHost\Microsoft.EMIC.Cloud.GenericWorker.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Cloud.GenericWorkerAgent\bin\$(Configuration)\Cloud.GenericWorkerAgent.exe.config">
+      <Link>GW\Cloud.GenericWorkerAgent.exe.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="SetupScripts\Download-SysInternals.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SetupScripts\Install-ASPNETMVC3.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SetupScripts\Install-UserPrerequisites.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SetupScripts\Install-WIF.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SetupScripts\install.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SetupScripts\Set-Permissions.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SetupScripts\install.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>41405</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <EnableWcfTestClientForSVCDefaultValue>True</EnableWcfTestClientForSVCDefaultValue>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

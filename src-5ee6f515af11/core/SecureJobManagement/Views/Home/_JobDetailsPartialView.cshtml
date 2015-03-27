@@ -1,0 +1,69 @@
+﻿@using Site.JobManagement.Controllers
+@model Microsoft.EMIC.Cloud.GenericWorker.IJob
+
+<fieldset>
+    <legend>VENUS-C Job</legend>
+
+    <table>
+        <tr>
+            <td class="display-label">Owner</td>
+            <td>@Model.Owner</td>
+        </tr>
+         <tr>
+            <td class="display-label">Status</td>
+            <td>@Model.Status</td>
+        </tr>
+        <tr>
+            <td class="display-label">Job Name</td>
+            <td>@Model.GetVENUSJobDescription().JobName</td>
+        </tr>
+        <tr>
+            <td class="display-label">Application</td>
+            <td>@Model.ApplicationIdentificationURI</td>
+        </tr>
+        <tr>
+            <td class="display-label">System-internal Job ID</td>
+            <td>@Model.InternalJobID</td>
+        </tr>
+        <tr>
+            <td class="display-label">Customer's Job ID</td>
+            <td>@Model.CustomerJobID</td>
+        </tr>
+        <tr>
+            <td class="display-label">Instance ID</td>
+            <td>@Model.InstanceID</td>
+        </tr>
+        <tr>
+            <td class="display-label">Submission</td>
+            <td>@Model.Submission</td>
+        </tr>
+        <tr>
+            <td class="display-label">LastChange</td>
+            <td>@Model.LastChange</td>
+        </tr>
+
+        <tr>
+            <td class="display-label">Status Text</td>
+            <td>@Model.StatusText.EscapedWithLinebreaks()</td>
+        </tr>
+        <tr>
+            <td class="display-label">Stdout</td>
+            <td>@Html.Raw(@Model.Stdout.Replace("\r\n", "<br />"))</td>
+        </tr>
+        <tr>
+            <td class="display-label">Stderr</td>
+            <td>@Html.Raw(@Model.Stderr.Replace("\r\n", "<br />"))</td>
+        </tr>
+
+        @{
+            var args = Model.GetVENUSJobDescription().JobArgs;
+            for (var i = 0; i < args.Count; i++ )
+            {
+                <tr>
+                    <td class="display-label">Argument @i ( <b>@args[i].Name</b> )</td>
+                    <td>@args[i].Serialize(new System.Xml.XmlDocument()).OuterXml</td>
+                </tr>
+            }
+        }
+    </table>
+</fieldset>

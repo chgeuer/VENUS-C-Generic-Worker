@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="aa286ad1-0f19-4138-bf16-f4c88df4874c" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+    <introduction>
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <!-- <autoOutline /> -->
+      <para>
+        Certificates used by a deployment have to be uploaded to the hosted service first. All certificates belonging to the hosted service will automatically be installed in the certificate store of the VMs.
+      </para>
+      <para>The following steps need to be done for the files containing public and private key (*.pfx):</para>
+
+
+    </introduction>
+    <!-- <prerequisites><content>Optional prerequisites info</content></prerequisites> -->
+    <!-- One or more procedure or section with procedure -->
+    <procedure>
+      <title>Adding Certificates</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Double Click on the Cloud Service that you created - in this case it is "rdemofordeployment" as shown in figure below</para>
+            <mediaLink>
+              <image xlink:href="newDeploymentImage4"/>
+            </mediaLink>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Now Double Click on the "Certificate" link - which is found on the upper right panel of links as shown in the figure below</para>
+
+            <mediaLink>
+              <image xlink:href="newDeploymentImage5"/>
+            </mediaLink>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>As this is a new deployement of cloud services/Hosted service there would not be any certificates visible, So now click on the "Upload a Certificate" link to upload the certificate you wish to add to this deployment with the ofcourse the certificate password, as shown in the figure below</para>
+
+            <mediaLink>
+              <image xlink:href="newDeploymentImage6"/>
+            </mediaLink>
+
+            <para>
+              Now select the certificate you want to upload and type in the password corresponding to the certificate and click "OK".
+            </para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Do the same for the certificate you want to use for management by clicking the "upload" link in the bottom panel as shown in the below pic.</para>
+
+            
+          </content>
+        </step>
+      </steps>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+      <conclusion>
+        <content>
+           <para>In addition the public of the management certificate (*.cer) needs to be uploaded so that Azure can determine if someone doing a management call is authorized for this action.</para>
+        </content>
+      </conclusion>
+    </procedure>
+    <!-- Optional additional procedure or section with procedure -->
+    <procedure>
+      <title>Adding Management Certificate</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>Click on “Management Certificates” in the upper left area.</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Click on “Add Certificate”</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Select the public key of the management certificate you uploaded to the hosted service before.</para>
+          </content>
+        </step>
+      </steps>
+      <conclusion>
+        <content>
+          <mediaLink>
+            <image xlink:href="newDeploymentImage7"/>
+          </mediaLink>
+          <para>
+            As the private key of the management certificate is available to the deployment
+            (= GenericWorker), the deployment will be able to make management calls like increasing or decreasing the number of VMs.
+          </para>
+
+          <para>
+            <legacyBold>
+              Result
+            </legacyBold>
+          </para>
+          <para>
+            After you have done the above steps - you see the following page as shown in the below image
+          </para>
+          <mediaLink>
+            <image xlink:href="newDeploymentImage13"/>
+          </mediaLink>
+        </content>
+      </conclusion>
+      <!-- <conclusion>Optional conclusion</conclusion> -->
+    </procedure>
+    <!-- Optional next steps info
+    <nextSteps>
+      <content><para>Next steps info goes here</para></content>
+    </nextSteps>
+    -->
+    <relatedTopics>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>
